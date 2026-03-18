@@ -54,15 +54,15 @@ uv run helm-server <span class="nt">--suite</span> my_med_test
 
 <p>Adds heavier libraries (bert-score, rouge-score, nltk). <strong>Install may take 2–3 minutes.</strong></p>
 
-<p>Scenarios: <strong>DischargeMe</strong> (hospital course summaries), <strong>ACI-Bench</strong> (clinical transcripts), <strong>Patient-Edu</strong> (simplifying medical jargon).</p>
+<p>Scenarios: <strong>DischargeMe</strong> (hospital course summaries; requires PhysioNet <code class="language-plaintext highlighter-rouge">data_path</code>), <strong>ACI-Bench</strong> (clinical transcripts), <strong>Patient-Edu</strong> (simplifying medical jargon).</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv pip <span class="nb">install</span> <span class="s2">"medhelm[summarization]"</span>
 </code></pre></div></div>
 
-<p>Example:</p>
+<p>Example (ACI-Bench; runs without extra data):</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv run medhelm-run <span class="se">\</span>
-  <span class="nt">--run-entries</span> <span class="s2">"discharge_summaries:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="se">\</span>
+  <span class="nt">--run-entries</span> <span class="s2">"aci_bench:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="se">\</span>
   <span class="nt">--suite</span> med_summaries <span class="se">\</span>
   <span class="nt">--max-eval-instances</span> 5
 uv run helm-summarize <span class="nt">--suite</span> med_summaries
@@ -107,7 +107,7 @@ uv run helm-server <span class="nt">--suite</span> board_exams
     <tr>
       <td><strong>Summarization</strong></td>
       <td><code class="language-plaintext highlighter-rouge">uv pip install "medhelm[summarization]"</code></td>
-      <td>DischargeMe, ACI-Bench, Patient-Edu (2–3 min install)</td>
+      <td>DischargeMe (needs data_path), ACI-Bench, Patient-Edu (2–3 min install)</td>
     </tr>
     <tr>
       <td><strong>Gated</strong></td>
