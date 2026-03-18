@@ -41,7 +41,7 @@
 <p>Run a benchmark:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv run medhelm-run <span class="se">\</span>
-  <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=huggingface/qwen2.5-7b"</span> <span class="se">\</span>
+  <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="se">\</span>
   <span class="nt">--suite</span> my_med_test <span class="se">\</span>
   <span class="nt">--max-eval-instances</span> 10
 uv run helm-summarize <span class="nt">--suite</span> my_med_test
@@ -62,7 +62,7 @@ uv run helm-server <span class="nt">--suite</span> my_med_test
 <p>Example:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv run medhelm-run <span class="se">\</span>
-  <span class="nt">--run-entries</span> <span class="s2">"discharge_summaries:model=huggingface/qwen2.5-7b"</span> <span class="se">\</span>
+  <span class="nt">--run-entries</span> <span class="s2">"discharge_summaries:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="se">\</span>
   <span class="nt">--suite</span> med_summaries <span class="se">\</span>
   <span class="nt">--max-eval-instances</span> 5
 uv run helm-summarize <span class="nt">--suite</span> med_summaries
@@ -81,7 +81,7 @@ uv run helm-server <span class="nt">--suite</span> med_summaries
 <p>Example:</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv run medhelm-run <span class="se">\</span>
-  <span class="nt">--run-entries</span> <span class="s2">"med_qa:model=huggingface/qwen2.5-7b"</span> <span class="se">\</span>
+  <span class="nt">--run-entries</span> <span class="s2">"med_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="se">\</span>
   <span class="nt">--suite</span> board_exams <span class="se">\</span>
   <span class="nt">--max-eval-instances</span> 10
 uv run helm-summarize <span class="nt">--suite</span> board_exams
