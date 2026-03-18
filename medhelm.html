@@ -14,6 +14,7 @@
     </a>
     <nav class="header-nav">
       <a href="/">Home</a>
+      <a href="https://crfm.stanford.edu/helm/medhelm/latest/#/leaderboard" rel="noopener" target="_blank">Leaderboard</a>
       <a href="/installation">Docs</a>
       <a href="/tutorial">Tutorials</a>
       <a href="/benchmark">Tests</a>
@@ -165,17 +166,20 @@ gcloud storage rsync -r $GCS_BENCHMARK_OUTPUT_PATH $OUTPUT_PATH
 
 <h4 id="3-run-a-tiny-evaluation">3. Run a Tiny Evaluation</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set variables</span>
-<span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span>
+<p><strong>Quick test</strong> (small model, 2 instances — runs in seconds):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=openai/gpt2,model_deployment=huggingface/gpt2"</span>
+<span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
+<span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>2
+helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+</code></pre></div></div>
+
+<p><strong>Full example</strong> (better quality, 10 instances):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span>
 <span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
 <span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>10
-
-<span class="c"># Run evaluation</span>
-helm-run <span class="se">\</span>
-   <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="se">\</span>
-   <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="se">\</span>
-   <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="se">\</span>
-   <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
 </code></pre></div></div>
 
 <h4 id="4-build-and-open-the-local-leaderboard">4. Build and Open the Local Leaderboard</h4>
@@ -296,24 +300,26 @@ pip <span class="nb">install</span> <span class="nt">-U</span> setuptools
 
 <h2 id="run-your-first-evaluation">Run Your First Evaluation</h2>
 
-<p>The example below evaluates <strong>Qwen2.5‑7B‑Instruct</strong> on the <strong>PubMedQA</strong> scenario using 10 instances.</p>
+<p><strong>Quick test:</strong> Use <strong>GPT‑2</strong> with 2 instances to verify install and run the full pipeline in seconds. <strong>Full example:</strong> Use <strong>Qwen2.5‑7B‑Instruct</strong> with 10 instances for better quality.</p>
 
 <h4 id="1-run-the-benchmark">1. Run the Benchmark</h4>
 
-<p>The following command runs <strong>PubMedQA</strong> on <strong>Qwen2.5‑7B‑Instruct</strong> for 10 instances and stores the results under <code class="language-plaintext highlighter-rouge">./benchmark_output/runs/my-medhelm-suite</code>.</p>
+<p><strong>Quick test</strong> (runs in seconds):</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set variables</span>
-<span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=openai/gpt2,model_deployment=huggingface/gpt2"</span>
+<span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
+<span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>2
+<span class="nv">OUTPUT_PATH</span><span class="o">=</span><span class="s2">"./benchmark_output"</span>
+helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+</code></pre></div></div>
+
+<p><strong>Full example</strong> (10 instances, better quality):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span>
 <span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
 <span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>10
 <span class="nv">OUTPUT_PATH</span><span class="o">=</span><span class="s2">"./benchmark_output"</span>
-
-<span class="c"># Run evaluation</span>
-helm-run <span class="se">\</span>
-   <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="se">\</span>
-   <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="se">\</span>
-   <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="se">\</span>
-   <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
 </code></pre></div></div>
 
 <p>For more information about <code class="language-plaintext highlighter-rouge">helm-run</code>, refer to the <a href="tutorial/#using-helm-run">Using helm-run</a> page.</p>
