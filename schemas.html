@@ -6,7 +6,8 @@
   <title>Schemas | MedHELM</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-<body class="docs-page">
+
+<body class="docs-page docs-page-schemas">
   <header class="site-header">
   <div class="header-inner">
     <a href="/" class="header-logo" aria-label="MedHELM">
@@ -90,9 +91,387 @@
       <div class="main-inner">
         <h1 id="schemas">Schemas</h1>
 
-<p>HELM uses several core data structures (e.g. <code class="language-plaintext highlighter-rouge">Scenario</code>, <code class="language-plaintext highlighter-rouge">Instance</code>, <code class="language-plaintext highlighter-rouge">Request</code>, <code class="language-plaintext highlighter-rouge">RequestResult</code>). They are defined in the source code under <code class="language-plaintext highlighter-rouge">helm.benchmark</code> and <code class="language-plaintext highlighter-rouge">helm.common</code>.</p>
+<h2 id="scenariodataclass">Scenariodataclass</h2>
 
-<p>For the full API reference, build the documentation with MkDocs from the repository root or see the <a href="https://github.com/PacificAI/medhelm/tree/main/src/helm">source code</a>.</p>
+<p>A scenario represents a (task, data distribution). It is usually based on some raw dataset and is converted into a list of<code class="language-plaintext highlighter-rouge">Instance</code> s. Override this class.</p>
+
+<p>Note: the constructor should be lightweight,<code class="language-plaintext highlighter-rouge">get_instances</code> should do all the heavy lifting.</p>
+
+<h3 id="name-str--fieldinitfalseclass-attributeinstance-attribute">name: str = field(init=False)class-attributeinstance-attribute</h3>
+
+<p>Short unique identifier of the scenario</p>
+
+<h3 id="description-str--fieldinitfalseclass-attributeinstance-attribute">description: str = field(init=False)class-attributeinstance-attribute</h3>
+
+<p>Description of the scenario (task, data)</p>
+
+<h3 id="tags-liststr--fieldinitfalseclass-attributeinstance-attribute">tags: List[str] = field(init=False)class-attributeinstance-attribute</h3>
+
+<p>Extra metadata (e.g., whether this is a question answering or commonsense task)</p>
+
+<h3 id="definition_path-str--fieldinitfalseclass-attributeinstance-attribute">definition_path: str = field(init=False)class-attributeinstance-attribute</h3>
+
+<p>Where the scenario subclass for<code class="language-plaintext highlighter-rouge">self</code> is defined.</p>
+
+<h3 id="post_init---none"><strong>post_init</strong>() -&gt; None</h3>
+
+<h3 id="get_instancesoutput_path-str---listinstanceabstractmethod">get_instances(output_path: str) -&gt; List[Instance]abstractmethod</h3>
+
+<p>Does the main work in the<code class="language-plaintext highlighter-rouge">Scenario</code>(e.g., download datasets, convert it into a list of instances).</p>
+
+<h3 id="render_linesinstances-listinstance---liststr">render_lines(instances: List[Instance]) -&gt; List[str]</h3>
+
+<h3 id="get_metadata---scenariometadata">get_metadata() -&gt; ScenarioMetadata</h3>
+
+<h2 id="scenariostatedataclass">ScenarioStatedataclass</h2>
+
+<p>A<code class="language-plaintext highlighter-rouge">ScenarioState</code> represents the output of adaptation. Contains a set of<code class="language-plaintext highlighter-rouge">RequestState</code> that were created and executed (a<code class="language-plaintext highlighter-rouge">ScenarioState</code> could be pre-execution or post-execution).</p>
+
+<h3 id="adapter_spec-adapterspecinstance-attribute">adapter_spec: AdapterSpecinstance-attribute</h3>
+
+<h3 id="request_states-listrequeststateinstance-attribute">request_states: List[RequestState]instance-attribute</h3>
+
+<h3 id="annotator_specs-optionallistannotatorspec--noneclass-attributeinstance-attribute">annotator_specs: Optional[List[AnnotatorSpec]] = Noneclass-attributeinstance-attribute</h3>
+
+<h3 id="post_init"><strong>post_init</strong>()</h3>
+
+<h3 id="get_request_statestrain_trial_index-int-instance-instance-reference_index-optionalint---listrequeststate">get_request_states(train_trial_index: int, instance: Instance, reference_index: Optional[int]) -&gt; List[RequestState]</h3>
+
+<h2 id="requeststatedataclass">RequestStatedataclass</h2>
+
+<p>A<code class="language-plaintext highlighter-rouge">RequestState</code> represents a single<code class="language-plaintext highlighter-rouge">Request</code> made on behalf of an<code class="language-plaintext highlighter-rouge">Instance</code>. It should have all the information that’s needed later for a<code class="language-plaintext highlighter-rouge">Metric</code> to be able to understand the<code class="language-plaintext highlighter-rouge">Request</code> and its<code class="language-plaintext highlighter-rouge">RequestResult</code>.</p>
+
+<h3 id="instance-instanceinstance-attribute">instance: Instanceinstance-attribute</h3>
+
+<p>Which instance we’re evaluating</p>
+
+<h3 id="reference_index-optionalintinstance-attribute">reference_index: Optional[int]instance-attribute</h3>
+
+<p>Which reference of the instance we’re evaluating (if any)</p>
+
+<h3 id="request_mode-optionalstrinstance-attribute">request_mode: Optional[str]instance-attribute</h3>
+
+<p>Which request mode (“original” or “calibration”) of the instance we’re evaluating (if any) (for ADAPT_MULTIPLE_CHOICE_SEPARATE_CALIBRATED)</p>
+
+<h3 id="train_trial_index-intinstance-attribute">train_trial_index: intinstance-attribute</h3>
+
+<p>Which training set this request is for</p>
+
+<h3 id="output_mapping-optionaldictstr-strinstance-attribute">output_mapping: Optional[Dict[str, str]]instance-attribute</h3>
+
+<p>How to map the completion text back to a real output (e.g., for multiple choice, “B” =&gt; “the second choice”)</p>
+
+<h3 id="request-requestinstance-attribute">request: Requestinstance-attribute</h3>
+
+<p>The request that is actually made</p>
+
+<h3 id="result-optionalrequestresultinstance-attribute">result: Optional[RequestResult]instance-attribute</h3>
+
+<p>The result of the request (filled in when the request is executed)</p>
+
+<h3 id="num_train_instances-intinstance-attribute">num_train_instances: intinstance-attribute</h3>
+
+<p>Number of training instances (i.e., in-context examples)</p>
+
+<h3 id="prompt_truncated-boolinstance-attribute">prompt_truncated: boolinstance-attribute</h3>
+
+<p>Whether the prompt (instructions + test input) is truncated to fit the model’s context window.</p>
+
+<h3 id="num_conditioning_tokens-int--0class-attributeinstance-attribute">num_conditioning_tokens: int = 0class-attributeinstance-attribute</h3>
+
+<p>The number of initial tokens that will be ignored when computing language modeling metrics</p>
+
+<h3 id="annotations-optionaldictstr-any--noneclass-attributeinstance-attribute">annotations: Optional[Dict[str, Any]] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Output of some post-processing step that is needed for the metric to understand the request Should match the annotator’s name to an Annotation (usually a list of dictionaries for each completion) Example: parsing, rendering an image based on the text completion, etc.</p>
+
+<h3 id="post_init-1"><strong>post_init</strong>()</h3>
+
+<h3 id="render_lines---liststr">render_lines() -&gt; List[str]</h3>
+
+<h2 id="instancedataclass">Instancedataclass</h2>
+
+<p>An<code class="language-plaintext highlighter-rouge">Instance</code> represents one data point that we’re evaluating on (e.g., one question in a QA task). Note:<code class="language-plaintext highlighter-rouge">eq=False</code> means that we hash by the identity.</p>
+
+<h3 id="input-inputinstance-attribute">input: Inputinstance-attribute</h3>
+
+<p>The input</p>
+
+<h3 id="references-listreferenceinstance-attribute">references: List[Reference]instance-attribute</h3>
+
+<p>References that helps us evaluate</p>
+
+<h3 id="split-optionalstr--noneclass-attributeinstance-attribute">split: Optional[str] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Split (e.g., train, valid, test)</p>
+
+<h3 id="sub_split-optionalstr--noneclass-attributeinstance-attribute">sub_split: Optional[str] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Sub split (e.g. toxic, non-toxic)</p>
+
+<h3 id="id-optionalstr--noneclass-attributeinstance-attribute">id: Optional[str] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Used to group Instances that were created from a particular Instance through data augmentation</p>
+
+<h3 id="perturbation-optionalperturbationdescription--noneclass-attributeinstance-attribute">perturbation: Optional[PerturbationDescription] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Description of the Perturbation that was applied when creating this Instance</p>
+
+<h3 id="contrast_inputs-optionallistinput--noneclass-attributeinstance-attribute">contrast_inputs: Optional[List[Input]] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Perturbed input as defined by contrast sets (if available)</p>
+
+<h3 id="contrast_references-optionallistlistreference--noneclass-attributeinstance-attribute">contrast_references: Optional[List[List[Reference]]] = Noneclass-attributeinstance-attribute</h3>
+
+<p>References for the perturbed input above (if available)</p>
+
+<h3 id="extra_data-optionaldictstr-any--noneclass-attributeinstance-attribute">extra_data: Optional[Dict[str, Any]] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Extra data required by the scenario e.g. chain-of-thought annotations</p>
+
+<h3 id="first_correct_reference-optionalreferenceproperty">first_correct_reference: Optional[Reference]property</h3>
+
+<p>Return the first correct reference.</p>
+
+<h3 id="all_correct_references-listreferenceproperty">all_correct_references: List[Reference]property</h3>
+
+<p>Return all correct references.</p>
+
+<h3 id="render_lines---liststr-1">render_lines() -&gt; List[str]</h3>
+
+<h2 id="referencedataclass">Referencedataclass</h2>
+
+<p>A<code class="language-plaintext highlighter-rouge">Reference</code> specifies a possible output and how good/bad it is. This could be used to represent multiple reference outputs which are all acceptable (e.g., in machine translation) or alternatives (e.g., in a multiple-choice exam).</p>
+
+<h3 id="output-outputinstance-attribute">output: Outputinstance-attribute</h3>
+
+<p>The output</p>
+
+<h3 id="tags-liststrinstance-attribute">tags: List[str]instance-attribute</h3>
+
+<p>Extra metadata (e.g., whether it’s correct/factual/toxic)</p>
+
+<h3 id="is_correct-boolproperty">is_correct: boolproperty</h3>
+
+<h3 id="render_lines---liststr-2">render_lines() -&gt; List[str]</h3>
+
+<h2 id="perturbationdescriptiondataclass">PerturbationDescriptiondataclass</h2>
+
+<p>DataClass used to describe a Perturbation</p>
+
+<h3 id="name-strinstance-attribute">name: strinstance-attribute</h3>
+
+<p>Name of the Perturbation</p>
+
+<h3 id="robustness-bool--falseclass-attributeinstance-attribute">robustness: bool = Falseclass-attributeinstance-attribute</h3>
+
+<p>Whether a perturbation is relevant to robustness. Will be used to aggregate perturbations metrics</p>
+
+<h3 id="fairness-bool--falseclass-attributeinstance-attribute">fairness: bool = Falseclass-attributeinstance-attribute</h3>
+
+<p>Whether a perturbation is relevant to fairness. Will be used to aggregate perturbations metrics</p>
+
+<h3 id="computed_on-str--perturbation_perturbedclass-attributeinstance-attribute">computed_on: str = PERTURBATION_PERTURBEDclass-attributeinstance-attribute</h3>
+
+<p>Which types of Instances we are evaluating, to be populated during metric evaluation. PERTURBATION_PERTURBED (default) means we are evaluating on perturbed instances, PERTURBATION_ORIGINAL means we are evaluating the unperturbed version of instances where this perturbation applies, and, PERTURBATION_WORST means the the minimum metric between the two.</p>
+
+<h3 id="seed-optionalint--noneclass-attributeinstance-attribute">seed: Optional[int] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Seed added to instance_id when generating perturbation</p>
+
+<h2 id="requestdataclass">Requestdataclass</h2>
+
+<p>A<code class="language-plaintext highlighter-rouge">Request</code> specifies how to query a language model (given a prompt, complete it). It is the unified representation for communicating with various APIs (e.g., GPT-3, Jurassic).</p>
+
+<h3 id="model_deployment-str--class-attributeinstance-attribute">model_deployment: str = ‘‘class-attributeinstance-attribute</h3>
+
+<p>Which model deployment to query -&gt; Determines the Client. Refers to a deployment in the model deployment registry.</p>
+
+<h3 id="model-str--class-attributeinstance-attribute">model: str = ‘‘class-attributeinstance-attribute</h3>
+
+<p>Which model to use -&gt; Determines the Engine. Refers to a model metadata in the model registry.</p>
+
+<h3 id="embedding-bool--falseclass-attributeinstance-attribute">embedding: bool = Falseclass-attributeinstance-attribute</h3>
+
+<p>Whether to query embedding instead of text response</p>
+
+<h3 id="prompt-str--class-attributeinstance-attribute">prompt: str = ‘‘class-attributeinstance-attribute</h3>
+
+<p>What prompt do condition the language model on</p>
+
+<h3 id="temperature-float--10class-attributeinstance-attribute">temperature: float = 1.0class-attributeinstance-attribute</h3>
+
+<p>Temperature parameter that governs diversity</p>
+
+<h3 id="num_completions-int--1class-attributeinstance-attribute">num_completions: int = 1class-attributeinstance-attribute</h3>
+
+<p>Generate this many completions (by sampling from the model)</p>
+
+<h3 id="top_k_per_token-int--1class-attributeinstance-attribute">top_k_per_token: int = 1class-attributeinstance-attribute</h3>
+
+<p>Take this many highest probability candidates per token in the completion</p>
+
+<h3 id="max_tokens-int--100class-attributeinstance-attribute">max_tokens: int = 100class-attributeinstance-attribute</h3>
+
+<p>Maximum number of tokens to generate (per completion)</p>
+
+<h3 id="stop_sequences-liststr--fielddefault_factorylistclass-attributeinstance-attribute">stop_sequences: List[str] = field(default_factory=list)class-attributeinstance-attribute</h3>
+
+<p>Stop generating once we hit one of these strings.</p>
+
+<h3 id="echo_prompt-bool--falseclass-attributeinstance-attribute">echo_prompt: bool = Falseclass-attributeinstance-attribute</h3>
+
+<p>Should<code class="language-plaintext highlighter-rouge">prompt</code> be included as a prefix of each completion? (e.g., for evaluating perplexity of the prompt)</p>
+
+<h3 id="top_p-float--1class-attributeinstance-attribute">top_p: float = 1class-attributeinstance-attribute</h3>
+
+<p>Same from tokens that occupy this probability mass (nucleus sampling)</p>
+
+<h3 id="presence_penalty-float--0class-attributeinstance-attribute">presence_penalty: float = 0class-attributeinstance-attribute</h3>
+
+<p>Penalize repetition (OpenAI &amp; Writer only)</p>
+
+<h3 id="frequency_penalty-float--0class-attributeinstance-attribute">frequency_penalty: float = 0class-attributeinstance-attribute</h3>
+
+<p>Penalize repetition (OpenAI &amp; Writer only)</p>
+
+<h3 id="random-optionalstr--noneclass-attributeinstance-attribute">random: Optional[str] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Used to control randomness. Expect different responses for the same request but with different values for<code class="language-plaintext highlighter-rouge">random</code>.</p>
+
+<h3 id="messages-optionallistdictstr-str--noneclass-attributeinstance-attribute">messages: Optional[List[Dict[str, str]]] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Used for chat models. (OpenAI only for now). if messages is specified for a chat model, the prompt is ignored. Otherwise, the client should convert the prompt into a message.</p>
+
+<h3 id="multimodal_prompt-optionalmultimediaobject--noneclass-attributeinstance-attribute">multimodal_prompt: Optional[MultimediaObject] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Multimodal prompt with media objects interleaved (e.g., text, video, image, text, …)</p>
+
+<h3 id="image_generation_parameters-optionalimagegenerationparameters--noneclass-attributeinstance-attribute">image_generation_parameters: Optional[ImageGenerationParameters] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Parameters for image generation.</p>
+
+<h3 id="response_format-optionalresponseformat--noneclass-attributeinstance-attribute">response_format: Optional[ResponseFormat] = Noneclass-attributeinstance-attribute</h3>
+
+<p>EXPERIMENTAL: Response format. Currently only supported by OpenAI and Together.</p>
+
+<h3 id="model_host-strproperty">model_host: strproperty</h3>
+
+<p>Returns the model host (referring to the deployment). Not to be confused with the model creator organization (referring to the model).</p>
+
+<p>‘openai/davinci’ =&gt; ‘openai’</p>
+
+<p>‘together/bloom’ =&gt; ‘together’</p>
+
+<h3 id="model_engine-strproperty">model_engine: strproperty</h3>
+
+<p>Returns the model engine (referring to the model). This is often the same as self.model_deploymentl.split(“/”)[1], but not always. For example, one model could be served on several servers (each with a different model_deployment) In that case we would have for example: ‘aws/bloom-1’, ‘aws/bloom-2’, ‘aws/bloom-3’ =&gt; ‘bloom’ This is why we need to keep track of the model engine with the model metadata. Example: ‘openai/davinci’ =&gt; ‘davinci’</p>
+
+<h3 id="validate">validate()</h3>
+
+<h2 id="requestresultdataclass">RequestResultdataclass</h2>
+
+<p>What comes back due to a<code class="language-plaintext highlighter-rouge">Request</code>.</p>
+
+<h3 id="success-boolinstance-attribute">success: boolinstance-attribute</h3>
+
+<p>Whether the request was successful</p>
+
+<h3 id="embedding-listfloatinstance-attribute">embedding: List[float]instance-attribute</h3>
+
+<p>Fixed dimensional embedding corresponding to the entire prompt</p>
+
+<h3 id="completions-listgeneratedoutputinstance-attribute">completions: List[GeneratedOutput]instance-attribute</h3>
+
+<p>List of completion</p>
+
+<h3 id="cached-boolinstance-attribute">cached: boolinstance-attribute</h3>
+
+<p>Whether the request was actually cached</p>
+
+<h3 id="request_time-optionalfloat--noneclass-attributeinstance-attribute">request_time: Optional[float] = Noneclass-attributeinstance-attribute</h3>
+
+<p>How long the request took in seconds</p>
+
+<h3 id="request_datetime-optionalint--noneclass-attributeinstance-attribute">request_datetime: Optional[int] = Noneclass-attributeinstance-attribute</h3>
+
+<p>When was the request sent? We keep track of when the request was made because the underlying model or inference procedure backing the API might change over time. The integer represents the current time in seconds since the Epoch (January 1, 1970).</p>
+
+<h3 id="error-optionalstr--noneclass-attributeinstance-attribute">error: Optional[str] = Noneclass-attributeinstance-attribute</h3>
+
+<p>If<code class="language-plaintext highlighter-rouge">success</code> is false, what was the error?</p>
+
+<h3 id="error_flags-optionalerrorflags--noneclass-attributeinstance-attribute">error_flags: Optional[ErrorFlags] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Describes how to treat errors in the request.</p>
+
+<h3 id="batch_size-optionalint--noneclass-attributeinstance-attribute">batch_size: Optional[int] = Noneclass-attributeinstance-attribute</h3>
+
+<p>Batch size (<code class="language-plaintext highlighter-rouge">TogetherClient</code> only)</p>
+
+<h3 id="batch_request_time-optionalfloat--noneclass-attributeinstance-attribute">batch_request_time: Optional[float] = Noneclass-attributeinstance-attribute</h3>
+
+<p>How long it took to process the batch? (<code class="language-plaintext highlighter-rouge">TogetherClient</code> only)</p>
+
+<h3 id="render_lines---liststr-3">render_lines() -&gt; List[str]</h3>
+
+<h2 id="perinstancestatsdataclass">PerInstanceStatsdataclass</h2>
+
+<p>Captures a unit of evaluation.</p>
+
+<h3 id="instance_id-strinstance-attribute">instance_id: strinstance-attribute</h3>
+
+<h3 id="perturbation-optionalperturbationdescriptioninstance-attribute">perturbation: Optional[PerturbationDescription]instance-attribute</h3>
+
+<h3 id="train_trial_index-intinstance-attribute-1">train_trial_index: intinstance-attribute</h3>
+
+<p>Which replication</p>
+
+<h3 id="stats-liststatinstance-attribute">stats: List[Stat]instance-attribute</h3>
+
+<p>Statistics computed from the predicted output</p>
+
+<h2 id="statdataclass">Statdataclass</h2>
+
+<p>A mutable class that allows us to aggregate values and report mean/stddev.</p>
+
+<h3 id="name-metricnameinstance-attribute">name: MetricNameinstance-attribute</h3>
+
+<h3 id="count-int--0class-attributeinstance-attribute">count: int = 0class-attributeinstance-attribute</h3>
+
+<h3 id="sum-float--0class-attributeinstance-attribute">sum: float = 0class-attributeinstance-attribute</h3>
+
+<h3 id="sum_squared-float--0class-attributeinstance-attribute">sum_squared: float = 0class-attributeinstance-attribute</h3>
+
+<h3 id="min-optionalfloat--noneclass-attributeinstance-attribute">min: Optional[float] = Noneclass-attributeinstance-attribute</h3>
+
+<h3 id="max-optionalfloat--noneclass-attributeinstance-attribute">max: Optional[float] = Noneclass-attributeinstance-attribute</h3>
+
+<h3 id="mean-optionalfloat--noneclass-attributeinstance-attribute">mean: Optional[float] = Noneclass-attributeinstance-attribute</h3>
+
+<h3 id="variance-optionalfloat--noneclass-attributeinstance-attribute">variance: Optional[float] = Noneclass-attributeinstance-attribute</h3>
+
+<p>This is the population variance, not the sample variance.</p>
+
+<p>See <a href="https://towardsdatascience.com/variance-sample-vs-population-3ddbd29e498a">https://towardsdatascience.com/variance-sample-vs-population-3ddbd29e498a</a> for details.</p>
+
+<h3 id="stddev-optionalfloat--noneclass-attributeinstance-attribute">stddev: Optional[float] = Noneclass-attributeinstance-attribute</h3>
+
+<p>This is the population standard deviation, not the sample standard deviation.</p>
+
+<p>See <a href="https://towardsdatascience.com/variance-sample-vs-population-3ddbd29e498a">https://towardsdatascience.com/variance-sample-vs-population-3ddbd29e498a</a> for details.</p>
+
+<h3 id="addx---stat">add(x) -&gt; Stat</h3>
+
+<h3 id="mergeother-stat---stat">merge(other: Stat) -&gt; Stat</h3>
+
+<h3 id="repr"><strong>repr</strong>()</h3>
+
+<h3 id="bare_str---str">bare_str() -&gt; str</h3>
+
+<h3 id="take_mean">take_mean()</h3>
+
+<p>Return a version of the stat that only has the mean.</p>
 
       </div>
     </main>

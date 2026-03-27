@@ -6,7 +6,8 @@
   <title>Developer Setup | MedHELM</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-<body class="docs-page">
+
+<body class="docs-page docs-page-developer_setup">
   <header class="site-header">
   <div class="header-inner">
     <a href="/" class="header-logo" aria-label="MedHELM">
@@ -97,7 +98,7 @@
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">--version</span>
 </code></pre></div></div>
 
-<p>If your version of Python is older than 3.10, you <em>must</em> use either <strong>Conda</strong> or <strong>pyenv</strong> to install a version of Python &gt;=3.10 when setting up your virtual environment.</p>
+<p>If your version of Python is older than 3.10, use <strong>pyenv</strong> to install a version of Python &gt;=3.10 when setting up your virtual environment.</p>
 
 <h2 id="set-up-the-python-virtual-environment">Set up the Python virtual environment</h2>
 
@@ -113,17 +114,6 @@ python3 <span class="nt">-m</span> virtualenv <span class="nt">-p</span> python3
 <span class="c"># Activate the virtual environment.</span>
 <span class="c"># Run this every time you open your shell.</span>
 <span class="nb">source </span>venv/bin/activate
-</code></pre></div></div>
-
-<p>Using <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html"><strong>Conda</strong></a>:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a virtual environment.</span>
-<span class="c"># Only run this the first time.</span>
-conda create <span class="nt">-n</span> medhelm <span class="nv">python</span><span class="o">=</span>3.10 pip
-
-<span class="c"># Activate the virtual environment.</span>
-<span class="c"># Run this every time you open your shell.</span>
-conda activate medhelm
 </code></pre></div></div>
 
 <p>Using <a href="https://github.com/pyenv/pyenv"><strong>pyenv</strong></a> and <a href="https://github.com/pyenv/pyenv-virtualenv"><strong>pyenv-virtualenv</strong></a>:</p>
