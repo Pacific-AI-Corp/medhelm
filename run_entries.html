@@ -102,7 +102,7 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm-run --run-entries med_qa:model=openai/gpt2 --suite my-suite --max-eval-instances 10
 </code></pre></div></div>
 
-<p>Alternatively, we can put the run entry into a <code class="language-plaintext highlighter-rouge">run_entries.conf</code> file, and the pass that file to <code class="language-plaintext highlighter-rouge">helm-run</code> using the <code class="language-plaintext highlighter-rouge">--conf-file</code> flag. The <code class="language-plaintext highlighter-rouge">run_entries.conf</code> file is a <strong>run entry configuration file</strong> that conforms to the format documented <a href="run_entries_configuration_files/">here</a>. For example:</p>
+<p>Alternatively, we can put the run entry into a <code class="language-plaintext highlighter-rouge">run_entries.conf</code> file, and the pass that file to <code class="language-plaintext highlighter-rouge">helm-run</code> using the <code class="language-plaintext highlighter-rouge">--conf-file</code> flag. The <code class="language-plaintext highlighter-rouge">run_entries.conf</code> file is a <strong>run entry configuration file</strong> that conforms to the format documented <a href="/run_entries_configuration_files">here</a>. For example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm-run --conf-file run_entries.conf --suite my-suite --max-eval-instances 10
 </code></pre></div></div>
@@ -157,7 +157,7 @@
 
 <p>The <code class="language-plaintext highlighter-rouge">model</code> run expander also supports <strong>wildcard values</strong>. For instance, the <code class="language-plaintext highlighter-rouge">med_qa:model=text</code> run entry will run the <code class="language-plaintext highlighter-rouge">med_qa</code> scenario on <em>every</em> text model that <code class="language-plaintext highlighter-rouge">helm-run</code> can find in its configuration files. The wildcard is intended to be used in conjuction with the <code class="language-plaintext highlighter-rouge">--models-to-run</code>, which controls which models will actually be evaluated. For example, <code class="language-plaintext highlighter-rouge">helm-run --run-entries med_qa:model=text --models-to-run openai/gpt2 openai/gpt-3.5-turbo-613</code> will run <code class="language-plaintext highlighter-rouge">med_qa</code> on <em>only</em> <code class="language-plaintext highlighter-rouge">openai/gpt2</code> and <code class="language-plaintext highlighter-rouge">openai/gpt-3.5-turbo-613</code>.</p>
 
-<p>Wildcard values for the <code class="language-plaintext highlighter-rouge">model</code> run expander are common used in <strong>run entries configuration files</strong> which will are discussed <a href="run_entries_configuration_files/">here</a>.</p>
+<p>Wildcard values for the <code class="language-plaintext highlighter-rouge">model</code> run expander are common used in <strong>run entries configuration files</strong> which will are discussed <a href="/run_entries_configuration_files">here</a>.</p>
 
       </div>
     </main>
