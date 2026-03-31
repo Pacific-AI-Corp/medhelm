@@ -91,65 +91,107 @@
       <div class="main-inner">
         <h1 id="perturbations">Perturbations</h1>
 
-<h2 id="cleva_perturbation">cleva_perturbation</h2>
+<p>MedHELM perturbations and data augmentations live in the Python package <code class="language-plaintext highlighter-rouge">helm.benchmark.augmentations</code> (same module layout as Stanford HELM, mirrored in this <a href="https://github.com/PacificAI/medhelm/tree/main/src/helm/benchmark/augmentations">MedHELM codebase</a>). The reference below is generated from the source with <a href="https://mkdocstrings.github.io/">mkdocstrings</a> (same filtering approach as the <a href="https://crfm-helm.readthedocs.io/en/latest/perturbations/">CRFM HELM Perturbations</a> page).</p>
 
-<h3 id="clevamildmixperturbation">CLEVAMildMixPerturbation()</h3>
+<h2 id="cleva_perturbation"><code class="language-plaintext highlighter-rouge">cleva_perturbation</code></h2>
+
+<h3 id="clevamildmixperturbation"><code class="language-plaintext highlighter-rouge">CLEVAMildMixPerturbation()</code></h3>
 
 <p>CLEVA robustness perturbation that composes several perturbations.</p>
 
-<h4 id="chinese_typos_perturbation--chinesetyposperturbation005instance-attribute">chinese_typos_perturbation = ChineseTyposPerturbation(0.05)instance-attribute</h4>
+<h4 id="chinese_typos_perturbation--chinesetyposperturbation005-instance-attribute"><code class="language-plaintext highlighter-rouge">chinese_typos_perturbation = ChineseTyposPerturbation(0.05)</code> <code class="language-plaintext highlighter-rouge">instance-attribute</code></h4>
 
-<h4 id="synonym_perturbation--chinesesynonymperturbation03instance-attribute">synonym_perturbation = ChineseSynonymPerturbation(0.3)instance-attribute</h4>
+<h4 id="synonym_perturbation--chinesesynonymperturbation03-instance-attribute"><code class="language-plaintext highlighter-rouge">synonym_perturbation = ChineseSynonymPerturbation(0.3)</code> <code class="language-plaintext highlighter-rouge">instance-attribute</code></h4>
 
-<h3 id="chinesegenderperturbationmode-str-prob-float-source_class-str-target_class-str">ChineseGenderPerturbation(mode: str, prob: float, source_class: str, target_class: str)</h3>
+<h3 id="chinesegenderperturbationmode-str-prob-float-source_class-str-target_class-str"><code class="language-plaintext highlighter-rouge">ChineseGenderPerturbation(mode: str, prob: float, source_class: str, target_class: str)</code></h3>
 
 <p>Individual fairness perturbation for Chinese gender terms and pronouns.</p>
 
-<p>mode (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
+<p><strong>Parameters:</strong></p>
 
-<p>The mode of the gender perturbation, must be one of “terms” or “pronouns”.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mode</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>The mode of the gender perturbation, must be one of “terms” or “pronouns”.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">prob</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">source_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>The source gender that will be substituted with the target gender. If mapping_file_path is provided, the source class must be one of the genders in it. If not, it must be exactly one of <code class="language-plaintext highlighter-rouge">male</code>, <code class="language-plaintext highlighter-rouge">female</code>, and <code class="language-plaintext highlighter-rouge">neutral</code>. Case-insensitive.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">target_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>Same as the source class, but for the target gender.</td>
+      <td><em>required</em></td>
+    </tr>
+  </tbody>
+</table>
 
-<p>prob (<code class="language-plaintext highlighter-rouge">float</code>) –</p>
-
-<p>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</p>
-
-<p>source_class (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
-
-<p>The source gender that will be substituted with the target gender. If mapping_file_path is provided, the source class must be one of the genders in it. If not, it must be exactly one of<code class="language-plaintext highlighter-rouge">male</code>,<code class="language-plaintext highlighter-rouge">female</code>, and<code class="language-plaintext highlighter-rouge">neutral</code>. Case-insensitive.</p>
-
-<p>target_class (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
-
-<p>Same as the source class, but for the target gender.</p>
-
-<p>| Parameters: |
-| — |</p>
-
-<h3 id="chinesepersonnameperturbationprob-float-source_class-dictstr-str-target_class-dictstr-str-preserve_gender-bool--true">ChinesePersonNamePerturbation(prob: float, source_class: Dict[str, str], target_class: Dict[str, str], preserve_gender: bool = True)</h3>
+<h3 id="chinesepersonnameperturbationprob-float-source_class-dictstr-str-target_class-dictstr-str-preserve_gender-bool--true"><code class="language-plaintext highlighter-rouge">ChinesePersonNamePerturbation(prob: float, source_class: Dict[str, str], target_class: Dict[str, str], preserve_gender: bool = True)</code></h3>
 
 <p>Individual fairness perturbation for Chinese person names.</p>
 
 <p>Code adopted from <a href="https://github.com/PacificAI/medhelm/blob/main/src/helm/benchmark/augmentations/person_name_perturbation.py">https://github.com/PacificAI/medhelm/blob/main/src/helm/benchmark/augmentations/person_name_perturbation.py</a></p>
 
-<p>prob (<code class="language-plaintext highlighter-rouge">float</code>) –</p>
+<p><strong>Parameters:</strong></p>
 
-<p>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">prob</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">source_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Dict[str, str]</code></td>
+      <td>The properties of the source class. The keys of the dictionary should correspond to categories (“gender” only for now) and the values should be the corresponding values. If more than one category is provided. Case-insensitive.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">target_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Dict[str, str]</code></td>
+      <td>Same as source_class, but specifies the target_class.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">preserve_gender</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>If set to True, we preserve the gender when mapping names of one category to those of another. If we can’t find the gender association for a source_word, we randomly pick from one of the target names.</td>
+      <td><code class="language-plaintext highlighter-rouge">True</code></td>
+    </tr>
+  </tbody>
+</table>
 
-<p>source_class (<code class="language-plaintext highlighter-rouge">Dict[str, str]</code>) –</p>
-
-<p>The properties of the source class. The keys of the dictionary should correspond to categories (“gender” only for now) and the values should be the corresponding values. If more than one category is provided. Case-insensitive.</p>
-
-<p>target_class (<code class="language-plaintext highlighter-rouge">Dict[str, str]</code>) –</p>
-
-<p>Same as source_class, but specifies the target_class.</p>
-
-<p>preserve_gender (<code class="language-plaintext highlighter-rouge">bool</code>, default:<code class="language-plaintext highlighter-rouge">True</code>) –</p>
-
-<p>If set to True, we preserve the gender when mapping names of one category to those of another. If we can’t find the gender association for a source_word, we randomly pick from one of the target names.</p>
-
-<p>| Parameters: |
-| — |</p>
-
-<h3 id="chinesesynonymperturbationprob-float-trial_num-int--10">ChineseSynonymPerturbation(prob: float, trial_num: int = 10)</h3>
+<h3 id="chinesesynonymperturbationprob-float-trial_num-int--10"><code class="language-plaintext highlighter-rouge">ChineseSynonymPerturbation(prob: float, trial_num: int = 10)</code></h3>
 
 <p>Chinese synonyms. For implementation details, see <a href="https://github.com/GEM-benchmark/NL-Augmenter/blob/main/nlaugmenter/transformations/chinese_antonym_synonym_substitution">https://github.com/GEM-benchmark/NL-Augmenter/blob/main/nlaugmenter/transformations/chinese_antonym_synonym_substitution</a></p>
 
@@ -157,11 +199,11 @@
 
 <p>Perturbation example:</p>
 
-<p>Input: 裸婚，这里的“裸”，指物质财富匮乏的情况下结婚，例如：无房无车无存款，有时候用于强调现实的无奈，也有时候用于强调人对情感的关注。</p>
+<p><strong>Input:</strong> 裸婚，这里的“裸”，指物质财富匮乏的情况下结婚，例如：无房无车无存款，有时候用于强调现实的无奈，也有时候用于强调人对情感的关注。</p>
 
-<p>Output: 裸婚，这里底“裸”，指物质财富匮乏的情况下结婚，譬如说：无房无车无储蓄，有时候用于强调现实的无奈，亦有时候用来强调人士对情感的关注。</p>
+<p><strong>Output:</strong> 裸婚，这里底“裸”，指物质财富匮乏的情况下结婚，譬如说：无房无车无储蓄，有时候用于强调现实的无奈，亦有时候用来强调人士对情感的关注。</p>
 
-<h3 id="chinesetyposperturbationprob-float-rare_char_prob-float--005-consider_tone-bool--false-word_level_perturb-bool--true">ChineseTyposPerturbation(prob: float, rare_char_prob: float = 0.05, consider_tone: bool = False, word_level_perturb: bool = True)</h3>
+<h3 id="chinesetyposperturbationprob-float-rare_char_prob-float--005-consider_tone-bool--false-word_level_perturb-bool--true"><code class="language-plaintext highlighter-rouge">ChineseTyposPerturbation(prob: float, rare_char_prob: float = 0.05, consider_tone: bool = False, word_level_perturb: bool = True)</code></h3>
 
 <p>Chinese typos. For implementation details, see <a href="https://github.com/GEM-benchmark/NL-Augmenter/tree/main/nlaugmenter/transformations/chinese_butter_fingers_perturbation">https://github.com/GEM-benchmark/NL-Augmenter/tree/main/nlaugmenter/transformations/chinese_butter_fingers_perturbation</a></p>
 
@@ -169,45 +211,45 @@
 
 <p>Perturbation example:</p>
 
-<p>Input: 我想买一部新手机。</p>
+<p><strong>Input:</strong> 我想买一部新手机。</p>
 
-<p>Output: 我想买一部新收集。</p>
+<p><strong>Output:</strong> 我想买一部新收集。</p>
 
-<h3 id="mandarintocantoneseperturbation">MandarinToCantonesePerturbation()</h3>
+<h3 id="mandarintocantoneseperturbation"><code class="language-plaintext highlighter-rouge">MandarinToCantonesePerturbation()</code></h3>
 
 <p>Individual fairness perturbation for Mandarin to Cantonese translation. The implementation is inspired by <a href="https://justyy.com/tools/chinese-converter/">https://justyy.com/tools/chinese-converter/</a></p>
 
 <p>Note that this is a rule-based translation system and there are limitations.</p>
 
-<h3 id="simplifiedtotraditionalperturbation">SimplifiedToTraditionalPerturbation()</h3>
+<h3 id="simplifiedtotraditionalperturbation"><code class="language-plaintext highlighter-rouge">SimplifiedToTraditionalPerturbation()</code></h3>
 
 <p>Individual fairness perturbation for Chinese simplified to Chinese traditional.</p>
 
-<h2 id="contraction_expansion_perturbation">contraction_expansion_perturbation</h2>
+<h2 id="contraction_expansion_perturbation"><code class="language-plaintext highlighter-rouge">contraction_expansion_perturbation</code></h2>
 
-<h3 id="contractionperturbation">ContractionPerturbation()</h3>
+<h3 id="contractionperturbation"><code class="language-plaintext highlighter-rouge">ContractionPerturbation()</code></h3>
 
 <p>Contractions. Replaces each expansion with its contracted version.</p>
 
 <p>Perturbation example:</p>
 
-<p>Input: She is a doctor, and I am a student</p>
+<p><strong>Input:</strong> She is a doctor, and I am a student</p>
 
-<p>Output: She’s a doctor, and I’m a student</p>
+<p><strong>Output:</strong> She’s a doctor, and I’m a student</p>
 
-<h3 id="expansionperturbation">ExpansionPerturbation()</h3>
+<h3 id="expansionperturbation"><code class="language-plaintext highlighter-rouge">ExpansionPerturbation()</code></h3>
 
 <p>Expansions. Replaces each contraction with its expanded version.</p>
 
 <p>Perturbation example:</p>
 
-<p>Input: She’s a doctor, and I’m a student</p>
+<p><strong>Input:</strong> She’s a doctor, and I’m a student</p>
 
-<p>Output: She is a doctor, and I am a student</p>
+<p><strong>Output:</strong> She is a doctor, and I am a student</p>
 
-<h2 id="contrast_sets_perturbation">contrast_sets_perturbation</h2>
+<h2 id="contrast_sets_perturbation"><code class="language-plaintext highlighter-rouge">contrast_sets_perturbation</code></h2>
 
-<h3 id="contrastsetsperturbation">ContrastSetsPerturbation()</h3>
+<h3 id="contrastsetsperturbation"><code class="language-plaintext highlighter-rouge">ContrastSetsPerturbation()</code></h3>
 
 <p>Contrast Sets are from this paper (currently supported for the BoolQ and IMDB scenarios): <a href="https://arxiv.org/abs/2004.02709">https://arxiv.org/abs/2004.02709</a></p>
 
@@ -225,7 +267,6 @@ answer: no
 perturbed question: is “Fate and the Furious” the first of multiple movies?
 perturbed answer: yes
 perturbation strategy: adjective change.
-
 </code></pre></div></div>
 
 <p>An example instance of a perturbation for the IMDB dataset (from the original paper):</p>
@@ -240,141 +281,199 @@ see all Park’s effort come to fruition. . . . The premise is perfect, gags are
 hilarious and offbeat humour abounds, and it creates a deep connection with the
 audience.
 Sentiment: positive
-
 </code></pre></div></div>
 
-<h2 id="dialect_perturbation">dialect_perturbation</h2>
+<h2 id="dialect_perturbation"><code class="language-plaintext highlighter-rouge">dialect_perturbation</code></h2>
 
-<h3 id="dialectperturbationprob-float-source_class-str-target_class-str-mapping_file_path-optionalstr--none">DialectPerturbation(prob: float, source_class: str, target_class: str, mapping_file_path: Optional[str] = None)</h3>
+<h3 id="dialectperturbationprob-float-source_class-str-target_class-str-mapping_file_path-optionalstr--none"><code class="language-plaintext highlighter-rouge">DialectPerturbation(prob: float, source_class: str, target_class: str, mapping_file_path: Optional[str] = None)</code></h3>
 
 <p>Individual fairness perturbation for dialect.</p>
 
 <p>If mapping_file_path is not provided, (source_class, target_class) should be (“SAE”, “AAVE”).</p>
 
-<p>prob (<code class="language-plaintext highlighter-rouge">float</code>) –</p>
+<p><strong>Parameters:</strong></p>
 
-<p>Probability of substituting a word in the original class with a word in the target class given that a substitution is available.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">prob</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Probability of substituting a word in the original class with a word in the target class given that a substitution is available.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">source_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>The source dialect that will be substituted with the target dialect. Case-insensitive.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">target_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>The target dialect.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mapping_file_path</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Optional[str]</code></td>
+      <td>The absolute path to a file containing the word mappings from the source dialect to the target dialect in a json format. The json dictionary must be of type Dict[str, List[str]]. Otherwise, the default dictionary in self.MAPPING_DICTS for the provided source and target classes will be used, if available.</td>
+      <td><code class="language-plaintext highlighter-rouge">None</code></td>
+    </tr>
+  </tbody>
+</table>
 
-<p>source_class (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
+<h2 id="extra_space_perturbation"><code class="language-plaintext highlighter-rouge">extra_space_perturbation</code></h2>
 
-<p>The source dialect that will be substituted with the target dialect. Case-insensitive.</p>
+<h3 id="extraspaceperturbationnum_spaces-int"><code class="language-plaintext highlighter-rouge">ExtraSpacePerturbation(num_spaces: int)</code></h3>
 
-<p>target_class (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
+<p>A toy perturbation that replaces existing spaces in the text with <code class="language-plaintext highlighter-rouge">num_spaces</code> number of spaces.</p>
 
-<p>The target dialect.</p>
+<h2 id="filler_words_perturbation"><code class="language-plaintext highlighter-rouge">filler_words_perturbation</code></h2>
 
-<p>mapping_file_path (<code class="language-plaintext highlighter-rouge">Optional[str]</code>, default:<code class="language-plaintext highlighter-rouge">None</code>) –</p>
-
-<p>The absolute path to a file containing the word mappings from the source dialect to the target dialect in a json format. The json dictionary must be of type Dict[str, List[str]]. Otherwise, the default dictionary in self.MAPPING_DICTS for the provided source and target classes will be used, if available.</p>
-
-<p>| Parameters: |
-| — |</p>
-
-<h2 id="extra_space_perturbation">extra_space_perturbation</h2>
-
-<h3 id="extraspaceperturbationnum_spaces-int">ExtraSpacePerturbation(num_spaces: int)</h3>
-
-<p>A toy perturbation that replaces existing spaces in the text with<code class="language-plaintext highlighter-rouge">num_spaces</code> number of spaces.</p>
-
-<h2 id="filler_words_perturbation">filler_words_perturbation</h2>
-
-<h3 id="fillerwordsperturbationinsert_prob--0333-max_num_insert--none-speaker_ph--true-uncertain_ph--true-fill_ph--true">FillerWordsPerturbation(insert_prob = 0.333, max_num_insert = None, speaker_ph = True, uncertain_ph = True, fill_ph = True)</h3>
+<h3 id="fillerwordsperturbationinsert_prob--0333-max_num_insert--none-speaker_ph--true-uncertain_ph--true-fill_ph--true"><code class="language-plaintext highlighter-rouge">FillerWordsPerturbation(insert_prob = 0.333, max_num_insert = None, speaker_ph = True, uncertain_ph = True, fill_ph = True)</code></h3>
 
 <p>Randomly inserts filler words and phrases in the sentence. Perturbation example:</p>
 
-<p>Input: The quick brown fox jumps over the lazy dog.</p>
+<p><strong>Input:</strong> The quick brown fox jumps over the lazy dog.</p>
 
-<p>Output: The quick brown fox jumps over probably the lazy dog.</p>
+<p><strong>Output:</strong> The quick brown fox jumps over probably the lazy dog.</p>
 
-<h2 id="gender_perturbation">gender_perturbation</h2>
+<h2 id="gender_perturbation"><code class="language-plaintext highlighter-rouge">gender_perturbation</code></h2>
 
-<h3 id="genderperturbationmode-str-prob-float-source_class-str-target_class-str-mapping_file_path-optionalstr--none-mapping_file_genders-optionalliststr--none-bidirectional-bool--false">GenderPerturbation(mode: str, prob: float, source_class: str, target_class: str, mapping_file_path: Optional[str] = None, mapping_file_genders: Optional[List[str]] = None, bidirectional: bool = False)</h3>
+<h3 id="genderperturbationmode-str-prob-float-source_class-str-target_class-str-mapping_file_path-optionalstr--none-mapping_file_genders-optionalliststr--none-bidirectional-bool--false"><code class="language-plaintext highlighter-rouge">GenderPerturbation(mode: str, prob: float, source_class: str, target_class: str, mapping_file_path: Optional[str] = None, mapping_file_genders: Optional[List[str]] = None, bidirectional: bool = False)</code></h3>
 
 <p>Individual fairness perturbation for gender terms and pronouns.</p>
 
-<p>mode (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
+<p><strong>Parameters:</strong></p>
 
-<p>The mode of the gender perturbation, must be one of “terms” or “pronouns”.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mode</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>The mode of the gender perturbation, must be one of “terms” or “pronouns”.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">prob</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">source_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>The source gender that will be substituted with the target gender. If mapping_file_path is provided, the source class must be one of the genders in it. If not, it must be exactly one of <code class="language-plaintext highlighter-rouge">male</code>, <code class="language-plaintext highlighter-rouge">female</code>, and `neutral. Case-insensitive.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">target_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>Same as the source class, but for the target gender.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mapping_file_path</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Optional[str]</code></td>
+      <td>The absolute path to a file containing the word mappings from the source gender to the target gender in a json format. The json dictionary must be of type List[List[str, …]]. It is assumed that 0th index of the inner lists correspond to the 0th gender, 1st index to 1st gender and so on. All word cases are lowered. If mapping_file_path is None, the default dictionary in self.MODE_TO_MAPPINGS for the provided source and target classes will be used, if available.</td>
+      <td><code class="language-plaintext highlighter-rouge">None</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mapping_file_genders</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Optional[List[str]]</code></td>
+      <td>The genders in the mapping supplied in the mapping_file_path. The inner lists read from mapping_file_path should have the same length as the mapping_file_genders. The order of the genders is assumed to reflect the order in the mapping_file_path. Must not be None if mapping_file_path is set. All word cases are lowered.</td>
+      <td><code class="language-plaintext highlighter-rouge">None</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bidirectional</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Whether we should apply the perturbation in both directions. If we need to perturb a word, we first check if it is in list of source_class words, and replace it with the corresponding target_class word if so. If the word isn’t in the source_class words, we check if it is in the target_class words, and replace it with the corresponding source_class word if so.</td>
+      <td><code class="language-plaintext highlighter-rouge">False</code></td>
+    </tr>
+  </tbody>
+</table>
 
-<p>prob (<code class="language-plaintext highlighter-rouge">float</code>) –</p>
+<h2 id="lowercase_perturbation"><code class="language-plaintext highlighter-rouge">lowercase_perturbation</code></h2>
 
-<p>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</p>
-
-<p>source_class (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
-
-<p>The source gender that will be substituted with the target gender. If mapping_file_path is provided, the source class must be one of the genders in it. If not, it must be exactly one of<code class="language-plaintext highlighter-rouge">male</code>,<code class="language-plaintext highlighter-rouge">female</code>, and `neutral. Case-insensitive.</p>
-
-<p>target_class (<code class="language-plaintext highlighter-rouge">str</code>) –</p>
-
-<p>Same as the source class, but for the target gender.</p>
-
-<p>mapping_file_path (<code class="language-plaintext highlighter-rouge">Optional[str]</code>, default:<code class="language-plaintext highlighter-rouge">None</code>) –</p>
-
-<p>The absolute path to a file containing the word mappings from the source gender to the target gender in a json format. The json dictionary must be of type List[List[str, …]]. It is assumed that 0th index of the inner lists correspond to the 0th gender, 1st index to 1st gender and so on. All word cases are lowered. If mapping_file_path is None, the default dictionary in self.MODE_TO_MAPPINGS for the provided source and target classes will be used, if available.</p>
-
-<p>mapping_file_genders (<code class="language-plaintext highlighter-rouge">Optional[List[str]]</code>, default:<code class="language-plaintext highlighter-rouge">None</code>) –</p>
-
-<p>The genders in the mapping supplied in the mapping_file_path. The inner lists read from mapping_file_path should have the same length as the mapping_file_genders. The order of the genders is assumed to reflect the order in the mapping_file_path. Must not be None if mapping_file_path is set. All word cases are lowered.</p>
-
-<p>bidirectional (<code class="language-plaintext highlighter-rouge">bool</code>, default:<code class="language-plaintext highlighter-rouge">False</code>) –</p>
-
-<p>Whether we should apply the perturbation in both directions. If we need to perturb a word, we first check if it is in list of source_class words, and replace it with the corresponding target_class word if so. If the word isn’t in the source_class words, we check if it is in the target_class words, and replace it with the corresponding source_class word if so.</p>
-
-<p>| Parameters: |
-| — |</p>
-
-<h2 id="lowercase_perturbation">lowercase_perturbation</h2>
-
-<h3 id="lowercaseperturbation">LowerCasePerturbation</h3>
+<h3 id="lowercaseperturbation"><code class="language-plaintext highlighter-rouge">LowerCasePerturbation</code></h3>
 
 <p>Simple perturbation turning input and references into lowercase.</p>
 
-<h2 id="mild_mix_perturbation">mild_mix_perturbation</h2>
+<h2 id="mild_mix_perturbation"><code class="language-plaintext highlighter-rouge">mild_mix_perturbation</code></h2>
 
-<h3 id="mildmixperturbation">MildMixPerturbation()</h3>
+<h3 id="mildmixperturbation"><code class="language-plaintext highlighter-rouge">MildMixPerturbation()</code></h3>
 
 <p>Canonical robustness perturbation that composes several perturbations. These perturbations are chosen to be reasonable.</p>
 
-<h4 id="contraction_perturbation--contractionperturbationinstance-attribute">contraction_perturbation = ContractionPerturbation()instance-attribute</h4>
+<h4 id="contraction_perturbation--contractionperturbation-instance-attribute"><code class="language-plaintext highlighter-rouge">contraction_perturbation = ContractionPerturbation()</code> <code class="language-plaintext highlighter-rouge">instance-attribute</code></h4>
 
-<h4 id="lowercase_perturbation--lowercaseperturbationinstance-attribute">lowercase_perturbation = LowerCasePerturbation()instance-attribute</h4>
+<h4 id="lowercase_perturbation--lowercaseperturbation-instance-attribute"><code class="language-plaintext highlighter-rouge">lowercase_perturbation = LowerCasePerturbation()</code> <code class="language-plaintext highlighter-rouge">instance-attribute</code></h4>
 
-<h4 id="misspelling_perturbation--misspellingperturbationprob01instance-attribute">misspelling_perturbation = MisspellingPerturbation(prob=0.1)instance-attribute</h4>
+<h4 id="misspelling_perturbation--misspellingperturbationprob01-instance-attribute"><code class="language-plaintext highlighter-rouge">misspelling_perturbation = MisspellingPerturbation(prob=0.1)</code> <code class="language-plaintext highlighter-rouge">instance-attribute</code></h4>
 
-<h4 id="space_perturbation--spaceperturbationmax_spaces3instance-attribute">space_perturbation = SpacePerturbation(max_spaces=3)instance-attribute</h4>
+<h4 id="space_perturbation--spaceperturbationmax_spaces3-instance-attribute"><code class="language-plaintext highlighter-rouge">space_perturbation = SpacePerturbation(max_spaces=3)</code> <code class="language-plaintext highlighter-rouge">instance-attribute</code></h4>
 
-<h2 id="misspelling_perturbation">misspelling_perturbation</h2>
+<h2 id="misspelling_perturbation"><code class="language-plaintext highlighter-rouge">misspelling_perturbation</code></h2>
 
-<h3 id="misspellingperturbationprob-float">MisspellingPerturbation(prob: float)</h3>
+<h3 id="misspellingperturbationprob-float"><code class="language-plaintext highlighter-rouge">MisspellingPerturbation(prob: float)</code></h3>
 
 <p>Replaces words randomly with common misspellings, from a list of common misspellings.</p>
 
 <p>Perturbation example:</p>
 
-<p>Input: Already, the new product is not available.</p>
+<p><strong>Input:</strong> Already, the new product is not available.</p>
 
-<p>Output: Aready, the new product is not availible.</p>
+<p><strong>Output:</strong> Aready, the new product is not availible.</p>
 
-<p>prob (<code class="language-plaintext highlighter-rouge">float</code>) –</p>
+<p><strong>Parameters:</strong></p>
 
-<p>probability between [0,1] of perturbing a word to a common misspelling (if we have a common misspelling for the word)</p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">prob</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>probability between [0,1] of perturbing a word to a common misspelling (if we have a common misspelling for the word)</td>
+      <td><em>required</em></td>
+    </tr>
+  </tbody>
+</table>
 
-<p>| Parameters: |
-| — |</p>
+<h2 id="person_name_perturbation"><code class="language-plaintext highlighter-rouge">person_name_perturbation</code></h2>
 
-<h2 id="person_name_perturbation">person_name_perturbation</h2>
-
-<h3 id="personnameperturbationprob-float-source_class-dictstr-str-target_class-dictstr-str-name_file_path-optionalstr--none-person_name_type-str--first_name-preserve_gender-bool--true">PersonNamePerturbation(prob: float, source_class: Dict[str, str], target_class: Dict[str, str], name_file_path: Optional[str] = None, person_name_type: str = FIRST_NAME, preserve_gender: bool = True)</h3>
+<h3 id="personnameperturbationprob-float-source_class-dictstr-str-target_class-dictstr-str-name_file_path-optionalstr--none-person_name_type-str--first_name-preserve_gender-bool--true"><code class="language-plaintext highlighter-rouge">PersonNamePerturbation(prob: float, source_class: Dict[str, str], target_class: Dict[str, str], name_file_path: Optional[str] = None, person_name_type: str = FIRST_NAME, preserve_gender: bool = True)</code></h3>
 
 <p>Individual fairness perturbation for person names.</p>
 
 <p>If name_file_path isn’t provided, we use our default name mapping file, which can be found at:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://storage.googleapis.com/crfm-helm-public/source_datasets/augmentations/person_name_perturbation/person_names.txt
-
 </code></pre></div></div>
 
-<p>The available categories in our default file and their values are as follows:</p>
+<p>The <strong>available categories</strong> in our default file and their values are as follows:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>If person_name_type == "last_name":
 
@@ -384,71 +483,94 @@ If person_name_type == "first_name":
 
     (1) "race"   =&gt; "white_american", "black_american"
     (2) "gender" =&gt; "female", "male"
-
 </code></pre></div></div>
 
 <p>The first names in our default file come from Caliskan et al. (2017), which derives its list from Greenwald (1998). The former removed some names from the latter because the corresponding tokens infrequently occurred in Common Crawl, which was used as the training corpus for GloVe. We include the full list from the latter in our default file.</p>
 
 <p>The last names in our default file and their associated categories come from Garg et. al. (2017), which derives its list from Chalabi and Flowers (2014).</p>
 
-<p>prob (<code class="language-plaintext highlighter-rouge">float</code>) –</p>
+<p><strong>Parameters:</strong></p>
 
-<p>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</p>
-
-<p>source_class (<code class="language-plaintext highlighter-rouge">Dict[str, str]</code>) –</p>
-
-<p>The properties of the source class. The keys of the dictionary should correspond to categories (“race”, “gender”, “religion, “age”, etc.) and the values should be the corresponding values. If more than one category is provided, the source_names list will be constructed by finding the intersection of the names list for the provided categories. Assuming the ‘first_name’ mode is selected, an example dictionary can be: {‘race’: ‘white_american’}. Case-insensitive.</p>
-
-<p>target_class (<code class="language-plaintext highlighter-rouge">Dict[str, str]</code>) –</p>
-
-<p>Same as source_class, but specifies the target_class.</p>
-
-<p>name_file_path (<code class="language-plaintext highlighter-rouge">Optional[str]</code>, default:<code class="language-plaintext highlighter-rouge">None</code>) –</p>
-
-<p>The absolute path to a file containing the category associations of names. Each row of the file must have the following format:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">prob</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>Probability of substituting a word in the source class with a word in the target class given that a substitution is available.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">source_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Dict[str, str]</code></td>
+      <td>The properties of the source class. The keys of the dictionary should correspond to categories (“race”, “gender”, “religion, “age”, etc.) and the values should be the corresponding values. If more than one category is provided, the source_names list will be constructed by finding the intersection of the names list for the provided categories. Assuming the ‘first_name’ mode is selected, an example dictionary can be: {‘race’: ‘white_american’}. Case-insensitive.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">target_class</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Dict[str, str]</code></td>
+      <td>Same as source_class, but specifies the target_class.</td>
+      <td><em>required</em></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">name_file_path</code></td>
+      <td><code class="language-plaintext highlighter-rouge">Optional[str]</code></td>
+      <td>The absolute path to a file containing the category associations of names. Each row of the file must have the following format:</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;name&gt;,&lt;name_type&gt;[,&lt;category&gt;,&lt;value&gt;]*
-
 </code></pre></div></div>
 
-<p>Here is a breakdown of the fields: : The name (e.g. Alex). : Must be one of “first_name” or “last_name”. : The name of the category (e.g. race, gender, age, religion, etc.) : Value of the preceding category.</p>
+<table>
+  <tbody>
+    <tr>
+      <td>Here is a breakdown of the fields: : The name (e.g. Alex). : Must be one of “first_name” or “last_name”. : The name of the category (e.g. race, gender, age, religion, etc.) : Value of the preceding category. [,,]* denotes that any number of category and value pairs can be appended to a line. Here are some example lines: li,last_name,race,chinese aiesha,first_name,race,black_american,gender,female Notes: (1) For each field, the leading and trailing spaces are ignored, but those in between words in a field are kept. (2) All the fields are lowered. (3) It is possible for a name to have multiple associations (e.g. with more than one age, gender etc.) We use the default file if None is provided.</td>
+      <td><code class="language-plaintext highlighter-rouge">None</code></td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">person_name_type</code></td>
+      <td><code class="language-plaintext highlighter-rouge">str</code></td>
+      <td>One of “first_name” or “last_name”. If “last_name”, preserve_gender field must be False. Case-insensitive.</td>
+      <td><code class="language-plaintext highlighter-rouge">FIRST_NAME</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">preserve_gender</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>If set to True, we preserve the gender when mapping names of one category to those of another. If we can’t find the gender association for a source_word, we randomly pick from one of the target names.</td>
+      <td><code class="language-plaintext highlighter-rouge">True</code></td>
+    </tr>
+  </tbody>
+</table>
 
-<p>[,,]* denotes that any number of category and value pairs can be appended to a line.</p>
+<h2 id="space_perturbation"><code class="language-plaintext highlighter-rouge">space_perturbation</code></h2>
 
-<p>Here are some example lines: li,last_name,race,chinese aiesha,first_name,race,black_american,gender,female</p>
-
-<p>Notes: (1) For each field, the leading and trailing spaces are ignored, but those in between words in a field are kept. (2) All the fields are lowered. (3) It is possible for a name to have multiple associations (e.g. with more than one age, gender etc.)</p>
-
-<p>We use the default file if None is provided.</p>
-
-<p>person_name_type (<code class="language-plaintext highlighter-rouge">str</code>, default:<code class="language-plaintext highlighter-rouge">FIRST_NAME</code>) –</p>
-
-<p>One of “first_name” or “last_name”. If “last_name”, preserve_gender field must be False. Case-insensitive.</p>
-
-<p>preserve_gender (<code class="language-plaintext highlighter-rouge">bool</code>, default:<code class="language-plaintext highlighter-rouge">True</code>) –</p>
-
-<p>If set to True, we preserve the gender when mapping names of one category to those of another. If we can’t find the gender association for a source_word, we randomly pick from one of the target names.</p>
-
-<p>| Parameters: |
-| — |</p>
-
-<h2 id="space_perturbation">space_perturbation</h2>
-
-<h3 id="spaceperturbationmax_spaces-int">SpacePerturbation(max_spaces: int)</h3>
+<h3 id="spaceperturbationmax_spaces-int"><code class="language-plaintext highlighter-rouge">SpacePerturbation(max_spaces: int)</code></h3>
 
 <p>A simple perturbation that replaces existing spaces with 0-max_spaces spaces (thus potentially merging words).</p>
 
-<h2 id="suffix_perturbation">suffix_perturbation</h2>
+<h2 id="suffix_perturbation"><code class="language-plaintext highlighter-rouge">suffix_perturbation</code></h2>
 
-<h3 id="suffixperturbationsuffix-str">SuffixPerturbation(suffix: str)</h3>
+<h3 id="suffixperturbationsuffix-str"><code class="language-plaintext highlighter-rouge">SuffixPerturbation(suffix: str)</code></h3>
 
 <p>Appends a suffix to the end of the text. Example:</p>
 
 <p>A picture of a dog -&gt; A picture of a dog, picasso</p>
 
-<h2 id="synonym_perturbation">synonym_perturbation</h2>
+<h2 id="synonym_perturbation"><code class="language-plaintext highlighter-rouge">synonym_perturbation</code></h2>
 
-<h3 id="synonymperturbationprob-float">SynonymPerturbation(prob: float)</h3>
+<h3 id="synonymperturbationprob-float"><code class="language-plaintext highlighter-rouge">SynonymPerturbation(prob: float)</code></h3>
 
 <p>Synonyms. For implementation details, see <a href="https://github.com/GEM-benchmark/NL-Augmenter/blob/main/nlaugmenter/transformations/synonym_substitution/transformation.py">https://github.com/GEM-benchmark/NL-Augmenter/blob/main/nlaugmenter/transformations/synonym_substitution/transformation.py</a></p>
 
@@ -456,19 +578,19 @@ If person_name_type == "first_name":
 
 <p>Perturbation example:</p>
 
-<p>Input: This was a good movie, would watch again.</p>
+<p><strong>Input:</strong> This was a good movie, would watch again.</p>
 
-<p>Output: This was a dependable movie, would determine again.</p>
+<p><strong>Output:</strong> This was a dependable movie, would determine again.</p>
 
-<h2 id="translate_perturbation">translate_perturbation</h2>
+<h2 id="translate_perturbation"><code class="language-plaintext highlighter-rouge">translate_perturbation</code></h2>
 
-<h3 id="translateperturbationlanguage_code-str">TranslatePerturbation(language_code: str)</h3>
+<h3 id="translateperturbationlanguage_code-str"><code class="language-plaintext highlighter-rouge">TranslatePerturbation(language_code: str)</code></h3>
 
 <p>Translates to different languages.</p>
 
-<h2 id="typos_perturbation">typos_perturbation</h2>
+<h2 id="typos_perturbation"><code class="language-plaintext highlighter-rouge">typos_perturbation</code></h2>
 
-<h3 id="typosperturbationprob-float">TyposPerturbation(prob: float)</h3>
+<h3 id="typosperturbationprob-float"><code class="language-plaintext highlighter-rouge">TyposPerturbation(prob: float)</code></h3>
 
 <p>Typos. For implementation details, see <a href="https://github.com/GEM-benchmark/NL-Augmenter/tree/main/transformations/butter_fingers_perturbation">https://github.com/GEM-benchmark/NL-Augmenter/tree/main/transformations/butter_fingers_perturbation</a></p>
 
@@ -476,9 +598,9 @@ If person_name_type == "first_name":
 
 <p>Perturbation example:</p>
 
-<p>Input: After their marriage, she started a close collaboration with Karvelas.</p>
+<p><strong>Input:</strong> After their marriage, she started a close collaboration with Karvelas.</p>
 
-<p>Output: Aftrr theif marriage, she started a close collaboration with Karcelas.</p>
+<p><strong>Output:</strong> Aftrr theif marriage, she started a close collaboration with Karcelas.</p>
 
       </div>
     </main>
