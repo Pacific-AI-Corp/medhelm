@@ -120,33 +120,39 @@
 
 <h2 id="create-a-virtual-environment">Create a virtual environment</h2>
 
-<p>It is recommended to install MedHELM into a virtual environment with Python version &gt;=3.10 to avoid dependency conflicts. MedHELM requires Python &gt;=3.10. To create and activate a Python virtual environment, follow the instructions below.</p>
+<p>MedHELM is compatible with Python 3.10, 3.11, and 3.12. We recommend <strong>Python 3.12</strong> for best compatibility.</p>
 
-<p>Using <a href="https://docs.python.org/3/library/venv.html#creating-virtual-environments">Virtualenv</a>:</p>
+<p>It is recommended to install MedHELM into a virtual environment to avoid dependency conflicts.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Create a virtual environment.
-# Only run this the first time.
-python3 -m pip install virtualenv
-python3 -m virtualenv -p python3.10 helm-venv
+<h3 id="using-uv-recommended">Using uv (Recommended)</h3>
 
-# Activate the virtual environment.
-source helm-venv/bin/activate
+<p><a href="https://docs.astral.sh/uv/">uv</a> is a fast Python package manager. To create and activate a Python virtual environment:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a virtual environment with Python 3.12</span>
+uv venv <span class="nt">--python</span> 3.12 .venv
+
+<span class="c"># Activate the virtual environment</span>
+<span class="nb">source</span> .venv/bin/activate
+</code></pre></div></div>
+
+<h3 id="using-venv-alternative">Using venv (Alternative)</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a virtual environment</span>
+python3.12 <span class="nt">-m</span> venv .venv
+
+<span class="c"># Activate the virtual environment</span>
+<span class="nb">source</span> .venv/bin/activate
 </code></pre></div></div>
 
 <h2 id="install-medhelm">Install MedHELM</h2>
 
-<p>Choose one of the following tiers depending on which scenarios you want to run.</p>
+<p>Choose one of the following tiers depending on which scenarios you want to run. After activating your environment, use <code class="language-plaintext highlighter-rouge">pip</code> for installation (it handles legacy packages better than uv).</p>
 
 <h3 id="standard-recommended-to-start">Standard (recommended to start)</h3>
 
 <p>Scenarios: <strong>PubMedQA</strong>, <strong>MedCalc-Bench</strong>, <strong>MedicationQA</strong>, <strong>MedHallu</strong>.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install medhelm
-</code></pre></div></div>
-
-<p>With <a href="https://docs.astral.sh/uv/">uv</a>:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv pip install medhelm
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>medhelm
 </code></pre></div></div>
 
 <h3 id="clinical-nlp-tier-summarization">Clinical NLP tier (<code class="language-plaintext highlighter-rouge">[summarization]</code>)</h3>
@@ -155,13 +161,10 @@ source helm-venv/bin/activate
 
 <p>Scenarios: <strong>DischargeMe</strong> (hospital course summaries), <strong>ACI-Bench</strong> (clinical transcripts), <strong>Patient-Edu</strong> (simplifying medical jargon).</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install "medhelm[summarization]"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="s2">"medhelm[summarization]"</span>
 </code></pre></div></div>
 
-<p>With uv:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv pip install "medhelm[summarization]"
-</code></pre></div></div>
+<p><strong>Note on macOS with Python 3.12:</strong> Use <code class="language-plaintext highlighter-rouge">pip</code> (not <code class="language-plaintext highlighter-rouge">uv</code>) for this tier due to build compatibility with <code class="language-plaintext highlighter-rouge">pyemd</code>.</p>
 
 <h3 id="gated--licensing-tier-gated">Gated / licensing tier (<code class="language-plaintext highlighter-rouge">[gated]</code>)</h3>
 
@@ -169,12 +172,14 @@ source helm-venv/bin/activate
 
 <p>Scenarios: <strong>MedQA</strong> (USMLE/Board exams), <strong>MedMCQA</strong> (AIIMS/NEET exams).</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install "medhelm[gated]"
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="s2">"medhelm[gated]"</span>
 </code></pre></div></div>
 
-<p>With uv:</p>
+<h3 id="install-all-tiers-at-once">Install all tiers at once</h3>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv pip install "medhelm[gated]"
+<p>To install all scenarios (standard, summarization, and gated):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="s2">"medhelm[summarization,gated]"</span>
 </code></pre></div></div>
 
 <h2 id="summary">Summary</h2>
@@ -190,7 +195,7 @@ source helm-venv/bin/activate
   <tbody>
     <tr>
       <td><strong>Standard</strong></td>
-      <td><code class="language-plaintext highlighter-rouge">pip install medhelm</code> or <code class="language-plaintext highlighter-rouge">uv pip install medhelm</code></td>
+      <td><code class="language-plaintext highlighter-rouge">pip install medhelm</code></td>
       <td>PubMedQA, MedCalc-Bench, MedicationQA, MedHallu</td>
     </tr>
     <tr>
@@ -203,10 +208,26 @@ source helm-venv/bin/activate
       <td><code class="language-plaintext highlighter-rouge">pip install "medhelm[gated]"</code></td>
       <td>MedQA, MedMCQA (Google Drive)</td>
     </tr>
+    <tr>
+      <td><strong>All tiers</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">pip install "medhelm[summarization,gated]"</code></td>
+      <td>All of the above (install once, run any scenario)</td>
+    </tr>
   </tbody>
 </table>
 
-<p>See <a href="/quick_start">Quick Start</a> for running benchmarks with <code class="language-plaintext highlighter-rouge">uv run medhelm-run</code>.</p>
+<p>See <a href="/quick_start">Quick Start</a> for running benchmarks with <code class="language-plaintext highlighter-rouge">medhelm-run</code> (after activating your environment).</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="macos-with-python-312-and-the-summarization-tier">macOS with Python 3.12 and the summarization tier</h3>
+
+<p>If you encounter build errors with <code class="language-plaintext highlighter-rouge">pyemd</code> when installing <code class="language-plaintext highlighter-rouge">medhelm[summarization]</code> on macOS:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="s2">"medhelm[summarization]"</span>
+</code></pre></div></div>
+
+<p>This is a known compatibility issue. Use <code class="language-plaintext highlighter-rouge">pip</code> instead of <code class="language-plaintext highlighter-rouge">uv</code> for this tier.</p>
 
 <h2 id="install-multimodal-support">Install Multimodal Support</h2>
 
