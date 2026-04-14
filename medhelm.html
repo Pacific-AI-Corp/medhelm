@@ -134,21 +134,24 @@
 
 <ol>
   <li>
-    <p><a href="https://www.anaconda.com/docs/getting-started/getting-started">Conda</a> (~30 minutes to install)</p>
+    <p><a href="https://www.python.org/downloads/">Python 3.12</a></p>
 
-    <p>Used to manage the Python virtual environment for MedHELM.</p>
+    <p>MedHELM is compatible with Python 3.12 and newer.</p>
+  </li>
+  <li>
+    <p><a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> (~5 minutes to install)</p>
+
+    <p>Fast Python package manager. Used to create virtual environments and manage dependencies.</p>
   </li>
   <li>
     <p><a href="https://cloud.google.com/sdk/docs/install">Google Cloud CLI</a> (~30 minutes to install)</p>
 
     <p>Required for downloading MedHELM results stored in Google Cloud.</p>
-
-    <p><strong>Note:</strong> During installation, the installer will recommend Python 3.12 for full feature support. These features are not needed. MedHELM is <strong>only</strong> compatible with <code class="language-plaintext highlighter-rouge">Python 3.10</code>.</p>
   </li>
   <li>
-    <p>GPU Access</p>
+    <p>GPU Access (Optional)</p>
 
-    <p>Needed for running models locally. The exact GPU requirements depend on the model size and benchmark.</p>
+    <p>Needed for running larger models locally. The exact GPU requirements depend on the model size and benchmark.</p>
   </li>
 </ol>
 
@@ -160,17 +163,19 @@
 
 <h4 id="1-install-dependencies">1. Install Dependencies</h4>
 
-<p>Run the following commands to create and activate a new python virtual environment:</p>
+<p>Create a virtual environment with uv and install MedHELM:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Create and activate a clean environment
-conda create -n medhelm python=3.10 pip wget
-conda activate medhelm
-pip install -U setuptools
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a virtual environment with Python 3.12</span>
+uv venv <span class="nt">--python</span> 3.12 .venv
+
+<span class="c"># Activate the environment</span>
+<span class="nb">source</span> .venv/bin/activate
+
+<span class="c"># Install MedHELM with all extras (standard, summarization, and gated tiers)</span>
+pip <span class="nb">install</span> <span class="s2">"medhelm[summarization,gated]"</span>
 </code></pre></div></div>
 
-<p>Run the following command to install HELM and the necessary MedHELM extensions:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install -U "medhelm[summarization]"
-</code></pre></div></div>
+<p><strong>Note:</strong> On macOS with Python 3.12, use <code class="language-plaintext highlighter-rouge">pip</code> for the summarization tier due to build compatibility. The gated tier works with both <code class="language-plaintext highlighter-rouge">uv</code> and <code class="language-plaintext highlighter-rouge">pip</code>.</p>
 
 <h4 id="2-download-leaderboard-results">2. Download Leaderboard Results</h4>
 
@@ -196,47 +201,30 @@ gcloud storage rsync -r $GCS_BENCHMARK_OUTPUT_PATH $OUTPUT_PATH
 
 <p><strong>Quick test</strong> (small model, 2 instances — runs in seconds):</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=openai/gpt2,model_deployment=huggingface/gpt2"</span>
-<span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
-<span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>2
-helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>medhelm-run <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=openai/gpt2,model_deployment=huggingface/gpt2"</span> <span class="nt">--suite</span> my-medhelm-suite <span class="nt">--max-eval-instances</span> 2
 </code></pre></div></div>
 
 <p><strong>Full example</strong> (better quality, 10 instances):</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span>
-<span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
-<span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>10
-helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>medhelm-run <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="nt">--suite</span> my-medhelm-suite <span class="nt">--max-eval-instances</span> 10
 </code></pre></div></div>
 
 <h4 id="4-build-and-open-the-local-leaderboard">4. Build and Open the Local Leaderboard</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">SCHEMA</span><span class="o">=</span><span class="s2">"schema_medhelm.yaml"</span>
-<span class="nv">RELEASE</span><span class="o">=</span><span class="s2">"my-medhelm-release"</span>
-<span class="nv">LIVE_LEADERBOARD_SUITE</span><span class="o">=</span><span class="s2">"v2.0.0"</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Summarize the results</span>
+helm-summarize <span class="nt">--suite</span> my-medhelm-suite
 
-wget <span class="nt">-O</span> <span class="nv">$SCHEMA</span> <span class="se">\</span>
-   https://raw.githubusercontent.com/PacificAI/medhelm/v0.5.7/src/helm/benchmark/static/schema_medhelm.yaml
-
-<span class="c"># Create the leaderboard</span>
-helm-summarize <span class="se">\</span>
-  <span class="nt">--suites</span> <span class="nv">$SUITE</span> <span class="nv">$LIVE_LEADERBOARD_SUITE</span> <span class="se">\</span>
-  <span class="nt">--schema</span> <span class="nv">$SCHEMA</span> <span class="se">\</span>
-  <span class="nt">--release</span> <span class="nv">$RELEASE</span> <span class="se">\</span>
-  <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
-
-<span class="c"># Load the leaderboard</span>
-helm-server <span class="se">\</span>
-  <span class="nt">--release</span> <span class="nv">$RELEASE</span> <span class="se">\</span>
-  <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+<span class="c"># Start the web server</span>
+helm-server <span class="nt">--suite</span> my-medhelm-suite
 </code></pre></div></div>
+
+<p>Then open http://localhost:8000 in your browser.</p>
 
 <p><strong>Expected outcome:</strong></p>
 
 <ul>
-  <li>Benchmark results for the tiny evaluation at <code class="language-plaintext highlighter-rouge">$OUTPUT_PATH/runs/$SUITE</code>.</li>
-  <li>A local leaderboard combining results from the live leaderboard and the tiny evaluation (the URL will be printed in the terminal).</li>
+  <li>Benchmark results for the evaluation at <code class="language-plaintext highlighter-rouge">benchmark_output/runs/my-medhelm-suite/</code>.</li>
+  <li>A local leaderboard displaying results in an interactive web UI.</li>
 </ul>
 
 <hr />
@@ -307,21 +295,31 @@ helm-server <span class="se">\</span>
 
 <h2 id="installation">Installation</h2>
 
-<p><strong>NOTE</strong>: MedHELM is compatible <strong>only</strong> with <code class="language-plaintext highlighter-rouge">Python 3.10</code>. Other Python versions are not supported.</p>
+<p>MedHELM is compatible with Python 3.10, 3.11, and 3.12. We recommend <strong>Python 3.12</strong> for best compatibility.</p>
 
-<h4 id="1-create-a-virtual-environment">1. Create a Virtual Environment</h4>
+<h3 id="quick-setup-with-uv-recommended">Quick Setup with uv (Recommended)</h3>
 
-<p>Run the following commands to create and activate a new python virtual environment:</p>
+<ol>
+  <li>Create a virtual environment:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv venv <span class="nt">--python</span> 3.12 .venv
+<span class="nb">source</span> .venv/bin/activate
+</code></pre></div>    </div>
+  </li>
+  <li>Install MedHELM:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For all scenarios (standard, summarization, gated)</span>
+pip <span class="nb">install</span> <span class="s2">"medhelm[summarization,gated]"</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create and activate a clean environment</span>
-conda create <span class="nt">-n</span> medhelm <span class="nv">python</span><span class="o">=</span>3.10 pip wget
+<p><strong>Note on macOS/Python 3.12:</strong> Use <code class="language-plaintext highlighter-rouge">pip</code> (not <code class="language-plaintext highlighter-rouge">uv</code>) for the <code class="language-plaintext highlighter-rouge">[summarization]</code> tier due to compatibility with <code class="language-plaintext highlighter-rouge">pyemd</code>.</p>
+
+<h3 id="alternative-using-conda">Alternative: Using conda</h3>
+
+<p>If you prefer conda:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda create <span class="nt">-n</span> medhelm <span class="nv">python</span><span class="o">=</span>3.12 pip
 conda activate medhelm
-pip <span class="nb">install</span> <span class="nt">-U</span> setuptools
-</code></pre></div></div>
-
-<h4 id="2-install-helm-and-medhelm-specific-dependencies">2. Install HELM and MedHELM-specific Dependencies:</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-U</span> <span class="s2">"medhelm[summarization]"</span>
+pip <span class="nb">install</span> <span class="s2">"medhelm[summarization,gated]"</span>
 </code></pre></div></div>
 
 <hr />
@@ -330,56 +328,43 @@ pip <span class="nb">install</span> <span class="nt">-U</span> setuptools
 
 <p><strong>Quick test:</strong> Use <strong>GPT‑2</strong> with 2 instances to verify install and run the full pipeline in seconds. <strong>Full example:</strong> Use <strong>Qwen2.5‑7B‑Instruct</strong> with 10 instances for better quality.</p>
 
-<h4 id="1-run-the-benchmark">1. Run the Benchmark</h4>
+<h3 id="step-1-run-the-benchmark">Step 1: Run the Benchmark</h3>
+
+<p>Make sure your environment is activated:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source</span> .venv/bin/activate
+</code></pre></div></div>
 
 <p><strong>Quick test</strong> (runs in seconds):</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=openai/gpt2,model_deployment=huggingface/gpt2"</span>
-<span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
-<span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>2
-<span class="nv">OUTPUT_PATH</span><span class="o">=</span><span class="s2">"./benchmark_output"</span>
-helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>medhelm-run <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=openai/gpt2,model_deployment=huggingface/gpt2"</span> <span class="nt">--suite</span> my-medhelm-suite <span class="nt">--max-eval-instances</span> 2
 </code></pre></div></div>
 
 <p><strong>Full example</strong> (10 instances, better quality):</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">RUN_ENTRIES</span><span class="o">=</span><span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span>
-<span class="nv">SUITE</span><span class="o">=</span><span class="s2">"my-medhelm-suite"</span>
-<span class="nv">MAX_EVAL_INSTANCES</span><span class="o">=</span>10
-<span class="nv">OUTPUT_PATH</span><span class="o">=</span><span class="s2">"./benchmark_output"</span>
-helm-run <span class="nt">--run-entries</span> <span class="nv">$RUN_ENTRIES</span> <span class="nt">--suite</span> <span class="nv">$SUITE</span> <span class="nt">--max-eval-instances</span> <span class="nv">$MAX_EVAL_INSTANCES</span> <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>medhelm-run <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="nt">--suite</span> my-medhelm-suite <span class="nt">--max-eval-instances</span> 10
 </code></pre></div></div>
 
-<p>For more information about <code class="language-plaintext highlighter-rouge">helm-run</code>, refer to the <a href="/tutorial#using-helm-run">Using helm-run</a> page.</p>
+<p>For more information about <code class="language-plaintext highlighter-rouge">medhelm-run</code>, refer to the <a href="/tutorial#using-helm-run">Using helm-run</a> page.</p>
 
-<h4 id="2-create-the-leaderboard">2. Create the Leaderboard</h4>
+<h3 id="step-2-summarize-results">Step 2: Summarize Results</h3>
 
-<p>The following commands convert the results from step 1 into an interactive leaderboard.</p>
+<p>Convert the benchmark results into an interactive leaderboard:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">SCHEMA</span><span class="o">=</span><span class="s2">"schema_medhelm.yaml"</span>
-<span class="nv">RELEASE</span><span class="o">=</span><span class="s2">"my-medhelm-release"</span>
-
-wget <span class="nt">-O</span> <span class="nv">$SCHEMA</span> <span class="se">\</span>
-   https://raw.githubusercontent.com/PacificAI/medhelm/v0.5.7/src/helm/benchmark/static/schema_medhelm.yaml
-helm-summarize <span class="se">\</span>
-  <span class="nt">--suites</span> <span class="nv">$SUITE</span> <span class="se">\</span>
-  <span class="nt">--schema</span> <span class="nv">$SCHEMA</span> <span class="se">\</span>
-  <span class="nt">--release</span> <span class="nv">$RELEASE</span> <span class="se">\</span>
-  <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm-summarize <span class="nt">--suite</span> my-medhelm-suite
 </code></pre></div></div>
 
-<p>For more information about <code class="language-plaintext highlighter-rouge">helm-summarize</code>, refer to the <a href="/tutorial#using-helm-summarize">Using helm-summarize</a> page.</p>
+<p>For more information, refer to the <a href="/tutorial#using-helm-summarize">Using helm-summarize</a> page.</p>
 
-<h4 id="3-run-the-leaderboard-locally">3. Run the Leaderboard Locally</h4>
+<h3 id="step-3-view-the-leaderboard-locally">Step 3: View the Leaderboard Locally</h3>
 
-<p>This command runs the leaderboard on a local server. The exact address and port will show on the command output.</p>
+<p>Start the web server to view your leaderboard:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm-server <span class="se">\</span>
-  <span class="nt">--release</span> <span class="nv">$RELEASE</span> <span class="se">\</span>
-  <span class="nt">--output-path</span> <span class="nv">$OUTPUT_PATH</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm-server <span class="nt">--suite</span> my-medhelm-suite
 </code></pre></div></div>
 
-<p>For more information about <code class="language-plaintext highlighter-rouge">helm-run</code>, refer to the <a href="/tutorial#using-helm-server">Using helm-server</a> page.</p>
+<p>Then open http://localhost:8000 in your browser.</p>
+
+<p>For more information, refer to the <a href="/tutorial#using-helm-server">Using helm-server</a> page.</p>
 
 <hr />
 
