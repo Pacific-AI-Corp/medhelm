@@ -171,8 +171,11 @@ uv venv <span class="nt">--python</span> 3.12 .venv
 <span class="c"># Activate the environment</span>
 <span class="nb">source</span> .venv/bin/activate
 
-<span class="c"># Install MedHELM with all extras (standard, summarization, and gated tiers)</span>
-pip <span class="nb">install</span> <span class="s2">"medhelm[summarization,gated]"</span>
+<span class="c"># If you cloned this repository (recommended for development/contributing)</span>
+uv pip <span class="nb">install</span> <span class="nt">-e</span> <span class="nb">.</span>
+
+<span class="c"># Or: install MedHELM from PyPI (released package)</span>
+<span class="c"># pip install "medhelm[summarization,gated]"</span>
 </code></pre></div></div>
 
 <p><strong>Note:</strong> On macOS with Python 3.12, use <code class="language-plaintext highlighter-rouge">pip</code> for the summarization tier due to build compatibility. The gated tier works with both <code class="language-plaintext highlighter-rouge">uv</code> and <code class="language-plaintext highlighter-rouge">pip</code>.</p>
@@ -212,10 +215,10 @@ gcloud storage rsync -r $GCS_BENCHMARK_OUTPUT_PATH $OUTPUT_PATH
 <h4 id="4-build-and-open-the-local-leaderboard">4. Build and Open the Local Leaderboard</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Summarize the results</span>
-helm-summarize <span class="nt">--suite</span> my-medhelm-suite
+helm-summarize <span class="nt">--suite</span> my-medhelm-suite <span class="nt">-o</span> ./benchmark_output
 
 <span class="c"># Start the web server</span>
-helm-server <span class="nt">--suite</span> my-medhelm-suite
+helm-server <span class="nt">--suite</span> my-medhelm-suite <span class="nt">-o</span> ./benchmark_output <span class="nt">--port</span> 8000
 </code></pre></div></div>
 
 <p>Then open http://localhost:8000 in your browser.</p>

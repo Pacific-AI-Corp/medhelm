@@ -57,13 +57,19 @@
     <div class="main-inner">
       <h1 id="quick-start">Quick Start</h1>
 
-<p>MedHELM is a public Python library with fewer dependencies and straightforward installation. Install from PyPI and run benchmarks with the <strong>uv</strong> workflow (or use <code class="language-plaintext highlighter-rouge">pip</code> and <code class="language-plaintext highlighter-rouge">helm-run</code> if you prefer).</p>
+<p>MedHELM is a public Python library with fewer dependencies and straightforward installation.</p>
+
+<p>If you <strong>cloned this repository</strong>, install it in editable mode (recommended for development/contributing). If you want the <strong>released package</strong>, install from PyPI.</p>
 
 <h2 id="standard-recommended-to-start">Standard (recommended to start)</h2>
 
 <p>Scenarios: <strong>PubMedQA</strong>, <strong>MedCalc-Bench</strong>, <strong>MedicationQA</strong>, <strong>MedHallu</strong>.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv pip <span class="nb">install </span>medhelm
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># From this repo (recommended if you cloned the repo)</span>
+uv pip <span class="nb">install</span> <span class="nt">-e</span> <span class="nb">.</span>
+
+<span class="c"># Or: from PyPI</span>
+<span class="c"># uv pip install medhelm</span>
 </code></pre></div></div>
 
 <p><strong>Quick test</strong> (small model, 2 instances — runs in seconds):</p>
@@ -72,8 +78,8 @@
   <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=openai/gpt2,model_deployment=huggingface/gpt2"</span> <span class="se">\</span>
   <span class="nt">--suite</span> my_med_test <span class="se">\</span>
   <span class="nt">--max-eval-instances</span> 2
-uv run helm-summarize <span class="nt">--suite</span> my_med_test
-uv run helm-server <span class="nt">--suite</span> my_med_test
+uv run helm-summarize <span class="nt">--suite</span> my_med_test <span class="nt">-o</span> ./benchmark_output
+uv run helm-server <span class="nt">--suite</span> my_med_test <span class="nt">-o</span> ./benchmark_output <span class="nt">--port</span> 8000
 </code></pre></div></div>
 
 <p><strong>Full example</strong> (better quality, 10 instances):</p>
@@ -82,8 +88,8 @@ uv run helm-server <span class="nt">--suite</span> my_med_test
   <span class="nt">--run-entries</span> <span class="s2">"pubmed_qa:model=qwen/qwen2.5-7b-instruct,model_deployment=huggingface/qwen2.5-7b-instruct"</span> <span class="se">\</span>
   <span class="nt">--suite</span> my_med_test <span class="se">\</span>
   <span class="nt">--max-eval-instances</span> 10
-uv run helm-summarize <span class="nt">--suite</span> my_med_test
-uv run helm-server <span class="nt">--suite</span> my_med_test
+uv run helm-summarize <span class="nt">--suite</span> my_med_test <span class="nt">-o</span> ./benchmark_output
+uv run helm-server <span class="nt">--suite</span> my_med_test <span class="nt">-o</span> ./benchmark_output <span class="nt">--port</span> 8000
 </code></pre></div></div>
 
 <p>Then open <a href="http://localhost:8000/">http://localhost:8000/</a> in your browser.</p>
@@ -139,7 +145,7 @@ uv run helm-server <span class="nt">--suite</span> board_exams
   <tbody>
     <tr>
       <td><strong>Standard</strong></td>
-      <td><code class="language-plaintext highlighter-rouge">uv pip install medhelm</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uv pip install -e .</code> (repo) or <code class="language-plaintext highlighter-rouge">uv pip install medhelm</code> (PyPI)</td>
       <td>PubMedQA, MedCalc-Bench, MedicationQA, MedHallu</td>
     </tr>
     <tr>
