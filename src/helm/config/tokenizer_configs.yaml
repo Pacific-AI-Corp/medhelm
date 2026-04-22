@@ -633,6 +633,12 @@ tokenizer_configs:
     end_of_text_token: "</s>"
     prefix_token: "<s>"
 
+  - name: mistralai/Mistral-Small-4-119B-2603
+    tokenizer_spec:
+      class_name: "helm.tokenizers.huggingface_tokenizer.HuggingFaceTokenizer"
+    end_of_text_token: "</s>"
+    prefix_token: "<s>"
+
   # Moonshot AI
   - name: moonshotai/kimi-k2-instruct
     tokenizer_spec:
@@ -787,6 +793,18 @@ tokenizer_configs:
     prefix_token: ""
 
   - name: qwen/qwen3-next-80b-a3b-thinking
+    tokenizer_spec:
+      class_name: "helm.tokenizers.huggingface_tokenizer.HuggingFaceTokenizer"
+    end_of_text_token: "<|im_end|>"
+    prefix_token: ""
+
+  - name: qwen/qwen3.5-397b-a17b
+    tokenizer_spec:
+      class_name: "helm.tokenizers.huggingface_tokenizer.HuggingFaceTokenizer"
+    end_of_text_token: "<|im_end|>"
+    prefix_token: ""
+
+  - name: qwen/qwen3.5-9b
     tokenizer_spec:
       class_name: "helm.tokenizers.huggingface_tokenizer.HuggingFaceTokenizer"
     end_of_text_token: "<|im_end|>"

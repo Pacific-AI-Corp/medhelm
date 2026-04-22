@@ -1308,6 +1308,28 @@ model_deployments:
         thinking_config:
           include_thoughts: true
 
+  - name: google/gemini-3-flash-preview
+    model_name: google/gemini-3-flash-preview
+    tokenizer_name: google/gemma-2b  # Gemini has no tokenizer endpoint, so we approximate by using Gemma's tokenizer.
+    max_sequence_length: 1048576  # Source: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-flash
+    # TODO: Max output tokens: 65536
+    client_spec:
+      class_name: "helm.clients.google_genai_client.GoogleGenAIClient"
+      args:
+        thinking_config:
+          include_thoughts: true
+
+  - name: google/gemini-3.1-flash-lite-preview
+    model_name: google/gemini-3.1-flash-lite-preview
+    tokenizer_name: google/gemma-2b  # Gemini has no tokenizer endpoint, so we approximate by using Gemma's tokenizer.
+    max_sequence_length: 1048576  # Source: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-1-flash-lite
+    # TODO: Max output tokens: 65536
+    client_spec:
+      class_name: "helm.clients.google_genai_client.GoogleGenAIClient"
+      args:
+        thinking_config:
+          include_thoughts: true
+
   - name: google/gemini-robotics-er-1.5-preview
     model_name: google/gemini-robotics-er-1.5-preview
     tokenizer_name: google/gemma-2b  # Gemini has no tokenizer endpoint, so we approximate by using Gemma's tokenizer.
@@ -1351,6 +1373,28 @@ model_deployments:
       class_name: "helm.clients.vertexai_client.VertexAIChatClient"
       args:
         vertexai_model: publishers/meta/models/llama-3.1-405b-instruct-maas
+
+  - name: google/llama-4-scout-17b-16e-instruct
+    model_name: meta/llama-4-scout-17b-16e-instruct
+    tokenizer_name: meta/llama-4-scout-17b-16e-instruct
+    max_sequence_length: 1000000
+    client_spec:
+      class_name: "helm.clients.google_genai_client.GoogleGenAIClient"
+      args:
+        genai_model: meta/llama-4-scout-17b-16e-instruct-maas
+        genai_use_vertexai: True
+        location: us-east5
+
+  - name: google/llama-4-maverick-17b-128e-instruct
+    model_name: meta/llama-4-maverick-17b-128e-instruct
+    tokenizer_name: meta/llama-4-scout-17b-16e-instruct
+    max_sequence_length: 10000000
+    client_spec:
+      class_name: "helm.clients.google_genai_client.GoogleGenAIClient"
+      args:
+        genai_model: meta/llama-4-maverick-17b-128e-instruct-maas
+        genai_use_vertexai: True
+        location: us-east5
 
   ## Gemma
   - name: together/gemma-2b
@@ -2537,6 +2581,13 @@ model_deployments:
     client_spec:
       class_name: "helm.clients.mistral_client.MistralAIClient"
 
+  - name: mistralai/mistral-small-2603
+    model_name: mistralai/mistral-small-2603
+    tokenizer_name: mistralai/Mistral-Small-4-119B-2603
+    max_sequence_length: 256000
+    client_spec:
+      class_name: "helm.clients.mistral_client.MistralAIClient"
+
   - name: mistralai/mistral-medium-2312
     model_name: mistralai/mistral-medium-2312
     tokenizer_name: mistralai/Mistral-7B-v0.1
@@ -2569,6 +2620,36 @@ model_deployments:
     model_name: mistralai/mistral-large-2411
     tokenizer_name: mistralai/Mistral-Large-Instruct-2411
     max_sequence_length: 128000
+    client_spec:
+      class_name: "helm.clients.mistral_client.MistralAIClient"
+
+  - name: mistralai/mistral-large-2512
+    model_name: mistralai/mistral-large-2512
+    client_spec:
+      class_name: "helm.clients.mistral_client.MistralAIClient"
+
+  - name: mistralai/mistral-medium-2508
+    model_name: mistralai/mistral-medium-2508
+    client_spec:
+      class_name: "helm.clients.mistral_client.MistralAIClient"
+
+  - name: mistralai/mistral-small-2506
+    model_name: mistralai/mistral-small-2506
+    client_spec:
+      class_name: "helm.clients.mistral_client.MistralAIClient"
+
+  - name: mistralai/ministral-14b-2512
+    model_name: mistralai/ministral-14b-2512
+    client_spec:
+      class_name: "helm.clients.mistral_client.MistralAIClient"
+
+  - name: mistralai/ministral-8b-2512
+    model_name: mistralai/ministral-8b-2512
+    client_spec:
+      class_name: "helm.clients.mistral_client.MistralAIClient"
+
+  - name: mistralai/ministral-3b-2512
+    model_name: mistralai/ministral-3b-2512
     client_spec:
       class_name: "helm.clients.mistral_client.MistralAIClient"
 
@@ -2833,6 +2914,34 @@ model_deployments:
     model_name: openai/gpt-5-nano-2025-08-07
     tokenizer_name: openai/o200k_base
     max_sequence_length: 400000
+    client_spec:
+      class_name: "helm.clients.openai_responses_client.OpenAIResponseClient"
+
+  - name: openai/gpt-5.4-pro-2026-03-05
+    model_name: openai/gpt-5.4-pro-2026-03-05
+    tokenizer_name: openai/o200k_base
+    max_sequence_length: 1050000
+    client_spec:
+      class_name: "helm.clients.openai_responses_client.OpenAIResponseClient"
+
+  - name: openai/gpt-5.4-mini-2026-03-17
+    model_name: openai/gpt-5.4-mini-2026-03-17
+    tokenizer_name: openai/o200k_base
+    max_sequence_length: 400000
+    client_spec:
+      class_name: "helm.clients.openai_responses_client.OpenAIResponseClient"
+
+  - name: openai/gpt-5.4-nano-2026-03-17
+    model_name: openai/gpt-5.4-nano-2026-03-17
+    tokenizer_name: openai/o200k_base
+    max_sequence_length: 400000
+    client_spec:
+      class_name: "helm.clients.openai_responses_client.OpenAIResponseClient"
+
+  - name: openai/gpt-5.4-2026-03-05
+    model_name: openai/gpt-5.4-2026-03-05
+    tokenizer_name: openai/o200k_base
+    max_sequence_length: 1050000
     client_spec:
       class_name: "helm.clients.openai_responses_client.OpenAIResponseClient"
 
@@ -3374,15 +3483,6 @@ model_deployments:
       class_name: "helm.clients.together_client.TogetherChatClient"
       args:
         together_model: meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo
-
-  - name: together/llama-4-scout-17b-16e-instruct
-    model_name: meta/llama-4-scout-17b-16e-instruct
-    tokenizer_name: meta/llama-4-scout-17b-16e-instruct
-    max_sequence_length: 327680
-    client_spec:
-      class_name: "helm.clients.together_client.TogetherChatClient"
-      args:
-        together_model: meta-llama/Llama-4-Scout-17B-16E-Instruct
 
   - name: together/llama-4-maverick-17b-128e-instruct-fp8
     model_name: meta/llama-4-maverick-17b-128e-instruct-fp8
@@ -4159,6 +4259,20 @@ model_deployments:
       args:
         # The model name is case sensitive on Together AI for this model
         together_model: Qwen/Qwen3-235B-A22B-Thinking-2507
+
+  - name: together/qwen3.5-397b-a17b
+    model_name: qwen/qwen3.5-397b-a17b
+    tokenizer_name: qwen/qwen3.5-397b-a17b
+    max_sequence_length: 262144
+    client_spec:
+      class_name: "helm.clients.together_client.TogetherChatClient"
+
+  - name: together/qwen3.5-9b
+    model_name: qwen/qwen3.5-9b
+    tokenizer_name: qwen/qwen3.5-9b
+    max_sequence_length: 262144
+    client_spec:
+      class_name: "helm.clients.together_client.TogetherChatClient"
 
   - name: huggingface/qwen2.5-7b-instruct-4bit
     model_name: qwen/qwen2.5-7b-instruct

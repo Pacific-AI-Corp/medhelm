@@ -1457,6 +1457,22 @@ models:
     release_date: 2026-02-19
     tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, AUDIO_LANGUAGE_MODEL_TAG, GOOGLE_GEMINI_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
 
+  - name: google/gemini-3-flash-preview
+    display_name: Gemini 3 Flash (Preview)
+    description: Gemini 3.0 models are thinking models, capable of reasoning through their thoughts before responding, resulting in enhanced performance and improved accuracy. ([blog](https://blog.google/products-and-platforms/products/gemini/gemini-3-flash/))
+    creator_organization_name: Google
+    access: limited
+    release_date: 2025-12-17
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, AUDIO_LANGUAGE_MODEL_TAG, GOOGLE_GEMINI_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: google/gemini-3.1-flash-lite-preview
+    display_name: Gemini 3.1 Flash-Lite (Preview)
+    description: Gemini 3.1 Flash-Lite (Preview) is the fastest and most cost-efficient Gemini 3 series model. ([blog](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-lite/))
+    creator_organization_name: Google
+    access: limited
+    release_date: 2026-03-03
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, AUDIO_LANGUAGE_MODEL_TAG, GOOGLE_GEMINI_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
   - name: google/gemini-robotics-er-1.5-preview
     display_name: Gemini Robotics-ER 1.5
     description: Gemini Robotics-ER 1.5 is a vision-language model (VLM) designed for advanced reasoning in the physical world, allowing robots to interpret complex visual data, perform spatial reasoning, and plan actions from natural language commands.
@@ -2259,6 +2275,15 @@ models:
     release_date: 2025-04-05
     tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
 
+  - name: meta/llama-4-maverick-17b-128e-instruct
+    display_name: Llama 4 Maverick (17Bx128E) Instruct
+    description: Llama 4 Maverick (17Bx128E) Instruct is part of the Llama 4 collection of models are natively multimodal AI models that enable text and multimodal experiences using a mixture-of-experts architecture. ([blog](https://ai.meta.com/blog/llama-4-multimodal-intelligence/))
+    creator_organization_name: Meta
+    access: open
+    num_parameters: 402000000000
+    release_date: 2025-04-05
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
   - name: meta/llama-4-maverick-17b-128e-instruct-fp8
     display_name: Llama 4 Maverick (17Bx128E) Instruct FP8
     description: Llama 4 Maverick (17Bx128E) Instruct FP8 is part of the Llama 4 collection of models are natively multimodal AI models that enable text and multimodal experiences using a mixture-of-experts architecture. ([blog](https://ai.meta.com/blog/llama-4-multimodal-intelligence/))
@@ -2771,6 +2796,68 @@ models:
     release_date: 2024-11-18
     tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
 
+  - name: mistralai/mistral-large-2512
+    display_name: Mistral Large 3 (2512) 
+    description: Mistral Large 3 is a open-weight, general-purpose multimodal model with a granular Mixture-of-Experts architecture with 41B active parameters and 675B total parameters. ([doc](https://docs.mistral.ai/models/mistral-large-3-25-12), [blog](https://mistral.ai/news/mistral-3))
+    creator_organization_name: Mistral AI
+    access: open
+    num_parameters: 675000000000
+    release_date: 2025-12-02
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: mistralai/mistral-medium-2508
+    display_name: Mistral Medium 3.1 (2508)
+    description: Mistral Medium 3.1 is a Mistral multimodal model. ([doc](https://docs.mistral.ai/models/mistral-medium-3-1-25-08))
+    creator_organization_name: Mistral AI
+    access: limited
+    release_date: 2025-08-12
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: mistralai/mistral-small-2506
+    display_name: Mistral Small 3.2 (2506)
+    description: Mistral Small 3.2 is a Mistral multimodal model. ([doc](https://docs.mistral.ai/models/mistral-small-3-2-25-06))
+    creator_organization_name: Mistral AI
+    access: open
+    num_parameters: 24000000000
+    release_date: 2025-06-20
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: mistralai/mistral-small-2603
+    display_name: Mistral Small 4 (2603)
+    description: Mistral Small 4 is a model in the Mistral Small family that unifies reasoning, multimodal, and agentic capabilities. ([blog](https://mistral.ai/news/mistral-small-4), [doc](https://docs.mistral.ai/models/mistral-small-4-0-26-03))
+    creator_organization_name: Mistral AI
+    access: open
+    num_parameters: 119000000000
+    release_date: 2026-03-16
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: mistralai/ministral-14b-2512
+    display_name: Ministral 3 (14B 2512)
+    description: Ministral 3 is a family of parameter-efficient dense language models designed for compute and memory constrained applications. ([doc](https://docs.mistral.ai/models/ministral-3-14b-25-12), [blog](https://mistral.ai/news/mistral-3), [paper](https://arxiv.org/abs/2601.08584))
+    creator_organization_name: Mistral AI
+    access: open
+    num_parameters: 14000000000
+    release_date: 2025-12-02
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: mistralai/ministral-8b-2512
+    display_name: Ministral 3 (8B 2512)
+    description: Ministral 3 is a family of parameter-efficient dense language models designed for compute and memory constrained applications. ([doc](https://docs.mistral.ai/models/ministral-3-8b-25-12), [blog](https://mistral.ai/news/mistral-3), [paper](https://arxiv.org/abs/2601.08584))
+    creator_organization_name: Mistral AI
+    access: open
+    num_parameters: 8000000000
+    release_date: 2025-12-02
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: mistralai/ministral-3b-2512
+    display_name: Ministral 3 (3B 2512)
+    description: Ministral 3 is a family of parameter-efficient dense language models designed for compute and memory constrained applications. ([doc](https://docs.mistral.ai/models/ministral-3-3b-25-12), [blog](https://mistral.ai/news/mistral-3), [paper](https://arxiv.org/abs/2601.08584))
+    creator_organization_name: Mistral AI
+    access: open
+    num_parameters: 3000000000
+    release_date: 2025-12-02
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
   - name: mistralai/open-mistral-nemo-2407
     display_name: Mistral NeMo (2402)
     description: Mistral NeMo is a multilingual 12B model with a large context window of 128K tokens. ([blog](https://mistral.ai/news/mistral-nemo/))
@@ -3263,6 +3350,38 @@ models:
     creator_organization_name: OpenAI
     access: limited
     release_date: 2025-08-07
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: openai/gpt-5.4-pro-2026-03-05
+    display_name: GPT-5.4 Pro (2026-03-05)
+    description: GPT-5.4 Pro (2026-03-05) is a model in the GPT-5 model family that incorporates recent advances in reasoning, coding, and agentic workflows. ([blog](https://openai.com/index/introducing-gpt-5-4/))
+    creator_organization_name: OpenAI
+    access: limited
+    release_date: 2026-03-05
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: openai/gpt-5.4-2026-03-05
+    display_name: GPT-5.4 (2026-03-05)
+    description: GPT-5.4 (2026-03-05) is a model in the GPT-5 model family that incorporates recent advances in reasoning, coding, and agentic workflows. ([blog](https://openai.com/index/introducing-gpt-5-4/))
+    creator_organization_name: OpenAI
+    access: limited
+    release_date: 2026-03-05
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: openai/gpt-5.4-mini-2026-03-17
+    display_name: GPT-5.4 mini (2026-03-17)
+    description: GPT-5.4 mini (2026-03-17) is a more efficient model designed for high-volume workloads. ([blog](https://openai.com/index/introducing-gpt-5-4-mini-and-nano/))
+    creator_organization_name: OpenAI
+    access: limited
+    release_date: 2026-03-17
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: openai/gpt-5.4-nano-2026-03-17
+    display_name: GPT-5.4 nano (2026-03-17)
+    description: GPT-5.4 nano (2026-03-17) is a more efficient model designed for high-volume workloads. ([blog](https://openai.com/index/introducing-gpt-5-4-mini-and-nano/))
+    creator_organization_name: OpenAI
+    access: limited
+    release_date: 2026-03-17
     tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
 
   - name: openai/gpt-5.2-2025-12-11
@@ -3829,6 +3948,24 @@ models:
     access: open
     num_parameters: 235000000000
     release_date: 2025-07-21  # https://x.com/Alibaba_Qwen/status/1947344511988076547
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: qwen/qwen3.5-397b-a17b
+    display_name: Qwen3.5 397B A17B
+    description: Qwen3.5 397B A17B uses a hybrid architecture that fuses linear attention (via Gated Delta Networks) with a sparse mixture-of-experts. ([blog](https://qwen.ai/blog?id=qwen3.5))
+    creator_organization_name: Qwen
+    access: open
+    num_parameters: 403000000000
+    release_date: 2026-02-15
+    tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: qwen/qwen3.5-9b
+    display_name: Qwen3.5 9B
+    description: Qwen3.5 9B A17B uses a hybrid architecture that fuses linear attention (via Gated Delta Networks) with a sparse mixture-of-experts. ([blog](https://qwen.ai/blog?id=qwen3.5))
+    creator_organization_name: Qwen
+    access: open
+    num_parameters: 10000000000
+    release_date: 2026-03-02  # Source: https://github.com/QwenLM/Qwen3.5/blob/7e103aebdbff11c98cc1cd6a2a568988cfd38168/README.md
     tags: [TEXT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
 
   - name: qwen/qwq-32b-preview

@@ -92,7 +92,7 @@ class HuggingFaceServer:
                 self.model = AutoModelForCausalLM.from_pretrained(pretrained_model_name_or_path, **kwargs)
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(pretrained_model_name_or_path, **kwargs).to(
-                    self.device
+                    self.device  # type: ignore
                 )
         self.wrapped_tokenizer = wrapped_tokenizer
 
@@ -143,8 +143,8 @@ class HuggingFaceServer:
                 stopping_criteria=stopping_criteria,
                 pad_token_id=pad_token_id,
             )
-            sequences = output.sequences
-            scores = output.scores
+            sequences = output.sequences  # type: ignore
+            scores = output.scores  # type: ignore
 
         prompt_tokens_logprobs = []
         if compute_logprobs_only:
@@ -325,16 +325,16 @@ class HuggingFaceClient(CachingClient):
         pretrained_model_name_or_path = (
             self._pretrained_model_name_or_path if self._pretrained_model_name_or_path else request.model
         )
-        huggingface_model: HuggingFaceServer = HuggingFaceServerFactory.get_server(
-            helm_model_name=request.model,
-            pretrained_model_name_or_path=pretrained_model_name_or_path,
-            wrapped_tokenizer=self._wrapped_tokenizer,
-            **self._kwargs,
-        )
 
         try:
 
             def do_it() -> Dict[str, Any]:
+                huggingface_model: HuggingFaceServer = HuggingFaceServerFactory.get_server(
+                    helm_model_name=request.model,
+                    pretrained_model_name_or_path=pretrained_model_name_or_path,
+                    wrapped_tokenizer=self._wrapped_tokenizer,
+                    **self._kwargs,
+                )
                 return huggingface_model.serve_request(raw_request)
 
             cache_key = CachingClient.make_cache_key(raw_request, request)

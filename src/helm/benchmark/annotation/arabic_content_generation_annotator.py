@@ -1,3 +1,4 @@
+import re
 from typing import Any, Dict, Union
 
 from helm.benchmark.adaptation.request_state import RequestState
@@ -29,13 +30,27 @@ _SCORE_TAG = "SCORE:"
 
 
 _CRITERIA = {
-    "faithfulness": "Did the model say anything that isn’t supported by the facts?",
-    "completeness": "Did the model include the important facts?",
-    "style": "Does the model output follow the requested style, while keeping the facts intact?",
-    "tone_and_intent": "Does the output follow the requested tone and intent i.e. what the text is trying to do emotionally/strategically?",
-    "formality_and_register": "Does the output follow the requested formality and register i.e. how “corporate” vs “casual” the language is?",
-    "point_of_view_and_voice": "Does the output follow the requested point of view and voice i.e. who is “speaking” and how direct it is?",
-    "structure_and_formatting_habits": "Does the output follow the requested structure and formatting habits i.e. how the text is organized?",
+    "faithfulness": """Did the model say anything that isn’t supported by the facts in the user-provided content?
+
+1. The model frequently introduces multiple claims, details, or conclusions that are clearly not supported by or directly contradict the facts in the user-provided content.
+2. The model includes several unsupported statements or minor factual additions that go beyond the user-provided content, though the core response still loosely aligns with the given information.
+3. The model mostly relies on the user-provided content but adds at least one noticeable unsupported claim or speculative detail that is not grounded in the provided facts.
+4. The model stays almost entirely within the bounds of the user-provided content, with only a very minor or ambiguous addition that is not explicitly supported but does not materially affect accuracy.
+5. The model strictly adheres to the user-provided content and makes no claims, inferences, or details that are not directly supported by the given facts.""",
+    "completeness": """Did the model include all important facts from the user-provided content?
+
+1. The model omits most of the important facts from the user-provided content, including central ideas or key details necessary for understanding.
+2. The model includes a few important facts but misses many key details or central points from the user-provided content.
+3. The model includes several important facts from the user-provided content but omits at least one significant detail or key element.
+4. The model includes nearly all important facts from the user-provided content, with only minor or non-essential details missing.
+5. The model includes all important facts from the user-provided content with no meaningful omissions.""",
+    "style": """"Did the model output follow the requested style, including the specified tone, intent, level of formality, register, point of view, and voice?
+
+1. The output clearly ignores or contradicts the requested style, failing to match the specified tone, intent, formality, register, point of view, or voice.
+2. The output shows minimal alignment with the requested style, with major inconsistencies or frequent deviations from the specified tone, formality, point of view, or voice.
+3. The output generally reflects the requested style but includes noticeable inconsistencies or partial mismatches in tone, formality, register, point of view, or voice.
+4. The output closely follows the requested style with only minor or occasional deviations in tone, intent, formality, register, point of view, or voice.
+5. The output fully and consistently matches the requested style, accurately maintaining the specified tone, intent, level of formality, register, point of view, and voice throughout.""",
 }
 
 
@@ -63,8 +78,8 @@ class ArabicContentGenerationAnnotator(Annotator):
             )
 
             annotator_request = Request(
-                model="openai/gpt-5.1-2025-11-13",
-                model_deployment="openai/gpt-5.1-2025-11-13",
+                model="openai/gpt-5.4-2026-03-05",
+                model_deployment="openai/gpt-5.4-2026-03-05",
                 prompt=annotator_prompt,
                 temperature=0.0,
                 max_tokens=2000,
@@ -73,17 +88,14 @@ class ArabicContentGenerationAnnotator(Annotator):
             assert len(annotator_response.completions) == 1
             annotator_response_text = annotator_response.completions[0].text
 
-            annotations[criterion_id] = {
-                "prompt": annotator_prompt,
-                **self._parse_annotator_response(annotator_response_text),
-            }
+            annotations[criterion_id] = self._parse_annotator_response(annotator_response_text)
         return annotations
 
     def _parse_annotator_response(self, annotator_response_text: str) -> Dict[str, Union[int, str]]:
-        result: Dict[str, Union[int, str]] = {}
-        for line in annotator_response_text.split("\n"):
-            if line.startswith(_REASONING_TAG):
-                result["reasoning"] = line.removeprefix(_REASONING_TAG).strip()
-            elif line.startswith(_SCORE_TAG):
-                result["score"] = int(line.removeprefix(_SCORE_TAG).strip())
-        return result
+        match = re.search(r"REASONING:\s*(.*)\s*SCORE:\s*(\d+)", annotator_response_text)
+        if not match:
+            raise ValueError(f"Could not parse annotator response: '{annotator_response_text}'")
+        return {
+            "reasoning": match.group(1),
+            "score": int(match.group(2)),
+        }

@@ -2,6 +2,56 @@
 
 ## [Upcoming]
 
+### Models
+
+- Add GPT-5.4, GPT-5.4 mini, and GPT-5.4 nano (#4145)
+
+## [v0.5.14] - 2026-03-26
+
+### Breaking Changes
+
+- Previously, responses from models on the OpenAI, Anthropic Claude, OpenRouter, NVIDIA NIM, vLLM, and xAI Grok APIs were tokenized locally locally. These responses will no longer be tokenized. (#4108, #4113)
+- The MadinahQA scenario will now include the context field in the inputs for the reading comprehension task (#4127)
+
+### Models
+
+- Add Mistral Large 3, Mistral Medium 3.1, Mistral Small 3.2, and Ministral 3 (#4098)
+- Add GPT-5.4 (#4099)
+- Switch llama-4-scout-17b-16e-instruct to use Vertex AI instead of Together (#4104)
+- Add the ability to use models from certain providers without manually configuring `model_deployments.yaml` (#4100, #4103, #4117):
+  - The following providers are supported:
+    - OpenAI (#4107)
+    - Anthropic (#4109)
+    - OpenRouter (#4114)
+    - Mistral (#4118)
+    - Writer (#4119)
+    - xAI (#4120)
+    - Cohere (#4130)
+    - Google (#4131)
+    - Hugging Face Hub (from v0.5.12)
+    - HuggingFace Inference Providers (from v0.5.13)
+    - Together (from v0.5.12)
+    - LiteLLM (from v0.5.12)
+  - Note: Together models will now use the chat API rather than the text completions API by default (#4106)
+- Remove tokenization from `AnthropicMessagesClient` (#4108)
+- Remove tokenization from `OpenAIClient` (#4113)
+
+### Scenarios
+
+- Fix MadinahQA scenario to include Context field for reading comprehension (#4127)
+
+### Framework
+
+- Remove the human-evaluation optional dependency (#4101)
+- Install dependencies for documentation on Read the Docs with uv (#4140)
+
+### Contributors
+
+Thank you to the following contributors for your work on this HELM release!
+
+- @aaabulkhair
+- @yifanmai
+
 ## [v0.5.13] - 2026-02-25
 
 ### Breaking Changes
@@ -1323,26 +1373,27 @@ Thank you to the following contributors for your contributions to this HELM rele
 
 - Initial release
 
-[upcoming]: https://github.com/PacificAI/medhelm/compare/v0.5.13...HEAD
-[v0.5.13]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.13
-[v0.5.12]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.12
-[v0.5.11]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.11
-[v0.5.10]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.10
-[v0.5.9]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.9
-[v0.5.8]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.8
-[v0.5.7]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.7
-[v0.5.6]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.6
-[v0.5.5]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.5
-[v0.5.4]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.4
-[v0.5.3]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.3
-[v0.5.2]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.2
-[v0.5.1]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.1
-[v0.5.0]: https://github.com/PacificAI/medhelm/releases/tag/v0.5.0
-[v0.4.0]: https://github.com/PacificAI/medhelm/releases/tag/v0.4.0
-[v0.3.0]: https://github.com/PacificAI/medhelm/releases/tag/v0.3.0
-[v0.2.4]: https://github.com/PacificAI/medhelm/releases/tag/v0.2.4
-[v0.2.3]: https://github.com/PacificAI/medhelm/releases/tag/v0.2.3
-[v0.2.2]: https://github.com/PacificAI/medhelm/releases/tag/v0.2.2
-[v0.2.1]: https://github.com/PacificAI/medhelm/releases/tag/v0.2.1
-[v0.2.0]: https://github.com/PacificAI/medhelm/releases/tag/v0.2.0
-[v0.1.0]: https://github.com/PacificAI/medhelm/releases/tag/v0.1.0
+[upcoming]: https://github.com/stanford-crfm/helm/compare/v0.5.14...HEAD
+[v0.5.14]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.14
+[v0.5.13]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.13
+[v0.5.12]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.12
+[v0.5.11]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.11
+[v0.5.10]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.10
+[v0.5.9]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.9
+[v0.5.8]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.8
+[v0.5.7]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.7
+[v0.5.6]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.6
+[v0.5.5]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.5
+[v0.5.4]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.4
+[v0.5.3]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.3
+[v0.5.2]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.2
+[v0.5.1]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.1
+[v0.5.0]: https://github.com/stanford-crfm/helm/releases/tag/v0.5.0
+[v0.4.0]: https://github.com/stanford-crfm/helm/releases/tag/v0.4.0
+[v0.3.0]: https://github.com/stanford-crfm/helm/releases/tag/v0.3.0
+[v0.2.4]: https://github.com/stanford-crfm/helm/releases/tag/v0.2.4
+[v0.2.3]: https://github.com/stanford-crfm/helm/releases/tag/v0.2.3
+[v0.2.2]: https://github.com/stanford-crfm/helm/releases/tag/v0.2.2
+[v0.2.1]: https://github.com/stanford-crfm/helm/releases/tag/v0.2.1
+[v0.2.0]: https://github.com/stanford-crfm/helm/releases/tag/v0.2.0
+[v0.1.0]: https://github.com/stanford-crfm/helm/releases/tag/v0.1.0

@@ -1,17 +1,22 @@
-# This GitHub Actions workflow automatically upgrades the pinned versions
+# This GitHub Actions workflow automatically resolves and updates the pinned versions
 # for all Python dependencies (including transitive dependencies)
-# every Monday or whenever the workflow is manually triggered.
+# whenever pyproject.toml is modified or the workflow is manually triggered.
 
-name: Upgrade requirements
+name: Update dependencies
 
 on:
-  # schedule:
-  #   - cron: "30 15 * * 1"
+  push:
+    branches:
+      - "main"
+    paths:
+      - "pyproject.toml"
+      - "constraints.txt"
+      - '.github/workflows/update-dependencies.yml'
   workflow_dispatch:
 
 jobs:
-  upgrade-requirements:
-    name: Upgrade requirements
+  update-dependencies:
+    name: Update dependencies
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,17 +32,10 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           version: "0.9.4"
-          enable-cache: true
-      - name: Create build env with setuptools (for openai-whisper)
-        run: |
-          python -m venv .build-venv
-          .build-venv/bin/pip install setuptools wheel --quiet
-      - name: Upgrade dependencies
-        run: UV_PYTHON=".build-venv/bin/python" uv lock --upgrade --no-build-isolation-package openai-whisper
+      - name: Lock dependencies
+        run: uv lock
       - name: Install dependencies
-        run: UV_PYTHON=".build-venv/bin/python" uv sync --extra ci --no-build-isolation-package openai-whisper
-      - name: Write requirements.txt
-        run: uv pip freeze --exclude-editable > requirements.txt
+        run: uv sync --extra ci
         # Need to manually run tests here because the pull request opened later will not
         # run the test workflow.
         #
@@ -57,8 +55,8 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: Upgrade requirements
-          title: "Upgrade requirements"
-          branch: actions/upgrade-requirements
+          commit-message: Update dependencies
+          title: "Update dependencies"
+          branch: actions/update-dependencies
           delete-branch: true
           body: Auto-generated from GitHub Actions.

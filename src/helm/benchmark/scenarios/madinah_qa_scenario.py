@@ -3,6 +3,7 @@ from typing import Dict, List
 
 import datasets
 
+from helm.benchmark.presentation.taxonomy_info import TaxonomyInfo
 from helm.common.general import ensure_directory_exists
 from helm.benchmark.scenarios.scenario import (
     Scenario,
@@ -13,6 +14,7 @@ from helm.benchmark.scenarios.scenario import (
     CORRECT_TAG,
     Input,
     Output,
+    ScenarioMetadata,
 )
 
 
@@ -49,7 +51,16 @@ class MadinahQAScenario(Scenario):
         for split_name, dataset in dataset_splits.items():
             assert isinstance(dataset, datasets.Dataset)
             for row_index, row in enumerate(dataset):
-                input = Input(text=row["Question"])
+                # Include the Context field (reading passage) when available.
+                # The General subset has a Context passage for 602/612 questions;
+                # the Grammar subset has no Context (all null).
+                # This matches the original ArabicMMLU evaluation code and LightEval.
+                context = row.get("Context")
+                question = row["Question"]
+                if context and isinstance(context, str) and context.strip():
+                    input = Input(text=f"{context}\n\n{question}")
+                else:
+                    input = Input(text=question)
                 references: List[Reference] = []
                 correct_option_index = ord(row["Answer Key"]) - ord("A") + 1
                 for option_index in range(1, 6):
@@ -71,3 +82,19 @@ class MadinahQAScenario(Scenario):
                 instances.append(instance)
 
         return instances
+
+    def get_metadata(self) -> ScenarioMetadata:
+        return ScenarioMetadata(
+            name="madinah_qa",
+            display_name="MadinahQA",
+            description="A question answering benchmark published by MBZUAI that tests knowledge of Arabic language and grammar ([dataset](https://huggingface.co/datasets/MBZUAI/MadinahQA))",
+            taxonomy=TaxonomyInfo(
+                task="question answering",
+                what="academic questions about Arabic language",
+                when="before 2024",
+                who="academic exams writers and takers",
+                language="Arabic",
+            ),
+            main_metric="exact_match",
+            main_split="test",
+        )

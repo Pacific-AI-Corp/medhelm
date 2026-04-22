@@ -1,3 +1,4 @@
+import re
 from typing import Any, Dict, Union
 
 from helm.benchmark.adaptation.request_state import RequestState
@@ -64,8 +65,8 @@ class ArabicContentGenerationSimilarityAnnotator(Annotator):
             )
 
             annotator_request = Request(
-                model="openai/gpt-5.1-2025-11-13",
-                model_deployment="openai/gpt-5.1-2025-11-13",
+                model="openai/gpt-5.4-2026-03-05",
+                model_deployment="openai/gpt-5.4-2026-03-05",
                 prompt=annotator_prompt,
                 temperature=0.0,
                 max_tokens=2000,
@@ -81,10 +82,10 @@ class ArabicContentGenerationSimilarityAnnotator(Annotator):
         return annotations
 
     def _parse_annotator_response(self, annotator_response_text: str) -> Dict[str, Union[int, str]]:
-        result: Dict[str, Union[int, str]] = {}
-        for line in annotator_response_text.split("\n"):
-            if line.startswith(_REASONING_TAG):
-                result["reasoning"] = line.removeprefix(_REASONING_TAG).strip()
-            elif line.startswith(_SCORE_TAG):
-                result["score"] = int(line.removeprefix(_SCORE_TAG).strip())
-        return result
+        match = re.search(r"REASONING:\s*(.*)\s*SCORE:\s*(\d+)", annotator_response_text)
+        if not match:
+            raise ValueError(f"Could not parse annotator response: '{annotator_response_text}'")
+        return {
+            "reasoning": match.group(1),
+            "score": int(match.group(2)),
+        }
