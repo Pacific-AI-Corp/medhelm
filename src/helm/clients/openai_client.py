@@ -1,6 +1,7 @@
 # mypy: check_untyped_defs = False
 from dataclasses import replace
 import json
+import random
 import re
 import time
 from typing import Any, Dict, List, Optional, cast, Union, Callable
@@ -522,6 +523,9 @@ class OpenAIClient(CachingClient):
         # See https://platform.openai.com/docs/api-reference/batch/create for more details.
 
         # append line for each request in jsonl format
+        # random string is added to the file name to avoid collisions when multiple batch requests are being made at the same time
+        random_string = "".join(random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8))
+        file_name = f"./{random_string}_{file_name}"
         with open(file_name, "w") as f:
             hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_name}")
             for idx, request in enumerate(requests):
@@ -543,7 +547,7 @@ class OpenAIClient(CachingClient):
     def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
         # OpenAI's API Batch endpoints
         # (https://platform.openai.com/docs/api-reference/batch) only support batch requests
-        file_path = self._prepare_jsonl_file(requests, "./batch_requests.jsonl")
+        file_path = self._prepare_jsonl_file(requests, "batch_requests.jsonl")
 
         # upload the file to OpenAI
         uploaded_file = self.client.files.create(file=open(file_path, "rb"), purpose="batch")

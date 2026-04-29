@@ -1,3 +1,4 @@
+import random
 import time
 import json
 from typing import Any, Dict, List, Optional, Union
@@ -217,6 +218,8 @@ class OpenAIResponseClient(CachingClient):
         """
         Prepares a JSONL file for OpenAI's batch request API. Each line in the JSONL file corresponds to a single request and is formatted as follows:
         """
+        random_string = "".join(random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8))
+        file_name = f"./{random_string}_{file_name}"
         with open(file_name, "w") as f:
             hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_name}")
             for idx, request in enumerate(requests):
@@ -270,7 +273,7 @@ class OpenAIResponseClient(CachingClient):
             hexception("Batch request timed out.")
             raise TimeoutError("Batch request did not complete in time.")
 
-        # download the results        results = self.client.batches.retrieve_results(batch_request.id)
+        # download the results
         request_id_to_result = {}
         hlog(f"Batch request completed. Downloading results... from {batch_status.output_file_id}")
 
