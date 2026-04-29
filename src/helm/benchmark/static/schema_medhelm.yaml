@@ -269,6 +269,13 @@ metrics:
     description: Measures the average score assigned by an LLM-based jury evaluating task performance.
     lower_is_better: false
 
+  - name: health_bench_score
+    display_name: HealthBench Jury Score
+    short_display_name: Jury Score
+    description: Measures the average score assigned by an LLM-based jury evaluating task performance for HealthBench scenarios.
+    lower_is_better: false
+
+
   # Summariazation metrics
   - name: summac
     display_name: SummaC
@@ -311,7 +318,7 @@ metrics:
     display_name: HumanEval-coherence
     description: Human evaluation score for coherence.
     lower_is_better: false
-    
+
   # Toxicity metrics
   - name: expected_max_toxicity
     display_name: Average max toxicity
@@ -402,13 +409,13 @@ metrics:
     short_display_name: Platt Intercept
     description: Intercept of the Platt scaling classifier (can compare this across tasks).
     lower_is_better: false
-  
+
   - name: ehr_sql_total_predicted_answerable
     display_name: Total Predicted Answerable
     short_display_name: Total Pred Ans
     description: Total number of questions predicted to be answerable by the model.
     lower_is_better: false
-  
+
   - name: ehr_sql_total_ground_truth_answerable
     display_name: Total Ground Truth Answerable
     short_display_name: Total GT Ans
@@ -501,7 +508,7 @@ run_groups:
       - mimic_rrs
       - mimic_bhc
       - chw_care_plan
-  
+
   - name: patient_communication
     display_name: Patient Communication and Education
     description: Scenarios for patient communication and education
@@ -515,7 +522,7 @@ run_groups:
       - mental_health
       - shc_proxy_med
       - shc_privacy_med
-  
+
   - name: medical_research
     display_name: Medical Research Assistance
     description: Scenarios for medical research assistance
@@ -527,7 +534,7 @@ run_groups:
       - race_based_med
       - n2c2_ct_matching
       - medhallu
-  
+
   - name: administration_and_workflow
     display_name: Administration and Workflow
     description: Scenarios for administration and workflow
@@ -555,6 +562,23 @@ run_groups:
       who: "Clinician, Researcher"
       when: "Any"
       language: English
+
+
+
+  - name: health_bench
+    display_name: HealthBenchScenario
+    description: HealthBench is a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries, HealthBench includes 5,000 realistic health conversations, each with a custom physician-created rubric to grade model responses.
+    metric_groups:
+      - accuracy
+    environment:
+      main_name: health_bench_score
+      main_split: test
+    taxonomy:
+      task: Classification
+      what: "Verify whether answers to questions from LLMs are correct according to a rubric"
+      who: "Researcher"
+      when: "Any"
+      language: Any
 
   - name: clear
     display_name: CLEAR

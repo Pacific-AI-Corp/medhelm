@@ -30,7 +30,6 @@ class HuggingFaceInferenceProvidersChatCompletionRequest(TypedDict):
 
 
 class HuggingFaceInferenceProvidersClient(CachingClient):
-
     def __init__(
         self,
         cache_config: CacheConfig,

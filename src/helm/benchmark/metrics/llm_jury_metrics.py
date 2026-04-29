@@ -33,12 +33,12 @@ class LLMJuryMetric(Metric):
     ) -> List[Stat]:
         assert request_state.annotations
         annotations: Dict[str, Any] = request_state.annotations[self.scenario_name]
-        scores: List[int] = []
+        scores: List[float] = []
         score = self.default_score
         for annotation_key, annotation_dict in annotations.items():
             if annotation_key in self.annotator_models.keys() and annotation_dict is not None:
                 for val in annotation_dict.values():
-                    scores.append(int(val["score"]))
+                    scores.append(float(val["score"]))
         if scores:
             score = sum(scores) / len(scores)
         return [

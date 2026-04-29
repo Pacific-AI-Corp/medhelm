@@ -179,27 +179,53 @@ class LLMAsJuryAnnotator(Annotator):
 
         return Template(tmpl_text).substitute(replacements)
 
-    def _validate_annotation(self, annotator_criteria: Dict[str, Any], annotator_name: str) -> bool:
+    def _validate_annotation(
+        self,
+        annotator_criteria: Dict[str, Any],
+        annotator_name: str,
+    ) -> bool:
         """
-        Validate the annotation meets expected criteria.
-
-        :param annotator_criteria: Annotation dictionary to validate
-        :param annotator_name: Name of the annotator model
-        :return: Whether the annotation is valid
+        Recursively validate the annotation meets expected criteria.
         """
-        for key, value in self._annotation_criteria.items():
-            if key not in annotator_criteria:
-                hwarn(f"Annotator did not find the expected key " f"'{key}' in the response from {annotator_name}.")
-                return False
 
-            for subkey in value:
-                if subkey not in annotator_criteria[key]:
-                    hwarn(
-                        f"Annotator did not find the expected subkey "
-                        f"'{subkey}' in the response from {annotator_name}."
-                    )
+        def validate(schema: Dict[str, Any], data: Dict[str, Any], path: str = "") -> bool:
+            for key, expected in schema.items():
+                current_path = f"{path}.{key}" if path else key
+
+                if key not in data:
+                    hwarn(f"Missing key '{current_path}' in response from {annotator_name}.")
                     return False
-        return True
+
+                value = data[key]
+
+                # Case 1: nested dict → recurse
+                if isinstance(expected, dict):
+                    if not isinstance(value, dict):
+                        hwarn(f"Expected dict at '{current_path}' but got {type(value)} " f"from {annotator_name}.")
+                        return False
+                    if not validate(expected, value, current_path):
+                        return False
+
+                # Case 2: list of required subkeys
+                elif isinstance(expected, list):
+                    for subkey in expected:
+                        if subkey not in value:
+                            hwarn(f"Missing subkey '{current_path}.{subkey}' " f"in response from {annotator_name}.")
+                            return False
+
+                # Case 3: type checking (optional but useful)
+                elif isinstance(expected, type):
+                    if not isinstance(value, expected):
+                        hwarn(
+                            f"Invalid type at '{current_path}'. "
+                            f"Expected {expected}, got {type(value)} "
+                            f"from {annotator_name}."
+                        )
+                        return False
+
+            return True
+
+        return validate(self._annotation_criteria, annotator_criteria)
 
     def annotate(self, request_state: RequestState) -> Dict[str, Any]:
         """

@@ -4,10 +4,8 @@ import whisper
 
 
 class WhisperWrappedEncoder:
-
     @classmethod
     def load(cls, model_config):
-
         def replace_layer_norm(module):
             from whisper.model import LayerNorm
 

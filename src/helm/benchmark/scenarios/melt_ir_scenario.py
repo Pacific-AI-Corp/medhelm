@@ -72,7 +72,6 @@ class MELTInformationRetrievalScenario(Scenario):
         )
         instances = []
         for i, sample in enumerate(dataset["train"]):
-
             if i >= self.NUM_TRAIN_QUERIES:
                 break
 

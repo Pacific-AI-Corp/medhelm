@@ -190,7 +190,6 @@ def get_gpqa_spec(subset: str, use_chain_of_thought: str = "true", use_few_shot:
 
 @run_spec_function("ifeval")
 def get_ifeval_spec() -> RunSpec:
-
     scenario_spec = ScenarioSpec(class_name="helm.benchmark.scenarios.ifeval_scenario.IFEvalScenario")
 
     adapter_spec = AdapterSpec(
@@ -246,7 +245,6 @@ def get_wildbench_spec(subset: str) -> RunSpec:
 # TODO: Remove BigCodeBench from capabilities_run_specs.py because it is no longer part of HELM Capabilities
 @run_spec_function("bigcodebench")
 def get_bigcodebench_spec(version: str) -> RunSpec:
-
     scenario_spec = ScenarioSpec(
         class_name="helm.benchmark.scenarios.bigcodebench_scenario.BigCodeBenchScenario", args={"version": version}
     )
@@ -281,7 +279,6 @@ def get_bigcodebench_spec(version: str) -> RunSpec:
 
 @run_spec_function("omni_math")
 def get_omni_math_spec() -> RunSpec:
-
     scenario_spec = ScenarioSpec(class_name="helm.benchmark.scenarios.omni_math_scenario.OmniMATHScenario")
 
     adapter_spec = AdapterSpec(

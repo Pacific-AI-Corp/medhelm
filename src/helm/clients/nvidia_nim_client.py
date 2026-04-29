@@ -7,7 +7,6 @@ from helm.tokenizers.tokenizer import Tokenizer
 
 
 class NvidiaNimClient(OpenAIClient):
-
     BASE_URL = "https://integrate.api.nvidia.com/v1"
 
     def __init__(

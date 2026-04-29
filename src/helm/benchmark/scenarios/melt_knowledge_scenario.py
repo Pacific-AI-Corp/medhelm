@@ -60,7 +60,6 @@ class MELTClosedBookQAScenario(Scenario):
             trust_remote_code=True,
         )
         for dataset_split_name, helm_split_name in splits.items():
-
             for sample in dataset[dataset_split_name]:
                 instance = Instance(
                     input=Input(text=sample["question"]),

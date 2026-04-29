@@ -171,7 +171,6 @@ def generate_heim_human_eval_dataset(raw_human_eval_results_path: str):
 
     for question_type, question_info in QUESTION_TYPE_TO_INFOS.items():
         with htrack_block(f"Processing question type {question_type}"):
-
             # Keep track of the examples for this question type. Use the image url as the key
             examples: Dict[str, Dict[str, Any]] = {}
 

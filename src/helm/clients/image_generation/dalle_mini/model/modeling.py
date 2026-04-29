@@ -475,7 +475,6 @@ class GLU(nn.Module):
 
     @nn.compact
     def __call__(self, x: jnp.ndarray, deterministic: bool = True) -> jnp.ndarray:
-
         if self.config.use_deepnet_scaling:
             gain = deepnet_gain["encoder" if self.is_encoder else "decoder"]["beta"](self.config)
         elif self.config.use_subln_init:
@@ -546,7 +545,6 @@ class FFN(nn.Module):
 
     @nn.compact
     def __call__(self, x: jnp.ndarray, deterministic: bool = True) -> jnp.ndarray:
-
         if self.config.use_deepnet_scaling:
             gain = deepnet_gain["encoder" if self.is_encoder else "decoder"]["beta"](self.config)
         elif self.config.use_subln_init:
@@ -613,7 +611,6 @@ class FlaxBartEncoderLayer(nn.Module):
         output_attentions: bool = True,
         deterministic: bool = True,
     ) -> Tuple[jnp.ndarray]:
-
         if self.config.use_scan:
             hidden_states = hidden_states[0]
 
@@ -711,7 +708,6 @@ class FlaxBartDecoderLayer(nn.Module):
         output_attentions: bool = True,
         deterministic: bool = True,
     ) -> Tuple[jnp.ndarray]:
-
         if self.config.use_scan:
             hidden_states = hidden_states[0]
 
