@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from dataclasses import dataclass, replace
 
 from helm.common.context import Context
@@ -55,6 +55,9 @@ class ExecutionSpec:
     This specifies the MongoDB database to be used by the MongoDB cache.
     At most one of sqlite_cache_backend_config and mongo_cache_backend_config can be set."""
 
+    batch_size: int = None
+    """Batch size for batch requests. Only applicable if the context supports batch requests."""
+
 
 class Executor:
     """
@@ -64,6 +67,7 @@ class Executor:
 
     def __init__(self, execution_spec: ExecutionSpec):
         self.execution_spec = execution_spec
+        self.batch_size = execution_spec.batch_size
 
         cache_backend_config: CacheBackendConfig
         if execution_spec.sqlite_cache_backend_config and execution_spec.mongo_cache_backend_config:
@@ -94,12 +98,20 @@ class Executor:
             hlog("Skipped execution.")
             return scenario_state
 
-        # Do it!
-        request_states = parallel_map(
-            self.process,
-            scenario_state.request_states,
-            parallelism=self.execution_spec.parallelism,
-        )
+        if self.batch_size:
+            hlog(f"Processing requests in batches of {self.batch_size}...")
+            request_states = []
+            for i in range(0, len(scenario_state.request_states), self.batch_size):
+                batch = scenario_state.request_states[i : i + self.batch_size]
+                new_batch = self.process_batch(batch)
+                request_states.extend(new_batch)
+        else:
+            # Do it!
+            request_states = parallel_map(
+                self.process,
+                scenario_state.request_states,
+                parallelism=self.execution_spec.parallelism,
+            )
 
         hlog(f"Processed {len(request_states)} requests")
         return ScenarioState(
@@ -120,3 +132,24 @@ class Executor:
             else:
                 raise ExecutorError(f"{str(result.error)} Request: {state.request}")
         return replace(state, result=result)
+
+    def process_batch(self, states: List[RequestState]) -> List[RequestState]:
+        try:
+            results: List[RequestResult] = self.context.make_batch_request([state.request for state in states])
+        except Exception as e:
+            raise ExecutorError(f"{str(e)} Requests: {[state.request for state in states[:5]]}") from e
+        if len(results) != len(states):
+            raise ExecutorError(
+                f"Batch request returned {len(results)} results but expected {len(states)}. Requests: {[state.request for state in states]}"
+            )
+        new_states = []
+        for state, result in zip(states, results):
+            if result is None and not result.success:
+                if result.error_flags and not result.error_flags.is_fatal:
+                    hwarn(f"Non-fatal error treated as empty completion: {result.error}")
+                    result.completions = [GeneratedOutput(text="", logprob=0, tokens=[])]
+                else:
+                    raise ExecutorError(f"{str(result.error)} Request: {state.request}")
+            new_states.append(replace(state, result=result))
+
+        return new_states

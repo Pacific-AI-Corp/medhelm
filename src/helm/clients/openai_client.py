@@ -1,6 +1,8 @@
 # mypy: check_untyped_defs = False
 from dataclasses import replace
+import json
 import re
+import time
 from typing import Any, Dict, List, Optional, cast, Union, Callable
 
 from openai import OpenAIError
@@ -514,6 +516,118 @@ class OpenAIClient(CachingClient):
             return self._make_transcription_request(request)
         else:
             return self._make_chat_request(request)
+
+    def _prepare_jsonl_file(self, requests: List[Request], file_name: str) -> str:
+        # OpenAI's Batch API expects a JSONL file where each line is a JSON object representing a request.
+        # See https://platform.openai.com/docs/api-reference/batch/create for more details.
+
+        # append line for each request in jsonl format
+        with open(file_name, "w") as f:
+            hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_name}")
+            for idx, request in enumerate(requests):
+                raw_request = self._make_chat_raw_request(request)
+                f.write(
+                    json.dumps(
+                        {
+                            "custom_id": f"request_{idx}",
+                            "method": "POST",
+                            "url": "/v1/chat/completions",
+                            "body": raw_request,
+                        }
+                    )
+                    + "\n"
+                )
+
+        return file_name
+
+    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+        # OpenAI's API Batch endpoints
+        # (https://platform.openai.com/docs/api-reference/batch) only support batch requests
+        file_path = self._prepare_jsonl_file(requests, "./batch_requests.jsonl")
+
+        # upload the file to OpenAI
+        uploaded_file = self.client.files.create(file=open(file_path, "rb"), purpose="batch")
+        batch_request = self.client.batches.create(
+            completion_window="24h",
+            input_file_id=uploaded_file.id,
+            endpoint="/v1/chat/completions",
+        )
+
+        hlog(
+            f"{batch_request.model_dump(mode='json')} Created batch request with ID {batch_request.id}. Polling for completion..."
+        )
+
+        # Poll for batch request completion with exponential backoff
+        max_retries = 60
+        delay = 5
+        for attempt in range(max_retries):
+            batch_status = self.client.batches.retrieve(batch_request.id)
+            if batch_status.status == "completed":
+                hlog(f"Batch request succeeded: {batch_status.request_counts}. Retrieving results...")
+                break
+            if batch_status.status == "failed":
+                hexception(f"Batch request failed: {batch_status.errors}")
+                raise RuntimeError(f"Batch request failed: {batch_status.errors}")
+            hlog(f"Batch status: {batch_status.status} ({batch_status.request_counts}). Retrying in {delay}s...")
+            time.sleep(delay)
+            delay = min(delay * 2, 30)
+        else:
+            hexception("Batch request timed out.")
+            raise TimeoutError("Batch request did not complete in time.")
+
+        # Retrieve and parse results
+        content = self.client.files.content(batch_status.output_file_id).read()
+        id_to_response = {}
+        for line in content.splitlines():
+            try:
+                result = json.loads(line)
+                response = result.get("response", {}).get("body", {}) or result
+                id_to_response[result["custom_id"]] = response
+            except Exception as e:
+                hexception(f"Failed to parse batch line: {e}")
+
+        # Map responses to requests
+        results = []
+        for idx, request in enumerate(requests):
+            response = id_to_response.get(f"request_{idx}")
+            if not response:
+                hexception(f"No response for request_{idx}")
+                results.append(
+                    RequestResult(success=False, cached=False, error="No batch response", completions=[], embedding=[])
+                )
+                continue
+            try:
+                completions = [
+                    GeneratedOutput(
+                        text=choice["message"]["content"],
+                        logprob=0,
+                        tokens=[],
+                        finish_reason={"reason": choice["finish_reason"]},
+                    )
+                    for choice in response.get("choices", [])
+                ]
+                results.append(
+                    RequestResult(
+                        success=True,
+                        cached=False,
+                        request_time=response.get("request_time", 0),
+                        request_datetime=response.get("request_datetime"),
+                        completions=completions,
+                        embedding=[],
+                    )
+                )
+            except Exception as e:
+                hexception(e)
+                results.append(
+                    RequestResult(
+                        success=False,
+                        cached=False,
+                        error=f"Error parsing batch response: {e}",
+                        completions=[],
+                        embedding=[],
+                    )
+                )
+        return results
 
 
 class OpenAILegacyCompletionsClient(OpenAIClient):
