@@ -273,6 +273,11 @@ class OpenAIResponseClient(CachingClient):
         # download the results        results = self.client.batches.retrieve_results(batch_request.id)
         request_id_to_result = {}
         hlog(f"Batch request completed. Downloading results... from {batch_status.output_file_id}")
+
+        if not batch_status.output_file_id:
+            hexception("Batch request completed but no output file ID found.")
+            raise RuntimeError("Batch request completed but no output file ID found.")
+
         content_result = self.client.files.content(file_id=batch_status.output_file_id).read()
         for line in content_result.splitlines():
             result = json.loads(line)

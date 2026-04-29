@@ -55,7 +55,7 @@ class ExecutionSpec:
     This specifies the MongoDB database to be used by the MongoDB cache.
     At most one of sqlite_cache_backend_config and mongo_cache_backend_config can be set."""
 
-    batch_size: int = None
+    batch_size: Optional[int] = None
     """Batch size for batch requests. Only applicable if the context supports batch requests."""
 
 

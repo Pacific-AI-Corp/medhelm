@@ -576,6 +576,10 @@ class OpenAIClient(CachingClient):
             raise TimeoutError("Batch request did not complete in time.")
 
         # Retrieve and parse results
+        if not batch_status.output_file_id:
+            hexception("Batch request completed but no output file ID found.")
+            raise RuntimeError("Batch request completed but no output file ID found.")
+
         content = self.client.files.content(batch_status.output_file_id).read()
         id_to_response = {}
         for line in content.splitlines():
