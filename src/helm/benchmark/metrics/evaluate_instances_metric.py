@@ -30,7 +30,6 @@ class EvaluateInstancesMetric(MetricInterface, ABC):
         global_stats: Dict[MetricName, Stat] = {}
 
         for train_trial_index in range(adapter_spec.num_train_trials):
-
             # Aggregate these stats
             trial_stats: Dict[MetricName, Stat] = {}  # Statistics just for this trial
 

@@ -14,7 +14,6 @@ from helm.benchmark.metrics.image_generation.fractal_dimension.fractal_dimension
 
 
 class FractalDimensionMetric(Metric):
-
     # From https://www.nature.com/articles/35065154, "participants in the perception study consistently
     # preferred fractals with D values in the range of 1.3 to 1.5, irrespective of the pattern's origin.
     # Significantly, many of the fractal patterns surrounding us in nature have D values in this range.

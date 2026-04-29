@@ -30,9 +30,7 @@ class FinanceBenchScenario(Scenario):
         cache_dir = os.path.join(output_path, "data")
         ensure_directory_exists(cache_dir)
         target_path = os.path.join(cache_dir, "financebench_open_source.jsonl")
-        url: str = (
-            "https://raw.githubusercontent.com/patronus-ai/financebench/d7beebe5e739e0b806ab4443c1b3e23f51804acf/data/financebench_open_source.jsonl"  # noqa: E501
-        )
+        url: str = "https://raw.githubusercontent.com/patronus-ai/financebench/d7beebe5e739e0b806ab4443c1b3e23f51804acf/data/financebench_open_source.jsonl"  # noqa: E501
         ensure_file_downloaded(source_url=url, target_path=target_path)
 
         instances: List[Instance] = []

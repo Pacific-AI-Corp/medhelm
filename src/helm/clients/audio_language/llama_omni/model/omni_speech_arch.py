@@ -9,7 +9,6 @@ from helm.clients.audio_language.llama_omni.constants import IGNORE_INDEX, SPEEC
 
 
 class OmniSpeechMetaModel(nn.Module):
-
     def __init__(self, config):
         super(OmniSpeechMetaModel, self).__init__(config)
         self.config = config

@@ -40,6 +40,4 @@ def test_bleu_1():
 
 
 def test_chinese_bleu_1():
-    assert chinese_bleu_1(
-        "太祖武皇帝，沛國譙人也，姓曹，諱操，字孟德，漢相國參之後。", "太祖武皇帝，沛國譙人也，漢相國參之後。"
-    ) == pytest.approx(0.5907775139012316)
+    assert chinese_bleu_1("太祖武皇帝，沛國譙人也，姓曹，諱操，字孟德，漢相國參之後。", "太祖武皇帝，沛國譙人也，漢相國參之後。") == pytest.approx(0.5907775139012316)

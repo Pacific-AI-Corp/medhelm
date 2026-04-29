@@ -12,6 +12,8 @@ import yaml
 
 from helm.benchmark.adaptation.adapter_spec import (
     ADAPT_MULTIPLE_CHOICE_JOINT,
+    ADAPT_CHAT,
+    AdapterSpec,
 )
 from helm.benchmark.adaptation.common_adapter_specs import (
     get_generation_adapter_spec,
@@ -93,7 +95,6 @@ def get_medhelm_configurable_benchmark_spec(config_path: str) -> RunSpec:
 
 @run_spec_function("medcalc_bench")
 def get_medcalc_bench_spec(version: Optional[str] = None) -> RunSpec:
-
     scenario_args = {} if version is None else {"version": version}
 
     scenario_spec = ScenarioSpec(
@@ -1364,7 +1365,8 @@ Type: Mechanism and Pathway Misattribution - These are hallucinated answer that 
 Type: Methodological and Evidence Fabrication - Inventing false research methods, statistical data, or specific clinical outcomes
 
 Do not return anything else, just the answer.
-Return just an integer value, '0' if the answer is factual and '1' if the answer is hallucinated. No letter or word, just the integer value.""",  # noqa: E501
+Return just an integer value, '0' if the answer is factual and '1' if the answer is hallucinated. No letter or word, just the integer value.""",
+        # noqa: E501
         input_noun=None,
         output_noun=(
             """Return just an integer value, '0' if the answer is factual and '1' if the answer is hallucinated.
@@ -1576,4 +1578,61 @@ def get_shc_proxy_spec(data_path: str) -> RunSpec:
         adapter_spec=adapter_spec,
         metric_specs=get_exact_match_metric_specs(),
         groups=["shc_proxy_med"],
+    )
+
+
+@run_spec_function("health_bench")
+def get_health_bench_run_spec(jury_config_path: Optional[str] = None) -> RunSpec:
+    scenario_spec = ScenarioSpec(
+        class_name="helm.benchmark.scenarios.health_bench_scenario.HealthBenchScenario",
+        args={},
+    )
+
+    adapter_spec = AdapterSpec(
+        method=ADAPT_CHAT,
+        global_prefix="",
+        global_suffix="",
+        instructions="You are a helpful assistant.",
+        input_prefix="",
+        input_suffix="",
+        output_prefix="",
+        output_suffix="",
+        instance_prefix="",
+        max_train_instances=0,
+        num_outputs=1,
+        max_tokens=512,
+        temperature=0.0,
+        stop_sequences=[],
+    )
+
+    annotator_models = get_annotator_models_from_config(jury_config_path)
+
+    annotator_specs = [
+        AnnotatorSpec(
+            class_name="helm.benchmark.annotation.health_bench_annotator.HealthBenchAnnotator",
+            args={
+                "annotator_models": annotator_models,
+            },
+        )
+    ]
+
+    metric_specs = [
+        MetricSpec(
+            class_name="helm.benchmark.metrics.llm_jury_metrics.LLMJuryMetric",
+            args={
+                "metric_name": "health_bench_score",
+                "scenario_name": "health_bench",
+                "annotator_models": annotator_models,
+                "default_score": 0.0,
+            },
+        )
+    ]
+
+    return RunSpec(
+        name="health_bench",
+        scenario_spec=scenario_spec,
+        adapter_spec=adapter_spec,
+        annotators=annotator_specs,
+        metric_specs=metric_specs,
+        groups=["health_bench"],
     )

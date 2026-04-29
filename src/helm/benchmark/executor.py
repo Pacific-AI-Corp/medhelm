@@ -24,7 +24,6 @@ class ExecutorError(Exception):
 
 @dataclass(frozen=True)
 class ExecutionSpec:
-
     url: Optional[str]
     """If non-empty, URL of the proxy server we send requests to (e.g., http://localhost:1959)."""
 

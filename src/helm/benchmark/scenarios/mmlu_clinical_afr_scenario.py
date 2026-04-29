@@ -35,7 +35,6 @@ class MMLU_Clinical_Afr_Scenario(Scenario):
         with open(csv_path) as f:
             reader = csv.reader(f, delimiter=",")
             for row in reader:
-
                 question, answers, correct_choice = row[0], row[1:-1], row[-1]
                 answers_dict = dict(zip(["A", "B", "C", "D"], answers))
                 correct_answer: str = answers_dict[correct_choice]

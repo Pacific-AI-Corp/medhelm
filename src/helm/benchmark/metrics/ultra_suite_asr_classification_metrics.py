@@ -19,7 +19,6 @@ class UltraSuiteASRMetric(EvaluateInstancesMetric):
         y_pred_quasi: List[str] = []
         y_true: List[str] = []
         for request_state in request_states:  # one request state per instance
-
             for reference in request_state.instance.references:
                 if reference.tags == [CORRECT_TAG]:
                     true_label = reference.output.text

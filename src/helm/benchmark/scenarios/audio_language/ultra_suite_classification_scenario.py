@@ -48,7 +48,6 @@ class UltraSuiteClassificationScenario(Scenario):
         split: str = TEST_SPLIT
 
         for idx, row in enumerate(tqdm(dataset["train"])):
-
             # Load the annotation
             label = row["disorder_class"]
             transcription = row["transcription"]

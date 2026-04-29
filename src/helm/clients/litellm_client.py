@@ -33,7 +33,6 @@ class LiteLLMCompletionRequest(TypedDict):
 
 
 class LiteLLMCompletionClient(CachingClient):
-
     def __init__(
         self,
         cache_config: CacheConfig,

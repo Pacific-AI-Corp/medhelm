@@ -30,7 +30,6 @@ class SemanticSimilarityMetric(Metric):
         metric_service: MetricService,
         eval_cache_path: str,
     ) -> List[Stat]:
-
         assert request_state.result
 
         completions = [c.text for c in request_state.result.completions]

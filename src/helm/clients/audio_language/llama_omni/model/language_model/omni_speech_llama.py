@@ -55,12 +55,16 @@ class OmniSpeechLlamaForCausalLM(LlamaForCausalLM, OmniSpeechMetaForCausalLM):
         return_dict: Optional[bool] = None,
         cache_position: Optional[torch.LongTensor] = None,
     ) -> Union[Tuple, CausalLMOutputWithPast]:
-
         if inputs_embeds is None:
-            (input_ids, position_ids, attention_mask, past_key_values, inputs_embeds, labels) = (
-                self.prepare_inputs_labels_for_speech_and_text(
-                    input_ids, position_ids, attention_mask, past_key_values, labels, speech, speech_lengths
-                )
+            (
+                input_ids,
+                position_ids,
+                attention_mask,
+                past_key_values,
+                inputs_embeds,
+                labels,
+            ) = self.prepare_inputs_labels_for_speech_and_text(
+                input_ids, position_ids, attention_mask, past_key_values, labels, speech, speech_lengths
             )
 
         return super().forward(
@@ -90,10 +94,15 @@ class OmniSpeechLlamaForCausalLM(LlamaForCausalLM, OmniSpeechMetaForCausalLM):
             raise NotImplementedError("`inputs_embeds` is not supported")
 
         if speech is not None:
-            (inputs, position_ids, attention_mask, _, inputs_embeds, _) = (
-                self.prepare_inputs_labels_for_speech_and_text(
-                    inputs, position_ids, attention_mask, None, None, speech, speech_lengths
-                )
+            (
+                inputs,
+                position_ids,
+                attention_mask,
+                _,
+                inputs_embeds,
+                _,
+            ) = self.prepare_inputs_labels_for_speech_and_text(
+                inputs, position_ids, attention_mask, None, None, speech, speech_lengths
             )
         else:
             inputs_embeds = self.get_model().embed_tokens(inputs)
