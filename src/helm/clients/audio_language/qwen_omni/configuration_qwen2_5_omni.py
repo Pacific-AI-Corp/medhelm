@@ -108,7 +108,6 @@ class Qwen2_5OmniVisionEncoderConfig(PretrainedConfig):
 
 
 class Qwen2_5OmniAudioEncoderConfig(PretrainedConfig):
-
     model_type = "qwen2_5_omni_audio_encoder"
 
     def __init__(
@@ -149,7 +148,6 @@ class Qwen2_5OmniAudioEncoderConfig(PretrainedConfig):
 
 
 class Qwen2_5OmniTextConfig(PretrainedConfig):
-
     model_type = "qwen2_5_omni_text"
     is_composition = False
 
@@ -261,7 +259,6 @@ class Qwen2_5OmniThinkerConfig(PretrainedConfig):
 
 
 class Qwen2_5OmniTalkerConfig(PretrainedConfig):
-
     model_type = "qwen2_5_omni_talker"
     is_composition = False
 
@@ -357,7 +354,6 @@ class Qwen2_5OmniTalkerConfig(PretrainedConfig):
 
 
 class Qwen2_5OmniDiTConfig(PretrainedConfig):
-
     model_type = "qwen2_5_omni_dit"
 
     def __init__(
@@ -414,7 +410,6 @@ class Qwen2_5OmniDiTConfig(PretrainedConfig):
 
 
 class Qwen2_5OmniBigVGANConfig(PretrainedConfig):
-
     model_type = "qwen2_5_omni_bigvgan"
 
     def __init__(
@@ -437,7 +432,6 @@ class Qwen2_5OmniBigVGANConfig(PretrainedConfig):
 
 
 class Qwen2_5OmniToken2WavConfig(PretrainedConfig):
-
     model_type = "qwen2_5_omni_token2wav"
     sub_configs = {
         "dit_config": Qwen2_5OmniDiTConfig,
@@ -456,7 +450,6 @@ class Qwen2_5OmniToken2WavConfig(PretrainedConfig):
 
 
 class Qwen2_5OmniConfig(PretrainedConfig):
-
     model_type = "qwen2_5_omni"
     sub_configs = {
         "thinker_config": Qwen2_5OmniThinkerConfig,

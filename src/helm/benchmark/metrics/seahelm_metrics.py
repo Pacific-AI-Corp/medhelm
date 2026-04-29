@@ -180,7 +180,6 @@ class SEAHELMQAMetric(Metric):
         metric_service: MetricService,
         eval_cache_path: str,
     ) -> List[Stat]:
-
         stats: List[Stat] = []
         if len(request_state.instance.references) > 0:
             golds = [reference for reference in request_state.instance.references if reference.is_correct]

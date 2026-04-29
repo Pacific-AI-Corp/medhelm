@@ -24,7 +24,6 @@ class AnnotationExecutorError(Exception):
 
 @dataclass(frozen=True)
 class AnnotationExecutionSpec:
-
     local_path: str
     """Path where API credentials and cache is stored.
 

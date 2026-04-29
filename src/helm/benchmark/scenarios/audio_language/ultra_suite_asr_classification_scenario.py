@@ -46,7 +46,6 @@ class UltraSuiteASRClassificationScenario(Scenario):
         split: str = TEST_SPLIT
 
         for idx, row in enumerate(tqdm(dataset["train"])):
-
             label = row["disorder_class"]
             transcription = row["transcription"]
 

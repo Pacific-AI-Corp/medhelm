@@ -145,7 +145,6 @@ def get_infinite_bench_en_mc_spec(max_num_words: int = 131072) -> RunSpec:
 
 @run_spec_function("infinite_bench_en_sum")
 def get_infinite_bench_en_sum_spec(max_num_words: int = 131072) -> RunSpec:
-
     scenario_spec = ScenarioSpec(
         class_name="helm.benchmark.scenarios.infinite_bench_en_sum_scenario.InfiniteBenchEnSumScenario",
         args={

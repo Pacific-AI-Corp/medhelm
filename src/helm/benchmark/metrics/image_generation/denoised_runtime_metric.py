@@ -24,7 +24,6 @@ class DenoisedRuntimeMetric(MetricInterface):
         eval_cache_path: str,
         parallelism: int,
     ) -> MetricResult:
-
         instance_to_min_request_times: Dict[Instance, float] = defaultdict(lambda: math.inf)
         for request_state in tqdm(scenario_state.request_states):
             assert request_state.result is not None

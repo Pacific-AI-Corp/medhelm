@@ -71,7 +71,6 @@ class ModelInferenceHandler(ABC, Generic[T]):
 
 
 class GenerateInferenceHandler(ModelInferenceHandler[TextGenParameters]):
-
     def __init__(self, inference_engine: ModelInference):
         self.inference_engine = inference_engine
 
@@ -238,7 +237,6 @@ class IbmClient(CachingClient, ABC):
 
 
 class IbmChatClient(IbmClient):
-
     def make_request(self, request: Request) -> RequestResult:
         # Embedding not supported for this model
         if request.embedding:

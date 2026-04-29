@@ -7,7 +7,6 @@ from helm.tokenizers.tokenizer import Tokenizer
 
 
 class GrokChatClient(OpenAIClient):
-
     BASE_URL = "https://api.x.ai/v1"
 
     _UNSUPPORTED_ARGUMENTS = ["presence_penalty", "frequency_penalty"]

@@ -6,7 +6,6 @@ from helm.tokenizers.tokenizer import Tokenizer
 
 
 class YiChatClient(OpenAIClient):
-
     BASE_URL = "http://api.01ww.xyz/v1"
 
     def __init__(

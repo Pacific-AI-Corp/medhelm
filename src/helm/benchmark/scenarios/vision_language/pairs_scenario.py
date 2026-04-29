@@ -213,7 +213,6 @@ class PAIRSScenario(Scenario):
         instances: List[Instance] = []
 
         for question_type, questions in self._type_to_questions.items():
-
             image_url: str = self.IMAGE_URL.format(subset=self._subset, type=question_type, person=self._person)
             # We have to add this due to a mistake in naming in the original dataset
             if self._subset == "status" and question_type == "phone" and self._person == "white_man":

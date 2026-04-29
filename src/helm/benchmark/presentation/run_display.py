@@ -275,9 +275,9 @@ def write_run_display_json(run_path: str, run_spec: RunSpec, schema: Schema, ski
                 else:
                     output_to_map = match.string
             mapped_output = request_state.output_mapping.get(output_to_map)
-        instance_id_to_instance[(request_state.instance.id, request_state.instance.perturbation)] = (
-            request_state.instance
-        )
+        instance_id_to_instance[
+            (request_state.instance.id, request_state.instance.perturbation)
+        ] = request_state.instance
 
         if request_state.result.completions[0].multimodal_content:
             additional_prediction: str = request_state.result.completions[0].multimodal_content.text

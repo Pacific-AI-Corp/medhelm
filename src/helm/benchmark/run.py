@@ -280,7 +280,6 @@ def validate_args(args):
 
 @htrack(None)
 def helm_run(args):
-
     validate_args(args)
     register_builtin_configs_from_helm_package()
     register_configs_from_directory(args.local_path)

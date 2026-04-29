@@ -165,7 +165,6 @@ def preprocess_llama_3(sources, tokenizer: transformers.PreTrainedTokenizer, has
     # Mask targets
     sep = "<|start_header_id|>" + conv.roles[1] + "<|end_header_id|>\n\n"
     for conversation, target in zip(conversations, targets):
-
         cur_len = 1
         target[:cur_len] = IGNORE_INDEX
         parts = conversation.split(sep)

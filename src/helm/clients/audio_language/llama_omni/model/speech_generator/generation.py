@@ -32,7 +32,6 @@ logger = logging.get_logger(__name__)
 
 
 class GenerationWithCTC(GenerationMixin):
-
     @torch.no_grad()
     def generate(
         self,
@@ -52,7 +51,6 @@ class GenerationWithCTC(GenerationMixin):
         negative_prompt_attention_mask: Optional[torch.Tensor] = None,
         **kwargs,
     ):
-
         # 1. Handle `generation_config` and kwargs that might update it, and validate the `.generate()` call
         self._validate_model_class()
         tokenizer = kwargs.pop("tokenizer", None)  # Pull this out first, we only use it for stopping criteria

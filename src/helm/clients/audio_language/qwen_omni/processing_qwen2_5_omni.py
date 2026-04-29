@@ -39,7 +39,6 @@ class Qwen2_5OmniProcessorKwargs(ProcessingKwargs):
 
 
 class Qwen2_5OmniProcessor(ProcessorMixin):
-
     attributes = ["omni_processor", "feature_extractor", "tokenizer"]
     omni_processor_class = "Qwen2VLImageProcessor"
     feature_extractor_class = "WhisperFeatureExtractor"
@@ -70,7 +69,6 @@ class Qwen2_5OmniProcessor(ProcessorMixin):
         seconds_per_chunk: float = 2.0,
         **kwargs: Unpack[Qwen2_5OmniProcessorKwargs],
     ) -> BatchFeature:
-
         output_kwargs = self._merge_kwargs(
             Qwen2_5OmniProcessorKwargs,
             tokenizer_init_kwargs=self.tokenizer.init_kwargs,

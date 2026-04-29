@@ -46,7 +46,6 @@ class UltraSuiteASRTranscriptionScenario(Scenario):
 
         # Find all pairs of audio and JSON files
         for idx, row in enumerate(tqdm(dataset["train"])):
-
             # Load the annotation
             # Load the annotation
             label = row["disorder_class"]
