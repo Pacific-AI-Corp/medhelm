@@ -1,3 +1,5 @@
+from typing import List
+
 from helm.common.context import Context
 from helm.common.cache import CacheConfig
 from helm.common.authentication import Authentication
@@ -32,6 +34,9 @@ class RemoteContext(Context):
 
     def make_request(self, request: Request) -> RequestResult:
         return self.service.make_request(self.auth, request)
+
+    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+        raise NotImplementedError("This context does not support batch requests.")
 
     def tokenize(self, request: TokenizationRequest) -> TokenizationRequestResult:
         return self.service.tokenize(self.auth, request)

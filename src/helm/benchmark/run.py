@@ -166,6 +166,7 @@ def run_benchmarking(
     runner_class_name: Optional[str],
     mongo_uri: Optional[str] = None,
     disable_cache: Optional[bool] = None,
+    batch_size: Optional[int] = None,
 ) -> List[RunSpec]:
     """Runs RunSpecs given a list of RunSpec descriptions."""
     sqlite_cache_backend_config: Optional[SqliteCacheBackendConfig] = None
@@ -187,6 +188,7 @@ def run_benchmarking(
         dry_run=dry_run,
         sqlite_cache_backend_config=sqlite_cache_backend_config,
         mongo_cache_backend_config=mongo_cache_backend_config,
+        batch_size=batch_size,
     )
     with htrack_block("run_specs"):
         for run_spec in run_specs:
@@ -374,6 +376,7 @@ def helm_run(args):
         runner_class_name=args.runner_class_name,
         mongo_uri=args.mongo_uri,
         disable_cache=args.disable_cache,
+        batch_size=args.batch_size,
     )
 
     if args.run_specs:
@@ -460,6 +463,13 @@ def build_parser():
         "--plugins",
         nargs="+",
         help="Importable module names or filesystem paths that register custom run specs / scenarios / datasets",
+        default=None,
+    )
+
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        help="If set, the batch size to use for batch requests. Only applicable if the context supports batch requests.",
         default=None,
     )
     add_run_args(parser)

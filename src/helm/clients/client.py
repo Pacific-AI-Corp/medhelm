@@ -2,6 +2,7 @@ import json
 from abc import ABC, abstractmethod
 from typing import List, Mapping, Optional, cast
 
+# from helm.benchmark.runner import get_benchmark_output_path
 from helm.common.hierarchical_logger import hwarn
 from helm.common.media_object import MultimediaObject, TEXT_TYPE
 from helm.common.request import Request, RequestResult, GeneratedOutput, Token
@@ -18,6 +19,10 @@ class Client(ABC):
         For LLM, this usually corresponds to a single call to the model (completion).
         """
         pass
+
+    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+        """Makes a batch request to the model."""
+        raise NotImplementedError("This client does not support batch requests.")
 
 
 class CachingClient(Client):

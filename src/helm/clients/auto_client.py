@@ -1,6 +1,6 @@
 from dataclasses import replace
 import os
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
 from retrying import Attempt, RetryError
 
@@ -131,6 +131,32 @@ class AutoClient(Client):
 
             # Notify our user that we failed to make the request even after retrying.
             return replace(last_attempt.value, error=f"{retry_error}. Error: {last_attempt.value.error}")
+
+    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+        """Make batch requests. Only supported for some clients."""
+        # Group requests by model deployment
+
+        # @retry_request
+        def make_batch_request_with_retry(client: Client, requests: List[Request]) -> List[RequestResult]:
+            return client.make_batch_request(requests)
+
+        model_deployment_name = requests[0].model_deployment
+
+        client: Client = self._get_client(model_deployment_name)
+        try:
+
+            return make_batch_request_with_retry(client=client, requests=requests)
+
+        except RetryError as e:
+            last_attempt: Attempt = e.last_attempt
+            retry_error: str = (
+                f"Failed to make batch request after retrying "
+                f"{last_attempt.attempt_number} times. Error: {last_attempt.value.error}"
+            )
+            hlog(retry_error)
+
+            # Notify our user that we failed to make the batch request even after retrying.
+            return [replace(last_attempt.value, error=retry_error) for _ in requests]
 
     def get_gcs_client(self):
         from helm.clients.gcs_client import GCSClient

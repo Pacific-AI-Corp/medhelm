@@ -88,6 +88,10 @@ class LocalContext(Context):
         """Actually make a request to an API."""
         return self.client.make_request(request)
 
+    def make_batch_request(self, requests: list[Request]) -> list[RequestResult]:
+        """Actually make a batch request to an API."""
+        return self.client.make_batch_request(requests)
+
     def tokenize(self, request: TokenizationRequest) -> TokenizationRequestResult:
         return self.tokenizer.tokenize(request)
 
