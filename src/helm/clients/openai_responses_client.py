@@ -244,7 +244,11 @@ class OpenAIResponseClient(CachingClient):
         file_path = self._prepare_jsonl_file(requests, "batch_requests.jsonl")
 
         # upload the file to OpenAI
-        uploaded_file = self.client.files.create(file=open(file_path, "rb"), purpose="batch")
+        uploaded_file = self.client.files.create(
+            file=open(file_path, "rb"),
+            purpose="batch",
+            expires_after={"anchor": "created_at", "seconds": 60 * 60 * 48},  # 48 hours
+        )
         batch_request = self.client.batches.create(
             completion_window="24h",
             input_file_id=uploaded_file.id,
@@ -254,7 +258,7 @@ class OpenAIResponseClient(CachingClient):
         hlog(f"Created batch request with ID {batch_request.id}. Polling for completion...")
 
         # Poll for batch request completion with exponential backoff, capped at 60 seconds
-        max_retries = 60
+        max_retries = 1440
         delay = 5
         for attempt in range(max_retries):
             batch_status = self.client.batches.retrieve(batch_request.id)

@@ -550,7 +550,16 @@ class OpenAIClient(CachingClient):
         file_path = self._prepare_jsonl_file(requests, "batch_requests.jsonl")
 
         # upload the file to OpenAI
-        uploaded_file = self.client.files.create(file=open(file_path, "rb"), purpose="batch")
+        uploaded_file = self.client.files.create(
+            file=open(file_path, "rb"),
+            purpose="batch",
+            expires_after={
+                "anchor": "created_at",
+                "seconds": 60 * 60 * 48,  # 48 hours
+            },
+        )
+
+        # create a batch request with the uploaded file
         batch_request = self.client.batches.create(
             completion_window="24h",
             input_file_id=uploaded_file.id,
