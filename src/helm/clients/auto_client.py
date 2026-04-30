@@ -138,7 +138,7 @@ class AutoClient(Client):
 
         # @retry_request
         def make_batch_request_with_retry(client: Client, requests: List[Request]) -> List[RequestResult]:
-            return client.make_batch_request(requests) or []
+            return client.make_batch_request(requests)
 
         model_deployment_name = requests[0].model_deployment
 

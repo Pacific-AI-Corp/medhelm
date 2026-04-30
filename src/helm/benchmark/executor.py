@@ -100,11 +100,16 @@ class Executor:
 
         if self.batch_size:
             hlog(f"Processing requests in batches of {self.batch_size}...")
-            request_states = []
-            for i in range(0, len(scenario_state.request_states), self.batch_size):
-                batch = scenario_state.request_states[i : i + self.batch_size]
-                new_batch = self.process_batch(batch)
-                request_states.extend(new_batch)
+            batches = [
+                scenario_state.request_states[i : i + self.batch_size]
+                for i in range(0, len(scenario_state.request_states), self.batch_size)
+            ]
+            batch_results = parallel_map(
+                self.process_batch,
+                batches,
+                parallelism=self.execution_spec.parallelism,
+            )
+            request_states = [state for batch in batch_results for state in batch]
         else:
             # Do it!
             request_states = parallel_map(

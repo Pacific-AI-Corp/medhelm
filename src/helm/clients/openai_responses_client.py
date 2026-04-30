@@ -251,9 +251,7 @@ class OpenAIResponseClient(CachingClient):
             endpoint="/v1/responses",
         )
 
-        hlog(
-            f"{batch_request.model_dump(mode='json')} Created batch request with ID {batch_request.id}. Polling for completion..."
-        )
+        hlog(f"Created batch request with ID {batch_request.id}. Polling for completion...")
 
         # Poll for batch request completion with exponential backoff, capped at 60 seconds
         max_retries = 60
@@ -268,7 +266,7 @@ class OpenAIResponseClient(CachingClient):
                 raise RuntimeError(f"Batch request failed: {batch_status.errors}")
             hlog(f"Batch status: {batch_status.status} ({batch_status.request_counts}). Retrying in {delay}s...")
             time.sleep(delay)
-            delay = min(delay * 2, 30)
+            delay = min(delay * 2, 60)
         else:
             hexception("Batch request timed out.")
             raise TimeoutError("Batch request did not complete in time.")
