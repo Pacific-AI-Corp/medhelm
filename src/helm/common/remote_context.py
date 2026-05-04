@@ -35,7 +35,7 @@ class RemoteContext(Context):
     def make_request(self, request: Request) -> RequestResult:
         return self.service.make_request(self.auth, request)
 
-    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+    def make_batch_request(self, requests: List[Request], local_path: str) -> List[RequestResult]:
         raise NotImplementedError("This context does not support batch requests.")
 
     def tokenize(self, request: TokenizationRequest) -> TokenizationRequestResult:
