@@ -350,6 +350,17 @@ class OpenAIClient(CachingClient):
         except openai.OpenAIError as e:
             return OpenAIClientUtils.handle_openai_error(e, request)
 
+        if "choices" not in response and response["choices"] is None:
+            hexception(ValueError(f"Invalid response from OpenAI API: {response}"))
+            return RequestResult(
+                success=False,
+                cached=False,
+                error="Invalid response from OpenAI API: 'choices' field is missing or null",
+                completions=[],
+                embedding=[],
+                error_flags=ErrorFlags(is_retriable=False, is_fatal=False),
+            )
+
         completions: List[GeneratedOutput] = []
         for raw_completion in response["choices"]:
             # Handle Azure OpenAI content filter
