@@ -1675,3 +1675,60 @@ def get_health_bench_run_spec(jury_config_path: Optional[str] = None) -> RunSpec
         metric_specs=metric_specs,
         groups=["health_bench"],
     )
+
+
+@run_spec_function("health_bench_professional")
+def get_health_bench_run_spec(jury_config_path: Optional[str] = None) -> RunSpec:
+    scenario_spec = ScenarioSpec(
+        class_name="helm.benchmark.scenarios.health_bench_scenario.HealthBenchProfessionalScenario",
+        args={},
+    )
+
+    adapter_spec = AdapterSpec(
+        method=ADAPT_CHAT,
+        global_prefix="",
+        global_suffix="",
+        instructions="You are a helpful assistant.",
+        input_prefix="",
+        input_suffix="",
+        output_prefix="",
+        output_suffix="",
+        instance_prefix="",
+        max_train_instances=0,
+        num_outputs=1,
+        max_tokens=512,
+        temperature=0.0,
+        stop_sequences=[],
+    )
+
+    annotator_models = get_annotator_models_from_config(jury_config_path)
+
+    annotator_specs = [
+        AnnotatorSpec(
+            class_name="helm.benchmark.annotation.health_bench_annotator.HealthBenchProfessionalAnnotator",
+            args={
+                "annotator_models": annotator_models,
+            },
+        )
+    ]
+
+    metric_specs = [
+        MetricSpec(
+            class_name="helm.benchmark.metrics.llm_jury_metrics.LLMJuryMetric",
+            args={
+                "metric_name": "health_bench_score",
+                "scenario_name": "health_bench_professional",
+                "annotator_models": annotator_models,
+                "default_score": 0.0,
+            },
+        )
+    ]
+
+    return RunSpec(
+        name="health_bench_professional",
+        scenario_spec=scenario_spec,
+        adapter_spec=adapter_spec,
+        annotators=annotator_specs,
+        metric_specs=metric_specs,
+        groups=["health_bench_professional"],
+    )
