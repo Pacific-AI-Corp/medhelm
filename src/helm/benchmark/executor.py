@@ -1,3 +1,4 @@
+import os
 from typing import List, Optional
 from dataclasses import dataclass, replace
 
@@ -140,7 +141,10 @@ class Executor:
 
     def process_batch(self, states: List[RequestState]) -> List[RequestState]:
         try:
-            local_path = self.execution_spec.local_path + "/batches" or "./batches"
+            local_path = self.execution_spec.local_path + "/batches" if self.execution_spec.local_path else "./batches"
+            os.makedirs(local_path, exist_ok=True)
+            if not os.path.exists(local_path):
+                hlog(f"Creating local path for batch requests: {local_path}")
             results: List[RequestResult] = self.context.make_batch_request(
                 requests=[state.request for state in states],
                 local_path=local_path,
@@ -151,7 +155,7 @@ class Executor:
             raise ExecutorError(f"Batch request returned {len(results)} results but expected {len(states)}.")
         new_states = []
         for state, result in zip(states, results):
-            if result is None and not result.success:
+            if result is None or not result.success:
                 if result.error_flags and not result.error_flags.is_fatal:
                     hwarn(f"Non-fatal error treated as empty completion: {result.error}")
                     result.completions = [GeneratedOutput(text="", logprob=0, tokens=[])]
