@@ -518,16 +518,16 @@ class OpenAIClient(CachingClient):
         else:
             return self._make_chat_request(request)
 
-    def _prepare_jsonl_file(self, requests: List[Request], file_name: str) -> str:
+    def _prepare_jsonl_file(self, requests: List[Request], file_path: str) -> str:
         # OpenAI's Batch API expects a JSONL file where each line is a JSON object representing a request.
         # See https://platform.openai.com/docs/api-reference/batch/create for more details.
 
         # append line for each request in jsonl format
         # random string is added to the file name to avoid collisions when multiple batch requests are being made at the same time
         random_string = "".join(random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8))
-        file_name = f"./{random_string}_{file_name}"
-        with open(file_name, "w") as f:
-            hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_name}")
+        file_path = f"{file_path}/{random_string}.jsonl"
+        with open(file_path, "w") as f:
+            hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_path}")
             for idx, request in enumerate(requests):
                 raw_request = self._make_chat_raw_request(request)
                 f.write(
@@ -542,12 +542,12 @@ class OpenAIClient(CachingClient):
                     + "\n"
                 )
 
-        return file_name
+        return file_path
 
-    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+    def make_batch_request(self, requests: List[Request], file_path: str = "./batches") -> List[RequestResult]:
         # OpenAI's API Batch endpoints
         # (https://platform.openai.com/docs/api-reference/batch) only support batch requests
-        file_path = self._prepare_jsonl_file(requests, "batch_requests.jsonl")
+        file_path = self._prepare_jsonl_file(requests, file_path)
 
         # upload the file to OpenAI
         uploaded_file = self.client.files.create(

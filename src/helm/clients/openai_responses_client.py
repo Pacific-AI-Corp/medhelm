@@ -214,14 +214,14 @@ class OpenAIResponseClient(CachingClient):
             embedding=[],
         )
 
-    def _prepare_jsonl_file(self, requests: List[Request], file_name: str):
+    def _prepare_jsonl_file(self, requests: List[Request], file_path: str):
         """
         Prepares a JSONL file for OpenAI's batch request API. Each line in the JSONL file corresponds to a single request and is formatted as follows:
         """
         random_string = "".join(random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8))
-        file_name = f"./{random_string}_{file_name}"
-        with open(file_name, "w") as f:
-            hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_name}")
+        file_path = f"{file_path}/{random_string}.jsonl"
+        with open(file_path, "w") as f:
+            hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_path}")
             for idx, request in enumerate(requests):
                 raw_request = self._make_raw_request(request)
                 f.write(
@@ -236,12 +236,12 @@ class OpenAIResponseClient(CachingClient):
                     + "\n"
                 )
 
-        return file_name
+        return file_path
 
-    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+    def make_batch_request(self, requests: List[Request], file_path: str = "./batches") -> List[RequestResult]:
         # OpenAI's API Batch endpoints
         # (https://platform.openai.com/docs/api-reference/batch) only support batch requests
-        file_path = self._prepare_jsonl_file(requests, "batch_requests.jsonl")
+        file_path = self._prepare_jsonl_file(requests, file_path)
 
         # upload the file to OpenAI
         uploaded_file = self.client.files.create(
