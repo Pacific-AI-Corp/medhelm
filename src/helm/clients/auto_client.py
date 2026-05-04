@@ -132,13 +132,13 @@ class AutoClient(Client):
             # Notify our user that we failed to make the request even after retrying.
             return replace(last_attempt.value, error=f"{retry_error}. Error: {last_attempt.value.error}")
 
-    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+    def make_batch_request(self, requests: List[Request], local_path: str) -> List[RequestResult]:
         """Make batch requests. Only supported for some clients."""
         # Group requests by model deployment
 
         # @retry_request
         def make_batch_request_with_retry(client: Client, requests: List[Request]) -> List[RequestResult]:
-            return client.make_batch_request(requests)
+            return client.make_batch_request(requests, local_path)
 
         model_deployment_name = requests[0].model_deployment
 

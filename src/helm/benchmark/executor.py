@@ -140,13 +140,15 @@ class Executor:
 
     def process_batch(self, states: List[RequestState]) -> List[RequestState]:
         try:
-            results: List[RequestResult] = self.context.make_batch_request([state.request for state in states])
+            local_path = self.execution_spec.local_path + "/batches" or "./batches"
+            results: List[RequestResult] = self.context.make_batch_request(
+                requests=[state.request for state in states],
+                local_path=local_path,
+            )
         except Exception as e:
             raise ExecutorError(f"{str(e)} Requests: {[state.request for state in states[:5]]}") from e
         if len(results) != len(states):
-            raise ExecutorError(
-                f"Batch request returned {len(results)} results but expected {len(states)}. Requests: {[state.request for state in states]}"
-            )
+            raise ExecutorError(f"Batch request returned {len(results)} results but expected {len(states)}.")
         new_states = []
         for state, result in zip(states, results):
             if result is None and not result.success:

@@ -36,7 +36,7 @@ class Context(ABC):
         pass
 
     @abstractmethod
-    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+    def make_batch_request(self, requests: List[Request], local_path: str) -> List[RequestResult]:
         """Actually make a request to an API."""
         pass
 

@@ -20,7 +20,7 @@ class Client(ABC):
         """
         pass
 
-    def make_batch_request(self, requests: List[Request]) -> List[RequestResult]:
+    def make_batch_request(self, requests: List[Request], local_path: str) -> List[RequestResult]:
         """Makes a batch request to the model."""
         raise NotImplementedError("This client does not support batch requests.")
 
