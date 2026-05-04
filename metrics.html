@@ -1067,6 +1067,16 @@ explanation: The longest common prefix is A A (between A A B C and A A D).
 
 <h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-39"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
 
+<h2 id="sct_bench_metrics"><code class="language-plaintext highlighter-rouge">sct_bench_metrics</code></h2>
+
+<h3 id="sctbenchmetric"><code class="language-plaintext highlighter-rouge">SCTBenchMetric</code></h3>
+
+<p>Metric for evaluating Script Concordance Test (SCT) responses.</p>
+
+<p>Computes two metrics: - sct_score: Normalized expert panel weight for the model’s chosen rating (0 to 1). - sct_expert_set_membership: Whether the model’s response falls within the expert agreement region (binary, averaged across instances).</p>
+
+<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-40"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
+
 <h2 id="seahelm_metrics"><code class="language-plaintext highlighter-rouge">seahelm_metrics</code></h2>
 
 <h3 id="seahelmmachinetranslationmetric"><code class="language-plaintext highlighter-rouge">SEAHELMMachineTranslationMetric()</code></h3>
@@ -1081,7 +1091,7 @@ explanation: The longest common prefix is A A (between A A B C and A A D).
 
 <p>@inproceedings{popovic-2015-chrf, title = “chr{F}: character n-gram {F}-score for automatic {MT} evaluation”, author = “Popovi{‘c}, Maja”, editor = “Bojar, Ond{ {r}}ej and Chatterjee, Rajan and Federmann, Christian and Haddow, Barry and Hokamp, Chris and Huck, Matthias and Logacheva, Varvara and Pecina, Pavel”, booktitle = “Proceedings of the Tenth Workshop on Statistical Machine Translation”, month = sep, year = “2015”, address = “Lisbon, Portugal”, publisher = “Association for Computational Linguistics”, url = “<a href="https://aclanthology.org/W15-3049">https://aclanthology.org/W15-3049</a>”, doi = “10.18653/v1/W15-3049”, pages = “392–395”, github = “<a href="https://github.com/mjpost/sacrebleu">https://github.com/mjpost/sacrebleu</a>”, }</p>
 
-<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-40"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
+<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-41"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
 
 <h3 id="seahelmqametriclanguage-str--en"><code class="language-plaintext highlighter-rouge">SEAHELMQAMetric(language: str = 'en')</code></h3>
 
@@ -1096,7 +1106,7 @@ explanation: The longest common prefix is A A (between A A B C and A A D).
 
 <p>@inproceedings{rajpurkar-etal-2016-squad, title = “{SQ}u{AD}: 100,000+ Questions for Machine Comprehension of Text”, author = “Rajpurkar, Pranav and Zhang, Jian and Lopyrev, Konstantin and Liang, Percy”, editor = “Su, Jian and Duh, Kevin and Carreras, Xavier”, booktitle = “Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing”, month = nov, year = “2016”, address = “Austin, Texas”, publisher = “Association for Computational Linguistics”, url = “<a href="https://aclanthology.org/D16-1264">https://aclanthology.org/D16-1264</a>”, doi = “10.18653/v1/D16-1264”, pages = “2383–2392”, }</p>
 
-<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-41"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
+<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-42"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
 
 <h2 id="spider_metrics"><code class="language-plaintext highlighter-rouge">spider_metrics</code></h2>
 
@@ -1112,7 +1122,7 @@ explanation: The longest common prefix is A A (between A A B C and A A D).
 
 <p>This is a demonstration of critique evaluation and is not intended for production use.</p>
 
-<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-42"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
+<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-43"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
 
 <p>Get critiques of a summary and compute metrics based on the critiques.</p>
 
@@ -1131,7 +1141,7 @@ explanation: The longest common prefix is A A (between A A B C and A A D).
   <li>Faithfulness (SummaC)</li>
 </ol>
 
-<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-43"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
+<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-44"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
 
 <h2 id="toxicity_metrics"><code class="language-plaintext highlighter-rouge">toxicity_metrics</code></h2>
 
@@ -1139,7 +1149,7 @@ explanation: The longest common prefix is A A (between A A B C and A A D).
 
 <p>Defines metrics for toxicity.</p>
 
-<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-44"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
+<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-45"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
 
 <p>We compute the same metrics from the RealToxicityPrompts paper: <a href="https://arxiv.org/pdf/2009.11462.pdf">https://arxiv.org/pdf/2009.11462.pdf</a></p>
 
@@ -1170,7 +1180,7 @@ explanation: The longest common prefix is A A (between A A B C and A A D).
 
 <p>Score metrics for WildBench.</p>
 
-<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-45"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
+<h4 id="evaluate_generationadapter_spec-adapterspec-request_state-requeststate-metric_service-metricservice-eval_cache_path-str---liststat-46"><code class="language-plaintext highlighter-rouge">evaluate_generation(adapter_spec: AdapterSpec, request_state: RequestState, metric_service: MetricService, eval_cache_path: str) -&gt; List[Stat]</code></h4>
 
       </div>
     </main>

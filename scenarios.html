@@ -3965,6 +3965,16 @@ Label: not ADE-related
 
 <p>The dataset contains 99,016 naturally occurring prompts (21,744 toxic (22%) and 77,272 non-toxic prompts (78%)). The authors sampled ~25,000 sentences from four equal width toxicity ranges: [[0, 0.25), …, [0.75, 1]). Sentences are split in half, producing a prompt and a continuation.</p>
 
+<h2 id="sct_bench_scenario"><code class="language-plaintext highlighter-rouge">sct_bench_scenario</code></h2>
+
+<h3 id="sctbenchscenarioreason-bool--false-few_shot-bool--false"><code class="language-plaintext highlighter-rouge">SCTBenchScenario(reason: bool = False, few_shot: bool = False)</code></h3>
+
+<p>SCT-Bench evaluates clinical reasoning under uncertainty using Script Concordance Tests (SCTs). SCTs are validated medical assessment tools that measure how new information alters diagnostic and treatment hypotheses. Models rate the impact on a -2 to +2 scale and are scored against an expert clinician panel distribution.</p>
+
+<p>The public dataset contains 177 questions from the Adelaide SCT and Open Medical SCT datasets.</p>
+
+<p>Dataset: <a href="https://github.com/SCT-Bench/sctpublic">https://github.com/SCT-Bench/sctpublic</a></p>
+
 <h2 id="seahelm_scenario"><code class="language-plaintext highlighter-rouge">seahelm_scenario</code></h2>
 
 <h3 id="floresscenariopair-str"><code class="language-plaintext highlighter-rouge">FloresScenario(pair: str)</code></h3>
