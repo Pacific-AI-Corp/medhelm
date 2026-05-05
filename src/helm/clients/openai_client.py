@@ -39,7 +39,9 @@ class OpenAIClientUtils:
         return bool(re.match(r"^o\d+", model_engine)) or bool(re.match(r"^gpt-5", model_engine))
 
     # Error OpenAI throws when the image in the prompt violates their content policy
-    HARMFUL_INFORMATION_ERROR: str = "Invalid prompt: we've limited access to this content for safety reasons. This type of information may be used to benefit or to harm people."  # noqa: E501
+    HARMFUL_INFORMATION_ERROR: str = (
+        "Invalid prompt: we've limited access to this content for safety reasons. This type of information may be used to benefit or to harm people."  # noqa: E501
+    )
     INAPPROPRIATE_IMAGE_ERROR: str = "Your input image may contain content that is not allowed by our safety system"
     INAPPROPRIATE_PROMPT_ERROR: str = "Invalid prompt: your prompt was flagged"
     INAPPROPRIATE_PROMPT_AZURE_ERROR: str = (
