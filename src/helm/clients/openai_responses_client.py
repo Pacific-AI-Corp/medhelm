@@ -160,6 +160,15 @@ class OpenAIResponseClient(CachingClient):
             del helm_raw_response["request_datetime"]
             response = Response.model_validate(helm_raw_response)
 
+            if response.output is None:
+                return RequestResult(
+                    success=False,
+                    cached=cached,
+                    error="No output in response",
+                    completions=[],
+                    embedding=[],
+                    error_flags=ErrorFlags(is_retriable=False, is_fatal=False),
+                )
             reasoning_output_parts: List[str] = []
             text_output_parts: List[str] = []
 
