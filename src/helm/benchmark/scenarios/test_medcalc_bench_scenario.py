@@ -13,6 +13,7 @@ def test_medcalc_bench_scenario():
 
         assert instances[0].split == "test"
 
+
 @pytest.mark.scenarios
 def test_medcalc_bench_v1_2_scenario():
     with TemporaryDirectory() as tmpdir:
