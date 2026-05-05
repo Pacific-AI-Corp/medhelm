@@ -1,8 +1,11 @@
+import random
+import time
+import json
 from typing import Any, Dict, List, Optional, Union
 
 from helm.clients.openai_client import OpenAIClientUtils
 from helm.common.cache import CacheConfig
-from helm.common.hierarchical_logger import hwarn
+from helm.common.hierarchical_logger import hexception, hlog, hwarn
 from helm.common.media_object import TEXT_TYPE
 from helm.common.request import (
     ErrorFlags,
@@ -109,6 +112,7 @@ class OpenAIResponseClient(CachingClient):
             "temperature": request.temperature,
             # Don't store responses for later retrieval
             "store": False,
+            "prompt_cache_retention": "24h",
         }
         if self.reasoning_effort:
             raw_request["reasoning"] = {"effort": self.reasoning_effort}
@@ -218,3 +222,147 @@ class OpenAIResponseClient(CachingClient):
             completions=completions,
             embedding=[],
         )
+
+    def _prepare_jsonl_file(self, requests: List[Request], local_path: str):
+        """
+        Prepares a JSONL file for OpenAI's batch request API. Each line in the JSONL file corresponds to a single request and is formatted as follows:
+        """
+        random_string = "".join(random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8))
+        file_path = f"{local_path}/{random_string}.jsonl"
+        with open(file_path, "w") as f:
+            hlog(f"Preparing batch request JSONL file with {len(requests)} requests at {file_path}")
+            for idx, request in enumerate(requests):
+                raw_request = self._make_raw_request(request)
+                f.write(
+                    json.dumps(
+                        {
+                            "custom_id": f"request_{idx}",
+                            "method": "POST",
+                            "url": "/v1/responses",
+                            "body": raw_request,
+                        }
+                    )
+                    + "\n"
+                )
+
+        return file_path
+
+    def make_batch_request(self, requests: List[Request], local_path: str = "./batches") -> List[RequestResult]:
+        # OpenAI's API Batch endpoints
+        # (https://platform.openai.com/docs/api-reference/batch) only support batch requests
+        file_path = self._prepare_jsonl_file(requests, local_path)
+
+        # upload the file to OpenAI
+        uploaded_file = self.client.files.create(
+            file=open(file_path, "rb"),
+            purpose="batch",
+            expires_after={"anchor": "created_at", "seconds": 60 * 60 * 48},  # 48 hours
+        )
+        batch_request = self.client.batches.create(
+            completion_window="24h",
+            input_file_id=uploaded_file.id,
+            endpoint="/v1/responses",
+        )
+
+        hlog(f"Created batch request with ID {batch_request.id}. Polling for completion...")
+
+        # Poll for batch request completion with exponential backoff, capped at 60 seconds
+        max_retries = 1440
+        delay = 5
+        for attempt in range(max_retries):
+            batch_status = self.client.batches.retrieve(batch_request.id)
+            if batch_status.status == "completed":
+                hlog(f"Batch request succeeded: {batch_status.request_counts}. Retrieving results...")
+                break
+            if batch_status.status == "failed":
+                hexception(f"Batch request failed: {batch_status.errors}")
+                raise RuntimeError(f"Batch request failed: {batch_status.errors}")
+            hlog(f"Batch status: {batch_status.status} ({batch_status.request_counts}). Retrying in {delay}s...")
+            time.sleep(delay)
+            delay = min(delay * 2, 60)
+        else:
+            hexception("Batch request timed out.")
+            raise TimeoutError("Batch request did not complete in time.")
+
+        # download the results
+        request_id_to_result = {}
+        hlog(f"Batch request completed. Downloading results... from {batch_status.output_file_id}")
+
+        if not batch_status.output_file_id:
+            hexception("Batch request completed but no output file ID found.")
+            raise RuntimeError("Batch request completed but no output file ID found.")
+
+        content_result = self.client.files.content(file_id=batch_status.output_file_id).read()
+        for line in content_result.splitlines():
+            result = json.loads(line)
+            # Prefer 'response', then 'body', else store the whole result
+            response = result.get("response", {}).get("body", {}) or result
+            request_id_to_result[result["custom_id"]] = response
+
+        request_results = []
+        for idx, request in enumerate(requests):
+            result = request_id_to_result[f"request_{idx}"]
+            if result.get("error", None):
+                request_results.append(
+                    RequestResult(
+                        success=False,
+                        cached=False,
+                        error=f"Error in response: {result['error']}",
+                        completions=[],
+                        embedding=[],
+                        error_flags=ErrorFlags(is_retriable=False, is_fatal=False),
+                    )
+                )
+            else:
+                response = Response.model_validate(result)
+                reasoning_output_parts: List[str] = []
+                text_output_parts: List[str] = []
+
+                if request.echo_prompt:
+                    text_output_parts.append(request.prompt)
+                for output in response.output:
+
+                    if output.type == "reasoning":
+                        for summary in output.summary:
+                            reasoning_output_parts.append(summary.text)
+                        if output.content:
+                            for reasoning_content in output.content:
+                                reasoning_output_parts.append(reasoning_content.text)
+                    elif output.type == "message":
+                        for content in output.content:
+                            if content.type == "output_text":
+                                text_output_parts.append(content.text)
+                            elif content.type == "refusal":
+                                request_results.append(
+                                    RequestResult(
+                                        success=False,
+                                        cached=False,
+                                        error=f"Received refusal from OpenAI API: {content.refusal}",
+                                        completions=[],
+                                        embedding=[],
+                                        error_flags=ErrorFlags(is_retriable=False, is_fatal=False),
+                                    )
+                                )
+                                continue
+                    else:
+                        raise ValueError(f"Unknown output type {output.type}")
+
+                thinking = Thinking(text="\n\n".join(reasoning_output_parts)) if reasoning_output_parts else None
+                text_output = "\n\n".join(text_output_parts)
+
+                request_results.append(
+                    RequestResult(
+                        success=True,
+                        cached=False,
+                        completions=[
+                            GeneratedOutput(
+                                text=text_output,
+                                logprob=0.0,
+                                tokens=[],
+                                thinking=thinking,
+                            )
+                        ],
+                        embedding=[],
+                    )
+                )
+        return request_results

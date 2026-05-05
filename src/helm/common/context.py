@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 from helm.common.critique_request import CritiqueRequest, CritiqueRequestResult
 from helm.common.clip_score_request import CLIPScoreRequest, CLIPScoreResult
@@ -31,6 +32,11 @@ class Context(ABC):
 
     @abstractmethod
     def make_request(self, request: Request) -> RequestResult:
+        """Actually make a request to an API."""
+        pass
+
+    @abstractmethod
+    def make_batch_request(self, requests: List[Request], local_path: str) -> List[RequestResult]:
         """Actually make a request to an API."""
         pass
 
