@@ -25,7 +25,6 @@
 import json
 import os
 from typing import List
-import zipfile
 import requests
 
 from helm.benchmark.presentation.taxonomy_info import TaxonomyInfo

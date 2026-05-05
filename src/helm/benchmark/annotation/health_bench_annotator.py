@@ -30,7 +30,6 @@ from helm.benchmark.annotation.model_as_judge import AnnotatorModelInfo, LLMAsJu
 from helm.benchmark.adaptation.request_state import RequestState
 from helm.clients.auto_client import AutoClient
 from helm.common.hierarchical_logger import hwarn, hlog
-from helm.common.request import Request
 
 PROMPT_TEMPLATE = """
 Your job is to look at a conversation and a rubric item, and score the last turn (i.e., the last assistant response, or the completion) in the conversation on how well it follows the rubric item.
@@ -387,7 +386,7 @@ class HealthBenchProfessionalAnnotator(LLMAsJuryAnnotator):
                 except Exception as e:
                     hlog(f"ERROR evaluating with LLM {annotator_name}: {e}")
                     failed_counts[annotator_name] += 1
-            ## merge annotation score with evaluation score
+            # merge annotation score with evaluation score
             if evaluate_score is not None:
                 score = (score + evaluate_score / 10) / 2
             overall_score[annotator_name] = {
