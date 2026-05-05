@@ -58,7 +58,7 @@ class HealthBenchScenario(Scenario):
             return file_path
 
         print(f"Downloading dataset to {file_path}...")
-        response = requests.get(self.DATA_URL, stream=True)
+        response = requests.get(self.DATASET_DOWNLOAD_URL, stream=True)
         response.raise_for_status()
 
         with open(file_path, "wb") as f:

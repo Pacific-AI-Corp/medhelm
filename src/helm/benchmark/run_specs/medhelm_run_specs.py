@@ -1678,7 +1678,7 @@ def get_health_bench_run_spec(jury_config_path: Optional[str] = None) -> RunSpec
 
 
 @run_spec_function("health_bench_professional")
-def get_health_bench_run_spec(jury_config_path: Optional[str] = None) -> RunSpec:
+def get_health_bench_professional_run_spec(jury_config_path: Optional[str] = None) -> RunSpec:
     scenario_spec = ScenarioSpec(
         class_name="helm.benchmark.scenarios.health_bench_scenario.HealthBenchProfessionalScenario",
         args={},

@@ -221,14 +221,27 @@ class HealthBenchAnnotator(LLMAsJuryAnnotator):
             "prompt_text": str(instance.input)
         }
 
-        convo_with_response = instance.input.messages + [{"content": model_output_text, "role": "assistant"}]
+        convo_with_response = (
+            instance.input.messages + [{"content": model_output_text, "role": "assistant"}]
+            if instance.input.messages
+            else [{"content": model_output_text, "role": "assistant"}]
+        )
 
         convo_str = "\n\n".join([f"{m['role']}: {m['content']}" for m in convo_with_response])
 
         grading_responses: List[dict] = []
 
         for annotator_name, annotator_model_info in self._annotator_models.items():
-            for rubric_item in instance.extra_data.get("rubrics", []):
+
+            if instance.extra_data is None or "rubrics" not in instance.extra_data:
+                hlog(
+                    f"Instance {instance.id} is missing rubric information, skipping annotation for annotator {annotator_name}"
+                )
+                continue
+
+            rubric_items = instance.extra_data.get("rubrics", [])
+
+            for rubric_item in rubric_items:
                 annotator_prompt = self._prompt_template.replace("<<conversation>>", convo_str).replace(
                     "<<rubric_item>>", str(rubric_item)
                 )
@@ -251,7 +264,7 @@ class HealthBenchAnnotator(LLMAsJuryAnnotator):
                     failed_counts[annotator_name] += 1
 
             score = calculate_score(
-                rubric_items=instance.extra_data.get("rubrics", []),
+                rubric_items=rubric_items,
                 graded_responses=grading_responses,
             )
 
@@ -304,14 +317,26 @@ class HealthBenchProfessionalAnnotator(LLMAsJuryAnnotator):
             "prompt_text": str(instance.input)
         }
 
-        convo_with_response = instance.input.messages + [{"content": model_output_text, "role": "assistant"}]
+        convo_with_response = (
+            instance.input.messages + [{"content": model_output_text, "role": "assistant"}]
+            if instance.input.messages
+            else [{"content": model_output_text, "role": "assistant"}]
+        )
 
         convo_str = "\n\n".join([f"{m['role']}: {m['content']}" for m in convo_with_response])
 
         grading_responses: List[dict] = []
 
         for annotator_name, annotator_model_info in self._annotator_models.items():
-            for rubric_item in instance.extra_data.get("rubrics", []):
+
+            if instance.extra_data is None or "rubrics" not in instance.extra_data:
+                hlog(
+                    f"Instance {instance.id} is missing rubric information, skipping annotation for annotator {annotator_name}"
+                )
+                continue
+            rubric_items = instance.extra_data.get("rubrics", [])
+
+            for rubric_item in rubric_items:
                 annotator_prompt = self._prompt_template.replace("<<conversation>>", convo_str).replace(
                     "<<rubric_item>>", str(rubric_item)
                 )
@@ -334,7 +359,7 @@ class HealthBenchProfessionalAnnotator(LLMAsJuryAnnotator):
                     failed_counts[annotator_name] += 1
 
             score = calculate_score(
-                rubric_items=instance.extra_data.get("rubrics", []),
+                rubric_items=rubric_items,
                 graded_responses=grading_responses,
             )
             evaluate_score = None
