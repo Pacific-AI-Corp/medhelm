@@ -101,7 +101,7 @@ class HealthBenchScenario(Scenario):
     def get_metadata(self) -> ScenarioMetadata:
         return ScenarioMetadata(
             name="health_bench",
-            display_name="HealthBenchScenario",
+            display_name="HealthBench",
             description="HealthBench: a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries, HealthBench includes 5,000 realistic health conversations, each with a custom physician-created rubric to grade model responses.",
             taxonomy=TaxonomyInfo(
                 task="Classification",
@@ -160,7 +160,7 @@ class HealthBenchProfessionalScenario(Scenario):
     def get_metadata(self) -> ScenarioMetadata:
         return ScenarioMetadata(
             name="health_bench_professional",
-            display_name="HealthBenchProfessionalScenario",
+            display_name="HealthBench Professional",
             description="HealthBenchProfessional: a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries",
             taxonomy=TaxonomyInfo(
                 task="Classification",
@@ -169,6 +169,6 @@ class HealthBenchProfessionalScenario(Scenario):
                 who="Researcher",
                 language="Any",
             ),
-            main_metric="health_bench_score",
+            main_metric="health_bench_professional_score",
             main_split="test",
         )

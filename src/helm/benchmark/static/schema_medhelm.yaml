@@ -275,6 +275,12 @@ metrics:
     description: Measures the average score assigned by an LLM-based jury evaluating task performance for HealthBench scenarios.
     lower_is_better: false
 
+  - name: health_bench_professional_score
+    display_name: HealthBench Professional Jury Score
+    short_display_name: Jury Score
+    description: Measures the average score assigned by an LLM-based jury evaluating task performance for HealthBench Professional scenarios and a score comparring the response with the one from a physicians
+    lower_is_better: false
+
 
   # Summariazation metrics
   - name: summac
@@ -490,6 +496,8 @@ run_groups:
       - patient_communication
       - medical_research
       - administration_and_workflow
+      - health_bench_professional
+      - health_bench
 
   - name: clinical_decision_support
     display_name: Clinical Decision Support
@@ -596,7 +604,7 @@ run_groups:
 
 
   - name: health_bench
-    display_name: HealthBenchScenario
+    display_name: HealthBench
     description: HealthBench is a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries, HealthBench includes 5,000 realistic health conversations, each with a custom physician-created rubric to grade model responses.
     metric_groups:
       - accuracy
@@ -609,6 +617,22 @@ run_groups:
       who: "Researcher"
       when: "Any"
       language: Any
+
+  - name: health_bench_professional
+    display_name: HealthBench Professional
+    description: HealthBench Professional is a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries.
+    metric_groups:
+        - accuracy
+
+    environment:
+        main_name: health_bench_professional_score
+        main_split: test
+    taxonomy:
+        task: Classification
+        what: "Verify whether answers to questions from LLMs are correct according to a rubric and physicians answer"
+        who: "Researcher"
+        when: "Any"
+        language: Any
 
   - name: clear
     display_name: CLEAR

@@ -1716,7 +1716,7 @@ def get_health_bench_professional_run_spec(jury_config_path: Optional[str] = Non
         MetricSpec(
             class_name="helm.benchmark.metrics.llm_jury_metrics.LLMJuryMetric",
             args={
-                "metric_name": "health_bench_score",
+                "metric_name": "health_bench_professional_score",
                 "scenario_name": "health_bench_professional",
                 "annotator_models": annotator_models,
                 "default_score": 0.0,
