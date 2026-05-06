@@ -496,8 +496,6 @@ run_groups:
       - patient_communication
       - medical_research
       - administration_and_workflow
-      - health_bench_professional
-      - health_bench
 
   - name: clinical_decision_support
     display_name: Clinical Decision Support
@@ -517,6 +515,8 @@ run_groups:
       - shc_ptbm_med
       - shc_sei_med
       - sct_bench
+      - health_bench
+      - health_bench_professional
 
   - name: clinical_note_generation
     display_name: Clinical Note Generation
@@ -601,8 +601,6 @@ run_groups:
       when: "Any"
       language: English
 
-
-
   - name: health_bench
     display_name: HealthBench
     description: HealthBench is a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries, HealthBench includes 5,000 realistic health conversations, each with a custom physician-created rubric to grade model responses.
@@ -623,7 +621,6 @@ run_groups:
     description: HealthBench Professional is a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries.
     metric_groups:
         - accuracy
-
     environment:
         main_name: health_bench_professional_score
         main_split: test
