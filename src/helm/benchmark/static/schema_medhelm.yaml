@@ -603,33 +603,38 @@ run_groups:
 
   - name: health_bench
     display_name: HealthBench
-    description: HealthBench is a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries, HealthBench includes 5,000 realistic health conversations, each with a custom physician-created rubric to grade model responses.
+    description: "HealthBench is a rubric-based benchmark containing 5,000 multi-turn health conversations. It is used to evaluate a model's ability to provide safe, accurate, and contextually appropriate medical information and triage to diverse user personas [(OpenAI, 2025)](https://openai.com/index/healthbench/)."
     metric_groups:
       - accuracy
+      - efficiency
+      - general_information
     environment:
       main_name: health_bench_score
       main_split: test
     taxonomy:
-      task: Classification
-      what: "Verify whether answers to questions from LLMs are correct according to a rubric"
-      who: "Researcher"
+      task: Text generation
+      what: "Provide context-tailored medical advice and triage based on user inquiries"
+      who: "Patient, Clinician"
       when: "Any"
-      language: Any
+      language: "Multilingual"
 
   - name: health_bench_professional
     display_name: HealthBench Professional
-    description: HealthBench Professional is a new benchmark designed to better measure the capabilities of AI systems for health. Built in partnership with 262 physicians who have practiced in 60 countries.
+    short_display_name: HealthBench Pro
+    description: "HealthBench Professional is a curated benchmark consisting of 525 physician-authored tasks. It is used to evaluate a frontier model's ability to execute complex clinical workflows, including advanced diagnostic reasoning, medical documentation, and evidence synthesis [(OpenAI, 2026)](https://openai.com/index/making-chatgpt-better-for-clinicians/)."
     metric_groups:
-        - accuracy
+      - accuracy
+      - efficiency
+      - general_information
     environment:
-        main_name: health_bench_professional_score
-        main_split: test
+      main_name: health_bench_professional_score
+      main_split: test
     taxonomy:
-        task: Classification
-        what: "Verify whether answers to questions from LLMs are correct according to a rubric and physicians answer"
-        who: "Researcher"
-        when: "Any"
-        language: Any
+      task: Text generation
+      what: "Execute diagnostic reasoning and documentation tasks based on clinical workflows"
+      who: "Clinician"
+      when: "Any"
+      language: "English"
 
   - name: clear
     display_name: CLEAR
