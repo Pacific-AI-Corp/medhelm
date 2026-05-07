@@ -179,7 +179,6 @@ class OpenAIResponseClient(CachingClient):
             if request.echo_prompt:
                 text_output_parts.append(request.prompt)
             for output in response.output:
-
                 if output.type == "reasoning":
                     for summary in output.summary:
                         reasoning_output_parts.append(summary.text)

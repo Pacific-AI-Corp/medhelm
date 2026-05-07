@@ -430,7 +430,6 @@ class Qwen2_5OmniPreTrainedModelForConditionalGeneration(Qwen2_5OmniPreTrainedMo
 
 @dataclass
 class Qwen2_5OmniThinkerCausalLMOutputWithPast(ModelOutput):
-
     loss: Optional[torch.FloatTensor] = None
     logits: Optional[torch.FloatTensor] = None
     past_key_values: Optional[List[torch.FloatTensor]] = None
@@ -566,7 +565,6 @@ class Qwen2_5OmniAudioAttention(nn.Module):
 
 
 class Qwen2_5OmniAudioFlashAttention2(Qwen2_5OmniAudioAttention):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._flash_attn_uses_top_left_mask = not is_flash_attn_greater_or_equal_2_10()
@@ -871,7 +869,6 @@ class Qwen2_5OmniAudioEncoder(Qwen2_5OmniPreTrainedModel):
         output_hidden_states=None,
         return_dict=None,
     ):
-
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
@@ -1503,7 +1500,6 @@ def repeat_kv(hidden_states: torch.Tensor, n_rep: int) -> torch.Tensor:
 
 
 class Qwen2_5OmniAttention(nn.Module):
-
     def __init__(self, config: Qwen2_5OmniConfig, layer_idx: Optional[int] = None):
         super().__init__()
         self.config = config
@@ -1622,7 +1618,6 @@ class Qwen2MLP(nn.Module):
 
 
 class Qwen2_5OmniFlashAttention2(Qwen2_5OmniAttention):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._flash_attn_uses_top_left_mask = not is_flash_attn_greater_or_equal_2_10()
@@ -1850,7 +1845,6 @@ class Qwen2_5OmniDecoderLayer(nn.Module):
         position_embeddings: Optional[Tuple[torch.Tensor, torch.Tensor]] = None,  # necessary, but kept here for BC
         **kwargs,
     ):
-
         residual = hidden_states
 
         hidden_states = self.input_layernorm(hidden_states)
@@ -2141,7 +2135,6 @@ class Qwen2_5OmniThinkerModel(Qwen2_5OmniPreTrainedModel):
             causal_mask = torch.full((sequence_length, target_length), fill_value=min_dtype, dtype=dtype, device=device)
             diagonal_attend_mask = torch.arange(target_length, device=device) > cache_position.reshape(-1, 1)
             if config.sliding_window is not None:
-
                 if not isinstance(past_key_values, SlidingWindowCache) or sequence_length > target_length:
                     sliding_attend_mask = torch.arange(target_length, device=device) <= (
                         cache_position.reshape(-1, 1) - config.sliding_window
@@ -2215,7 +2208,6 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
         cache_position: Optional[torch.Tensor] = None,
         video_second_per_grid: Optional[torch.LongTensor] = None,
     ) -> Union[Tuple, Qwen2_5OmniThinkerCausalLMOutputWithPast]:
-
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
@@ -2413,7 +2405,6 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
 
 @dataclass
 class Qwen2_5OmniTalkerCausalLMOutputWithPast(ModelOutput):
-
     loss: Optional[torch.FloatTensor] = None
     logits: Optional[torch.FloatTensor] = None
     past_key_values: Optional[List[torch.FloatTensor]] = None
@@ -2743,7 +2734,6 @@ class Qwen2_5OmniTalkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCon
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
     ) -> Union[Tuple, Qwen2_5OmniTalkerCausalLMOutputWithPast]:
-
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
@@ -3177,7 +3167,6 @@ class SERes2NetBlock(nn.Module):
 
 
 class ECAPA_TDNN(torch.nn.Module):
-
     def __init__(self, config: Qwen2_5OmniDiTConfig):
         super().__init__()
         assert len(config.enc_channels) == len(config.enc_kernel_sizes)
@@ -3362,7 +3351,6 @@ class FeedForward(nn.Module):
 
 # Modified from Llama with a different rotate function, will fixed in next release
 def apply_rotary_pos_emb(q, k, cos, sin, position_ids=None, unsqueeze_dim=1):
-
     def rotate_half_codec(x):
         # x = rearrange(x, "... (d r) -> ... d r", r=2)
         x = x.reshape(*x.shape[:-1], -1, 2)
@@ -3506,7 +3494,6 @@ class DiTBlock(nn.Module):
 
 
 class SnakeBeta(nn.Module):
-
     def __init__(self, in_features, alpha=1.0):
         super().__init__()
         self.in_features = in_features

@@ -43,7 +43,6 @@ class OmniMATHScenario(Scenario):
         # Read all instances
         instances: List[Instance] = []
         for idx, row in enumerate(dataset):
-
             input = Input(text=row["problem"])
             instance = Instance(
                 input=input,
