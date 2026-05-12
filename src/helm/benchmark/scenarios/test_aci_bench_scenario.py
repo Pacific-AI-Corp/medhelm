@@ -92,9 +92,7 @@ def test_process_json_single_entry():
 
 def test_process_json_multiple_entries():
     scenario = ACIBenchScenario()
-    entries = [
-        {"src": f"dialogue {i}", "tgt": f"note {i}"} for i in range(5)
-    ]
+    entries = [{"src": f"dialogue {i}", "tgt": f"note {i}"} for i in range(5)]
     with TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "many.json")
         _write_json(path, entries)
@@ -121,7 +119,7 @@ def test_process_json_empty_data_list():
 def test_process_json_preserves_special_characters():
     """Multi-line dialogues, unicode and quotes must round-trip through the JSON parser."""
     scenario = ACIBenchScenario()
-    dialogue = "[doctor] ¿cómo estás?\n[patient] \"fine, thanks\"\n[doctor] line 3"
+    dialogue = '[doctor] ¿cómo estás?\n[patient] "fine, thanks"\n[doctor] line 3'
     note = "Assessment: paciente está bien.\n• bullet 1\n• bullet 2"
     with TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "unicode.json")

@@ -190,17 +190,13 @@ def test_download_medication_qa_builds_correct_source_and_target(monkeypatch):
     def _fake(source_url, target_path, **kwargs):
         calls.append({"source_url": source_url, "target_path": target_path, "kwargs": kwargs})
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.medication_qa_scenario.ensure_file_downloaded", _fake
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.medication_qa_scenario.ensure_file_downloaded", _fake)
 
     with TemporaryDirectory() as tmpdir:
         scenario.download_medication_qa(tmpdir)
 
     assert len(calls) == 1
-    assert calls[0]["source_url"] == os.path.join(
-        MedicationQAScenario.SOURCE_REPO_URL, MedicationQAScenario.FILENAME
-    )
+    assert calls[0]["source_url"] == os.path.join(MedicationQAScenario.SOURCE_REPO_URL, MedicationQAScenario.FILENAME)
     assert calls[0]["target_path"] == os.path.join(tmpdir, MedicationQAScenario.FILENAME)
     assert calls[0]["kwargs"]["unpack"] is False
 

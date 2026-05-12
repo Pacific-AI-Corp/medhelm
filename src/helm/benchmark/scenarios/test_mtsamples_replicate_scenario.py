@@ -186,9 +186,7 @@ def test_fetch_file_list_raises_on_http_error(monkeypatch):
     scenario = MTSamplesReplicateScenario()
     monkeypatch.setattr(
         "helm.benchmark.scenarios.mtsamples_replicate_scenario.requests.get",
-        _make_requests_get(
-            {MTSamplesReplicateScenario.API_BASE_URL: _FakeResponse(status_code=404, text="Not Found")}
-        ),
+        _make_requests_get({MTSamplesReplicateScenario.API_BASE_URL: _FakeResponse(status_code=404, text="Not Found")}),
     )
 
     with pytest.raises(Exception, match="Failed to fetch file list"):
@@ -267,9 +265,7 @@ def _patch_scenario_with_fake_files(monkeypatch, files: List[tuple]):
     )
     responses = {MTSamplesReplicateScenario.API_BASE_URL: api_response}
     for name, content in files:
-        responses[MTSamplesReplicateScenario.RAW_BASE_URL + name] = _FakeResponse(
-            status_code=200, text=content
-        )
+        responses[MTSamplesReplicateScenario.RAW_BASE_URL + name] = _FakeResponse(status_code=200, text=content)
     monkeypatch.setattr(
         "helm.benchmark.scenarios.mtsamples_replicate_scenario.requests.get",
         _make_requests_get(responses),

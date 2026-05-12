@@ -46,9 +46,7 @@ def _patch_with_entries(monkeypatch, entries: dict) -> None:
         with open(target_path, "w", encoding="utf-8") as f:
             json.dump(entries, f)
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.pubmed_qa_scenario.ensure_file_downloaded", _fake
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.pubmed_qa_scenario.ensure_file_downloaded", _fake)
 
 
 # ---------------------------------------------------------------------------
@@ -206,10 +204,7 @@ def test_get_instances_handles_multiple_entries(monkeypatch):
     for i, text in enumerate(texts, start=1):
         assert f"Question: Q{i}\n" in text
     correct_answers = [
-        ref.output.text
-        for instance in instances
-        for ref in instance.references
-        if CORRECT_TAG in ref.tags
+        ref.output.text for instance in instances for ref in instance.references if CORRECT_TAG in ref.tags
     ]
     assert correct_answers == ["yes", "no", "maybe"]
 

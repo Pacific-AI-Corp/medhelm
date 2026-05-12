@@ -43,9 +43,7 @@ def _patch_with_jsonl(monkeypatch, train_rows: list = None, dev_rows: list = Non
         _write_jsonl(os.path.join(target_path, "train.json"), train_rows)
         _write_jsonl(os.path.join(target_path, "dev.json"), dev_rows)
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.med_mcqa_scenario.ensure_file_downloaded", _fake
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.med_mcqa_scenario.ensure_file_downloaded", _fake)
 
 
 # ---------------------------------------------------------------------------
@@ -177,9 +175,7 @@ def test_get_instances_requires_unzip_unpack(monkeypatch):
         _write_jsonl(os.path.join(target_path, "train.json"), [])
         _write_jsonl(os.path.join(target_path, "dev.json"), [])
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.med_mcqa_scenario.ensure_file_downloaded", _fake
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.med_mcqa_scenario.ensure_file_downloaded", _fake)
 
     scenario = MedMCQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -204,9 +200,7 @@ def test_get_instances_reads_dev_json_for_valid_split(monkeypatch):
         _write_jsonl(os.path.join(target_path, "dev.json"), [_entry(question="from-dev-file")])
         file_writes.append(os.listdir(target_path))
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.med_mcqa_scenario.ensure_file_downloaded", _fake
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.med_mcqa_scenario.ensure_file_downloaded", _fake)
 
     scenario = MedMCQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -236,10 +230,7 @@ def test_med_mcqa_scenario_integration():
     assert len(instances) == 187005
     # Each instance has exactly 4 references and exactly one is correct.
     assert all(len(instance.references) == 4 for instance in instances)
-    assert all(
-        sum(1 for ref in instance.references if CORRECT_TAG in ref.tags) == 1
-        for instance in instances
-    )
+    assert all(sum(1 for ref in instance.references if CORRECT_TAG in ref.tags) == 1 for instance in instances)
 
 
 # ---------------------------------------------------------------------------

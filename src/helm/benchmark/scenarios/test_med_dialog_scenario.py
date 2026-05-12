@@ -25,9 +25,7 @@ def _patch_with_entries(monkeypatch, entries: list, recorded_calls=None):
         with open(target_path, "w", encoding="utf-8") as f:
             json.dump({"data": entries}, f)
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.med_dialog_scenario.ensure_file_downloaded", _fake
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.med_dialog_scenario.ensure_file_downloaded", _fake)
 
 
 def _entry(src: str = "Patient: ...\nDoctor: ...", tgt: str = "Summary."):
@@ -140,7 +138,7 @@ def test_get_instances_only_downloads_test_split(monkeypatch):
 
 def test_get_instances_handles_dialogue_special_characters(monkeypatch):
     """Real conversations contain unicode, newlines and quotes; the JSON round-trip must preserve them."""
-    dialogue = "Patient: ¿Cómo está? \"I have pain.\"\nDoctor: Take this med ± once.\n• Note 1\n• Note 2"
+    dialogue = 'Patient: ¿Cómo está? "I have pain."\nDoctor: Take this med ± once.\n• Note 1\n• Note 2'
     summary = "Spanish-English mixed query about pain."
     _patch_with_entries(monkeypatch, [_entry(src=dialogue, tgt=summary)])
 

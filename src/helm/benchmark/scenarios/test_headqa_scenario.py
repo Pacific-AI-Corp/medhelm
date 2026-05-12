@@ -78,12 +78,9 @@ def test_headqa_scenario_instance_structure():
     assert all(instance.split == TEST_SPLIT for instance in instances)
     assert all(instance.input.text for instance in instances)
     assert all(len(instance.references) >= 2 for instance in instances)
+    assert all(sum(1 for ref in instance.references if CORRECT_TAG in ref.tags) == 1 for instance in instances)
     assert all(
-        sum(1 for ref in instance.references if CORRECT_TAG in ref.tags) == 1 for instance in instances
-    )
-    assert all(
-        instance.extra_data is not None
-        and {"id", "name", "category", "year"} <= instance.extra_data.keys()
+        instance.extra_data is not None and {"id", "name", "category", "year"} <= instance.extra_data.keys()
         for instance in instances
     )
     assert all(instance.extra_data["category"] in VALID_CATEGORIES for instance in instances)

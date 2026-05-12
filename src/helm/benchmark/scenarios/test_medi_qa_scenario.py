@@ -176,10 +176,12 @@ def test_get_instances_with_mocked_load_dataset(monkeypatch):
         "train_live_qa_med": [_row(qid="train-1", question="Train Q")],  # ignored
         "validation": [_row(qid="val-1", question="Validation Q")],  # ignored
         "test": [
-            _row(qid="t-1", question="Test Q-1",
-                 answers=[_answer(rank=1, text="Top test answer.")]),
-            _row(qid="t-2", question="Test Q-2",
-                 answers=[_answer(rank=1, text="Another."), _answer(rank=2, text="Lower.")]),
+            _row(qid="t-1", question="Test Q-1", answers=[_answer(rank=1, text="Top test answer.")]),
+            _row(
+                qid="t-2",
+                question="Test Q-2",
+                answers=[_answer(rank=1, text="Another."), _answer(rank=2, text="Lower.")],
+            ),
         ],
     }
 
@@ -190,9 +192,7 @@ def test_get_instances_with_mocked_load_dataset(monkeypatch):
         assert kwargs.get("trust_remote_code") is True
         return fake_dataset
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.medi_qa_scenario.load_dataset", _fake_load_dataset
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.medi_qa_scenario.load_dataset", _fake_load_dataset)
 
     scenario = MediQAScenario()
     with TemporaryDirectory() as tmpdir:

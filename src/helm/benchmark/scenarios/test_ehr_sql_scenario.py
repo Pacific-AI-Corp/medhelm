@@ -42,11 +42,7 @@ def test_extract_schema_single_create_table():
 
 def test_extract_schema_multiple_create_tables():
     scenario = EhrSqlScenario()
-    sql = (
-        "CREATE TABLE patient\n( id INT\n);\n"
-        "\n"
-        "CREATE TABLE diagnosis\n( code TEXT\n);\n"
-    )
+    sql = "CREATE TABLE patient\n( id INT\n);\n" "\n" "CREATE TABLE diagnosis\n( code TEXT\n);\n"
 
     with TemporaryDirectory() as tmpdir:
         path = os.path.join(tmpdir, "schema.sql")
@@ -306,9 +302,7 @@ def _patch_ensure_file_downloaded(monkeypatch):
         with open(target_path, "w", encoding="utf-8") as f:
             f.write("")
 
-    monkeypatch.setattr(
-        "helm.benchmark.scenarios.ehr_sql_scenario.ensure_file_downloaded", _fake
-    )
+    monkeypatch.setattr("helm.benchmark.scenarios.ehr_sql_scenario.ensure_file_downloaded", _fake)
     return calls
 
 

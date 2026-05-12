@@ -39,8 +39,7 @@ def test_medec_scenario_instance_structure():
     assert all(len(instance.references) == 1 for instance in instances)
     assert all(CORRECT_TAG in instance.references[0].tags for instance in instances)
     assert all(
-        instance.references[0].output.text == "CORRECT"
-        or instance.references[0].output.text.split(" ", 1)[0].isdigit()
+        instance.references[0].output.text == "CORRECT" or instance.references[0].output.text.split(" ", 1)[0].isdigit()
         for instance in instances
     )
 

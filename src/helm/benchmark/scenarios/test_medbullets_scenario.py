@@ -34,12 +34,8 @@ def test_medbullets_scenario_instance_structure():
 
     assert all(instance.split == TEST_SPLIT for instance in instances)
     assert all(instance.input.text for instance in instances)
-    assert all(
-        len(instance.references) == len(MedBulletsScenario.POSSIBLE_ANSWER_CHOICES) for instance in instances
-    )
-    assert all(
-        sum(1 for ref in instance.references if CORRECT_TAG in ref.tags) == 1 for instance in instances
-    )
+    assert all(len(instance.references) == len(MedBulletsScenario.POSSIBLE_ANSWER_CHOICES) for instance in instances)
+    assert all(sum(1 for ref in instance.references if CORRECT_TAG in ref.tags) == 1 for instance in instances)
 
 
 def test_medbullets_scenario_metadata():

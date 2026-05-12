@@ -50,12 +50,7 @@ def _make_requests_get(responses_by_url, recorded_calls=None):
 
 def test_extract_sections_all_present():
     scenario = MTSamplesProceduresScenario()
-    text = (
-        "PATIENT: John Doe\n"
-        "FINDINGS: Healthy heart.\n"
-        "SUMMARY: Discharge.\n"
-        "PLAN: Aspirin daily.\n"
-    )
+    text = "PATIENT: John Doe\n" "FINDINGS: Healthy heart.\n" "SUMMARY: Discharge.\n" "PLAN: Aspirin daily.\n"
 
     plan, summary, findings = scenario.extract_sections(text)
 
@@ -284,9 +279,7 @@ def _patch_scenario_with_fake_files(monkeypatch, files: List[tuple]):
         )
     }
     for name, content in files:
-        responses[MTSamplesProceduresScenario.RAW_BASE_URL + name] = _FakeResponse(
-            status_code=200, text=content
-        )
+        responses[MTSamplesProceduresScenario.RAW_BASE_URL + name] = _FakeResponse(status_code=200, text=content)
     monkeypatch.setattr(
         "helm.benchmark.scenarios.mtsamples_procedures_scenario.requests.get",
         _make_requests_get(responses),
