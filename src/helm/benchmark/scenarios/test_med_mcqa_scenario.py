@@ -1,7 +1,9 @@
 import json
 import os
-import pytest
 from tempfile import TemporaryDirectory
+from typing import Any, Optional
+
+import pytest
 
 from helm.benchmark.scenarios.med_mcqa_scenario import MedMCQAScenario
 from helm.benchmark.scenarios.scenario import CORRECT_TAG, TRAIN_SPLIT, VALID_SPLIT, Output, Reference
@@ -31,7 +33,7 @@ def _write_jsonl(path: str, rows: list) -> None:
             f.write(json.dumps(row) + "\n")
 
 
-def _patch_with_jsonl(monkeypatch, train_rows: list = None, dev_rows: list = None):
+def _patch_with_jsonl(monkeypatch, train_rows: Optional[list[Any]] = None, dev_rows: Optional[list[Any]] = None):
     """Mock `ensure_file_downloaded` so it materialises `data/train.json` and `data/dev.json`."""
     train_rows = train_rows or []
     dev_rows = dev_rows or []

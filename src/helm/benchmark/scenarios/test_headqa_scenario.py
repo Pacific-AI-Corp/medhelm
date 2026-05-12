@@ -66,7 +66,9 @@ def test_headqa_scenario_filter_by_category(category, expected_count):
         instances = scenario.get_instances(tmpdir)
 
     assert len(instances) == expected_count
-    assert all(instance.extra_data["category"] == category for instance in instances)
+    assert all(
+        instance.extra_data is not None and instance.extra_data["category"] == category for instance in instances
+    )
 
 
 @pytest.mark.scenarios
@@ -83,7 +85,10 @@ def test_headqa_scenario_instance_structure():
         instance.extra_data is not None and {"id", "name", "category", "year"} <= instance.extra_data.keys()
         for instance in instances
     )
-    assert all(instance.extra_data["category"] in VALID_CATEGORIES for instance in instances)
+    assert all(
+        instance.extra_data is not None and instance.extra_data["category"] in VALID_CATEGORIES
+        for instance in instances
+    )
 
 
 def test_headqa_scenario_metadata():

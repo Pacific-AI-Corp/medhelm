@@ -174,6 +174,7 @@ def test_process_json_basic_entry_creates_instance():
     assert instances[0].references == [
         Reference(output=Output(text="SELECT age FROM patient;"), tags=[CORRECT_TAG]),
     ]
+    assert instances[0].extra_data is not None
     assert instances[0].extra_data["db_path"] == "eicu.sqlite"
     assert instances[0].extra_data["value"] == {"foo": "bar"}
     assert instances[0].extra_data["is_impossible"] is False
@@ -225,6 +226,7 @@ def test_process_json_value_defaults_to_empty_dict_when_missing():
 
         instances = scenario.process_json(path, schema_prompt="schema", split=TEST_SPLIT)
 
+    assert instances[0].extra_data is not None
     assert instances[0].extra_data["value"] == {}
     assert instances[0].extra_data["is_impossible"] is False
 
@@ -243,6 +245,8 @@ def test_process_json_propagates_is_impossible_flag():
 
         instances = scenario.process_json(path, schema_prompt="schema", split=TEST_SPLIT)
 
+    assert instances[0].extra_data is not None
+    assert instances[1].extra_data is not None
     assert instances[0].extra_data["is_impossible"] is True
     assert instances[1].extra_data["is_impossible"] is False
 
@@ -404,7 +408,9 @@ def test_get_instances_end_to_end_with_mocks(monkeypatch):
     # Schema content propagates into every instance's input text.
     assert all("CREATE TABLE patient" in instance.input.text for instance in instances)
     # db_path is consistent.
-    assert all(instance.extra_data["db_path"] == "eicu.sqlite" for instance in instances)
+    assert all(
+        instance.extra_data is not None and instance.extra_data["db_path"] == "eicu.sqlite" for instance in instances
+    )
 
 
 # ---------------------------------------------------------------------------
