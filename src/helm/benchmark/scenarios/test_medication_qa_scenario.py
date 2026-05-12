@@ -13,15 +13,26 @@ from helm.benchmark.scenarios.scenario import CORRECT_TAG, TEST_SPLIT, Output, R
 # ---------------------------------------------------------------------------
 
 
-def _patch_with_dataframe(monkeypatch, df: pd.DataFrame) -> None:
-    """Mock `ensure_file_downloaded` so it writes the supplied DataFrame as the expected xlsx file."""
+def _patch_download_returns_df(monkeypatch, df: pd.DataFrame) -> None:
+    """Mock download + `read_excel` so tests need no network or openpyxl (`.xlsx` engine)."""
 
-    def _fake(source_url, target_path, **kwargs):
-        os.makedirs(os.path.dirname(target_path), exist_ok=True)
-        df.to_excel(target_path, index=False, engine="openpyxl")
+    def _fake_ensure(source_url, target_path, **kwargs):
+        parent = os.path.dirname(target_path)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
+        open(target_path, "a").close()
 
     monkeypatch.setattr(
-        "helm.benchmark.scenarios.medication_qa_scenario.ensure_file_downloaded", _fake
+        "helm.benchmark.scenarios.medication_qa_scenario.ensure_file_downloaded",
+        _fake_ensure,
+    )
+
+    def _fake_read_excel(_path):
+        return df
+
+    monkeypatch.setattr(
+        "helm.benchmark.scenarios.medication_qa_scenario.pd.read_excel",
+        _fake_read_excel,
     )
 
 
@@ -44,7 +55,7 @@ def test_medication_qa_scenario_get_instances():
 
 
 # ---------------------------------------------------------------------------
-# Mocked tests for `get_instances` (driven by synthetic Excel files).
+# Mocked tests for `get_instances` (synthetic tables returned as if from read_excel).
 # ---------------------------------------------------------------------------
 
 
@@ -55,7 +66,7 @@ def test_get_instances_basic_dataframe(monkeypatch):
             "Answer": ["For pain relief.", "Refrigerate it."],
         }
     )
-    _patch_with_dataframe(monkeypatch, df)
+    _patch_download_returns_df(monkeypatch, df)
 
     scenario = MedicationQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -79,7 +90,7 @@ def test_get_instances_filters_rows_with_missing_answers(monkeypatch):
             "Answer": ["A1.", None, "A3."],
         }
     )
-    _patch_with_dataframe(monkeypatch, df)
+    _patch_download_returns_df(monkeypatch, df)
 
     scenario = MedicationQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -92,7 +103,7 @@ def test_get_instances_filters_rows_with_missing_answers(monkeypatch):
 
 def test_get_instances_returns_empty_when_all_answers_missing(monkeypatch):
     df = pd.DataFrame({"Question": ["Q1", "Q2"], "Answer": [None, None]})
-    _patch_with_dataframe(monkeypatch, df)
+    _patch_download_returns_df(monkeypatch, df)
 
     scenario = MedicationQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -103,7 +114,7 @@ def test_get_instances_returns_empty_when_all_answers_missing(monkeypatch):
 
 def test_get_instances_returns_empty_for_empty_spreadsheet(monkeypatch):
     df = pd.DataFrame({"Question": [], "Answer": []})
-    _patch_with_dataframe(monkeypatch, df)
+    _patch_download_returns_df(monkeypatch, df)
 
     scenario = MedicationQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -120,7 +131,7 @@ def test_get_instances_preserves_row_order(monkeypatch):
             "Answer": [f"A{i}" if i % 2 == 0 else None for i in range(10)],
         }
     )
-    _patch_with_dataframe(monkeypatch, df)
+    _patch_download_returns_df(monkeypatch, df)
 
     scenario = MedicationQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -137,7 +148,7 @@ def test_get_instances_handles_long_freeform_answers(monkeypatch):
         "Do not exceed the recommended dose."
     )
     df = pd.DataFrame({"Question": ["How should I take X?"], "Answer": [long_answer]})
-    _patch_with_dataframe(monkeypatch, df)
+    _patch_download_returns_df(monkeypatch, df)
 
     scenario = MedicationQAScenario()
     with TemporaryDirectory() as tmpdir:
@@ -156,7 +167,7 @@ def test_get_instances_only_questions_with_answers_become_instances(monkeypatch)
             "Type": ["Indication"],
         }
     )
-    _patch_with_dataframe(monkeypatch, df)
+    _patch_download_returns_df(monkeypatch, df)
 
     scenario = MedicationQAScenario()
     with TemporaryDirectory() as tmpdir:
