@@ -5,6 +5,10 @@ import ReleaseSummary from "@/types/ReleaseSummary";
 import ProjectMetadata from "@/types/ProjectMetadata";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import getReleaseUrl from "@/utils/getReleaseUrl";
+import {
+  getHelmReleases,
+  getProjectMetadataUrl,
+} from "@/utils/helmPortalConfig";
 
 function ReleaseDropdown() {
   const [summary, setSummary] = useState<ReleaseSummary>({
@@ -14,12 +18,16 @@ function ReleaseDropdown() {
     date: "",
   });
 
+  const [metadataReleases, setMetadataReleases] = useState<
+    string[] | undefined
+  >();
+
   const [currProjectMetadata, setCurrProjectMetadata] = useState<
     ProjectMetadata | undefined
   >();
 
   useEffect(() => {
-    fetch("https://crfm.stanford.edu/helm/project_metadata.json")
+    fetch(getProjectMetadataUrl())
       .then((response) => response.json())
       .then((data: ProjectMetadata[]) => {
         // set currProjectMetadata to val where projectMetadataEntry.id matches window.PROJECT_ID
@@ -28,10 +36,15 @@ function ReleaseDropdown() {
             (entry) => entry.id === window.PROJECT_ID,
           );
           setCurrProjectMetadata(currentEntry);
-          // handles falling back to HELM lite as was previously done in this file
+          if (currentEntry?.releases?.length) {
+            setMetadataReleases(currentEntry.releases);
+          }
         } else {
           const currentEntry = data.find((entry) => entry.id === "lite");
           setCurrProjectMetadata(currentEntry);
+          if (currentEntry?.releases?.length) {
+            setMetadataReleases(currentEntry.releases);
+          }
         }
       })
       .catch((error) => {
@@ -50,11 +63,13 @@ function ReleaseDropdown() {
     return () => controller.abort();
   }, []);
 
+  const configuredReleases = getHelmReleases();
   const releases =
-    currProjectMetadata !== undefined &&
-    currProjectMetadata.releases !== undefined
-      ? currProjectMetadata.releases
-      : ["v1.0.0"];
+    configuredReleases.length > 1
+      ? configuredReleases
+      : metadataReleases !== undefined && metadataReleases.length > 0
+        ? metadataReleases
+        : configuredReleases;
 
   const currentVersion = summary.release || summary.suite || null;
 
@@ -78,6 +93,14 @@ function ReleaseDropdown() {
     ) : (
       <Badge color="yellow">stale</Badge>
     );
+
+  const projectId =
+    currProjectMetadata?.id ?? window.PROJECT_ID ?? "lite";
+
+  const menuVersions = ["latest"].concat(
+    releases.filter((release) => release !== "latest"),
+  );
+
   return (
     <div className="dropdown">
       <div
@@ -99,13 +122,10 @@ function ReleaseDropdown() {
         className="dropdown-content z-[50] menu p-1 shadow-lg bg-base-100 rounded-box w-max text-base"
         role="menu"
       >
-        {["latest"].concat(releases).map((release) => (
+        {menuVersions.map((release) => (
           <li key={release}>
             <a
-              href={getReleaseUrl(
-                release,
-                currProjectMetadata ? currProjectMetadata.id : "lite",
-              )}
+              href={getReleaseUrl(release, projectId)}
               className="block"
               role="menuitem"
             >

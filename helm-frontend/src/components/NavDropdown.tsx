@@ -2,6 +2,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import ProjectMetadata from "@/types/ProjectMetadata";
 import { useEffect, useState } from "react";
 import getReleaseUrl from "@/utils/getReleaseUrl";
+import { getProjectMetadataUrl } from "@/utils/helmPortalConfig";
 
 function NavDropdown() {
   const [projectMetadata, setProjectMetadata] = useState<ProjectMetadata[]>([]);
@@ -26,7 +27,7 @@ function NavDropdown() {
   }, [currProjectMetadata]);
 
   useEffect(() => {
-    fetch("https://crfm.stanford.edu/helm/project_metadata.json")
+    fetch(getProjectMetadataUrl())
       .then((response) => response.json())
       .then((data: ProjectMetadata[]) => {
         setProjectMetadata(data);

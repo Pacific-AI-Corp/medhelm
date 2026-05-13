@@ -1,3 +1,6 @@
+import { getHelmPortalBaseUrl } from "@/utils/helmPortalConfig";
+
+/** Project / release links (navbar, release menu, home cards). */
 export default function getReleaseUrl(
   version: string | undefined,
   currProjectId: string | undefined,
@@ -5,11 +8,13 @@ export default function getReleaseUrl(
   if (!currProjectId) {
     return "#";
   }
+
+  const base = getHelmPortalBaseUrl();
   if (currProjectId === "home") {
-    return `https://crfm.stanford.edu/helm/`;
+    return `${base}/`;
   }
   if (!version) {
-    return `https://crfm.stanford.edu/helm/${currProjectId}/latest/`;
+    return `${base}/${currProjectId}/latest/`;
   }
-  return `https://crfm.stanford.edu/helm/${currProjectId}/${version}/`;
+  return `${base}/${currProjectId}/${version}/`;
 }

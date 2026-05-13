@@ -4,6 +4,7 @@ import crfmLogo from "@/assets/crfm-logo.png";
 import helmLogo from "@/assets/helm-logo-simple.png";
 import NavDropdown from "@/components/NavDropdown";
 import ReleaseDropdown from "../ReleaseDropdown";
+import { getHelmLogoHref } from "@/utils/helmPortalConfig";
 
 export default function NavBar() {
   return (
@@ -41,7 +42,7 @@ export default function NavBar() {
         </div>
       </div>
       <div className="flex-1 items-center">
-        <a href="https://crfm.stanford.edu/" className="w-24">
+        <a href={getHelmLogoHref()} className="w-24">
           <img src={crfmLogo} className="object-contain" />
         </a>
         <Link to="/" className="mx-2 w-32">

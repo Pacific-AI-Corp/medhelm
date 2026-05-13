@@ -22,6 +22,17 @@ from helm.common.general import ensure_directory_exists, serialize_dates
 app = Bottle()
 
 
+def _helm_frontend_portal_config_js() -> str:
+    lines: List[str] = []
+    if app.config.get("helm.portal_base_url"):
+        lines.append(f'window.HELM_PORTAL_BASE_URL = {json.dumps(app.config["helm.portal_base_url"])};\n')
+    if app.config.get("helm.project_metadata_url"):
+        lines.append(f'window.HELM_PROJECT_METADATA_URL = {json.dumps(app.config["helm.project_metadata_url"])};\n')
+    if app.config.get("helm.logo_href"):
+        lines.append(f'window.HELM_LOGO_HREF = {json.dumps(app.config["helm.logo_href"])};\n')
+    return "".join(lines)
+
+
 @app.get("/config.js")
 def serve_config():
     response.content_type = "application/javascript; charset=UTF-8"
@@ -30,12 +41,14 @@ def serve_config():
             f'window.BENCHMARK_OUTPUT_BASE_URL = "{app.config["helm.outputurl"]}";\n'
             f'window.RELEASE = "{app.config["helm.release"]}";\n'
             f'window.PROJECT_ID = "{app.config["helm.project"]}";\n'
+            + _helm_frontend_portal_config_js()
         )
     else:
         return (
             f'window.BENCHMARK_OUTPUT_BASE_URL = "{app.config["helm.outputurl"]}";\n'
             f'window.SUITE = "{app.config["helm.suite"]}";\n'
             f'window.PROJECT_ID = "{app.config["helm.project"]}";\n'
+            + _helm_frontend_portal_config_js()
         )
 
 
@@ -186,6 +199,24 @@ def main():
         default=None,
         help="Export to the location as a static website.",
     )
+    parser.add_argument(
+        "--helm-portal-base-url",
+        type=str,
+        default=None,
+        help="React UI: HELM hub base URL (no trailing slash), e.g. https://your.domain/helm.",
+    )
+    parser.add_argument(
+        "--helm-project-metadata-url",
+        type=str,
+        default=None,
+        help="React UI: full URL to project_metadata.json.",
+    )
+    parser.add_argument(
+        "--helm-logo-href",
+        type=str,
+        default=None,
+        help="React UI: CRFM logo link URL.",
+    )
     args = parser.parse_args()
 
     if args.suite and args.release:
@@ -201,6 +232,9 @@ def main():
 
     app.config["helm.staticpath"] = static_path
     app.config["helm.project"] = args.project or "lite"
+    app.config["helm.portal_base_url"] = args.helm_portal_base_url
+    app.config["helm.project_metadata_url"] = args.helm_project_metadata_url
+    app.config["helm.logo_href"] = args.helm_logo_href
 
     if urllib.parse.urlparse(args.output_path).scheme in ["http", "https"]:
         # Output path is a URL, so set the output path base URL in the frontend to that URL
