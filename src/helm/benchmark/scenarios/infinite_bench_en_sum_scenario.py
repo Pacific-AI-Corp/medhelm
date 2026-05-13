@@ -54,6 +54,7 @@ class InfiniteBenchEnSumScenario(Scenario):
             split="longbook_sum_eng",
             features=ft,
             revision="90f0394333616266d9fe85824ceaf505093cbaa5",
+            trust_remote_code=True,
         )
 
         assert isinstance(dataset, Dataset)

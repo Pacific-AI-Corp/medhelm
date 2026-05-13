@@ -84,7 +84,7 @@ class HeadQAScenario(Scenario):
     def get_instances(self, output_path: str) -> List[Instance]:
         data_path: str = os.path.join(output_path, "data")
         ensure_directory_exists(data_path)
-        dataset: DatasetDict = load_dataset(self.HUGGING_FACE_DATASET_PATH, self.language)
+        dataset: DatasetDict = load_dataset(self.HUGGING_FACE_DATASET_PATH, self.language, trust_remote_code=True)
 
         # XXX: Should we consider validation as test too?
         # splits = {TRAIN_SPLIT: ["train", "validation"], TEST_SPLIT: ["test"]}

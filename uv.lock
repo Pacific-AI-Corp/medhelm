@@ -4486,6 +4486,7 @@ reka = [
 ]
 scenarios = [
     { name = "gdown" },
+    { name = "openpyxl" },
     { name = "xlrd" },
 ]
 seahelm = [
@@ -4697,6 +4698,7 @@ requires-dist = [
     { name = "opencv-python-headless", marker = "extra == 'image2struct'", specifier = ">=4.7.0.68,<=4.11.0.86" },
     { name = "openpyxl", marker = "extra == 'ibm-enterprise-scenarios'", specifier = "~=3.1" },
     { name = "openpyxl", marker = "extra == 'medhelm'", specifier = "~=3.1" },
+    { name = "openpyxl", marker = "extra == 'scenarios'", specifier = "~=3.1" },
     { name = "pandas", specifier = "~=2.0" },
     { name = "pdf2image", marker = "extra == 'image2struct'", specifier = "~=1.16" },
     { name = "pillow", marker = "extra == 'images'", specifier = ">=10.2" },
