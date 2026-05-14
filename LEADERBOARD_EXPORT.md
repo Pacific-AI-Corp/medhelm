@@ -39,10 +39,30 @@ Confirm release folders exist, for example:
 
 To generate your own runs instead of downloading, use `medhelm-run` and `helm-summarize` against the same `OUTPUT_PATH`. See [docs/medhelm.md](docs/medhelm.md).
 
+### Copy runs with only metrics and no instance and response data
+```bash
+rsync -av \
+  --exclude='scenario_state.json' \
+  --exclude='instances.json' \
+  --exclude='display_requests.json' \
+  --exclude='display_predictions.json' \
+  --exclude='per_instance_stats.json' \
+  . $OUTPUT_PATH
+```
+
 ## 2. Optional: rebuild the UI
 
 Only needed after editing `helm-frontend/`:
 
+
+```bash
+cd /path/to/medhelm/helm-frontend
+npm install --global yarn   # if you don’t already have Yarn
+yarn install
+yarn build --outDir '../src/helm/benchmark/static_build' --emptyOutDir
+cd /path/to/medhelm
+```
+OR
 ```bash
 cd helm-frontend
 npm install
@@ -89,13 +109,13 @@ Repeat for other tags under `benchmark_output/releases/`.
 The navbar release dropdown needs `project_metadata.json` at the URL you set above.
 
 ```bash
-cat > "$SITE_ROOT/medhelm/project_metadata.json" <<'EOF'
+ cat > "$SITE_ROOT/project_metadata.json" <<'EOF'
 [
   {
     "title": "MedHELM",
     "description": "MedHELM leaderboard",
     "id": "medhelm",
-    "releases": ["v2.0.0", "v1.0.0"]
+    "releases": ["v4.0.0", "v3.0.0", "v2.0.0", "v1.0.0"]
   }
 ]
 EOF

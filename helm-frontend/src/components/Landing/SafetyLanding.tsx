@@ -1,5 +1,5 @@
 import MiniLeaderboard from "@/components/MiniLeaderboard";
-import helmSafety from "@/assets/helm-safety.png";
+import helmSafety from "@/assets/medhelm_logo.jpg";
 
 export default function SafetyLanding() {
   return (

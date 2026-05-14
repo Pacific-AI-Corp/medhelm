@@ -5,16 +5,17 @@ export default function getReleaseUrl(
   version: string | undefined,
   currProjectId: string | undefined,
 ): string {
-  if (!currProjectId) {
-    return "#";
-  }
-
   const base = getHelmPortalBaseUrl();
-  if (currProjectId === "home") {
+
+  const project = currProjectId ?? "medhelm";
+
+  if (project === "home") {
     return `${base}/`;
   }
+
   if (!version) {
-    return `${base}/${currProjectId}/latest/`;
+    return `${base}/${project}/latest/`;
   }
-  return `${base}/${currProjectId}/${version}/`;
+
+  return `${base}/${project}/${version}/`;
 }
