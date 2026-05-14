@@ -1665,7 +1665,7 @@ def get_health_bench_run_spec(jury_config_path: Optional[str] = None) -> RunSpec
                 "default_score": 0.0,
             },
         )
-    ]
+    ] + get_basic_metric_specs([])
 
     return RunSpec(
         name="health_bench",
@@ -1722,7 +1722,7 @@ def get_health_bench_professional_run_spec(jury_config_path: Optional[str] = Non
                 "default_score": 0.0,
             },
         )
-    ]
+    ] + get_basic_metric_specs([])
 
     return RunSpec(
         name="health_bench_professional",
