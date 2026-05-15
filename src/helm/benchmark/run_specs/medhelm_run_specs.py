@@ -1732,3 +1732,31 @@ def get_health_bench_professional_run_spec(jury_config_path: Optional[str] = Non
         metric_specs=metric_specs,
         groups=["health_bench_professional"],
     )
+
+@run_spec_function("medxpert_qa_text")
+def get_medxpert_qa_text_spec(jury_config_path: Optional[str] = None) -> RunSpec:
+    scenario_spec = ScenarioSpec(
+        class_name="helm.benchmark.scenarios.medxpert_qa_text_scenario.MedXpertQATextScenario",
+        args={},
+    )
+
+    adapter_spec = get_multiple_choice_adapter_spec(
+        method=ADAPT_MULTIPLE_CHOICE_JOINT,
+        instructions=(
+            "You are a medical expert assistant. Answer the following medical question with single letter from options."
+        ),
+        input_noun="Question",
+        output_noun="Answer",
+        max_tokens=1,
+        max_train_instances=0,
+    )
+
+    metric_specs = get_exact_match_metric_specs()
+
+    return RunSpec(
+        name="medxpert_qa_text",
+        scenario_spec=scenario_spec,
+        adapter_spec=adapter_spec,
+        metric_specs=metric_specs,
+        groups=["medxpert_qa_text"],
+    )

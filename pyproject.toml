@@ -45,7 +45,7 @@ dependencies = [
     "sqlitedict>=2.1.0,<3.0",
     "bottle~=0.12.23",
     # Basic Scenarios
-    "datasets~=3.1",
+    "datasets>=3.1",
     "pyarrow>=11.0.0", # Pinned transitive dependency for datasets; workaround for #1026
     "pyarrow-hotfix~=0.6", # Hotfix for CVE-2023-47248
     # Basic metrics

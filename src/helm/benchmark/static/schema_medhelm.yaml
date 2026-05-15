@@ -517,6 +517,7 @@ run_groups:
       - sct_bench
       - health_bench
       - health_bench_professional
+      - medxpert_qa_text
 
   - name: clinical_note_generation
     display_name: Clinical Note Generation
@@ -708,6 +709,23 @@ run_groups:
   - name: head_qa
     display_name: HeadQA
     description: HeadQA is a benchmark consisting of biomedical multiple-choice questions intended to evaluate a model's medical knowledge and reasoning. Each instance presents a clinical or scientific question with four answer options, requiring the model to select the most appropriate answer [(Vilares et al., 2019)](https://arxiv.org/abs/1906.04701).
+    metric_groups:
+      - accuracy
+      - efficiency
+      - general_information
+    environment:
+      main_name: exact_match
+      main_split: test
+    taxonomy:
+      task: Question answering
+      what: Medical knowledge testing
+      who: Medical student, Researcher
+      when: Any
+      language: English
+
+  - name: medxpert_qa_text
+    display_name: MedXpert-QA-Text
+    description: MedXpert-QA-Text is a benchmark designed to evaluate a model's ability to answer medical questions based on unstructured clinical text. Each instance includes a clinical note and a related question, requiring the model to extract relevant information from the text to provide an accurate answer [(Zhang et al., 2024)](https://arxiv.org/abs/2406.12036).
     metric_groups:
       - accuracy
       - efficiency
