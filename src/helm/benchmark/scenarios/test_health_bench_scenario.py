@@ -1,6 +1,7 @@
 import json
 import os
 from tempfile import TemporaryDirectory
+from typing import Any
 from unittest.mock import patch
 
 import pytest
@@ -12,14 +13,14 @@ from helm.benchmark.scenarios.health_bench_scenario import (
 from helm.benchmark.scenarios.scenario import TEST_SPLIT
 
 
-def _write_jsonl(path: str, rows: list[dict]) -> None:
+def _write_jsonl(path: str, rows: list[dict[str, Any]]) -> None:
     with open(path, "w", encoding="utf-8") as f:
         for row in rows:
             f.write(json.dumps(row) + "\n")
 
 
 def test_health_bench_scenario_get_instances_parses_prompt_and_extra_data():
-    rows = [
+    rows: list[dict[str, Any]] = [
         {
             "prompt": [{"role": "user", "content": "What is aspirin?"}],
             "rubrics": [{"criterion": "accuracy"}],
@@ -49,13 +50,15 @@ def test_health_bench_scenario_get_instances_parses_prompt_and_extra_data():
         "example_tags": ["cardiology"],
         "prompt_id": "hb-1",
     }
-    assert instances[1].extra_data["rubrics"] == []
-    assert instances[1].extra_data["example_tags"] == []
-    assert instances[1].extra_data["prompt_id"] is None
+    extra1 = instances[1].extra_data
+    assert extra1 is not None
+    assert extra1["rubrics"] == []
+    assert extra1["example_tags"] == []
+    assert extra1["prompt_id"] is None
 
 
 def test_health_bench_professional_scenario_get_instances_parses_conversation_and_extra_data():
-    rows = [
+    rows: list[dict[str, Any]] = [
         {
             "conversation": {"messages": [{"role": "user", "content": "Symptoms?"}]},
             "rubric_items": [{"id": "r1"}],
@@ -93,9 +96,11 @@ def test_health_bench_professional_scenario_get_instances_parses_conversation_an
         "physician_response": "Consider differential X.",
     }
     assert instances[1].input.messages == []
-    assert instances[1].extra_data["rubrics"] == []
-    assert instances[1].extra_data["prompt_id"] is None
-    assert instances[1].extra_data["physician_response"] == ""
+    extra1 = instances[1].extra_data
+    assert extra1 is not None
+    assert extra1["rubrics"] == []
+    assert extra1["prompt_id"] is None
+    assert extra1["physician_response"] == ""
 
 
 def test_health_bench_scenario_metadata():
@@ -104,6 +109,7 @@ def test_health_bench_scenario_metadata():
     assert meta.display_name == "HealthBench"
     assert meta.main_metric == "medhelm_health_score"
     assert meta.main_split == "test"
+    assert meta.taxonomy is not None
     assert meta.taxonomy.task == "Classification"
 
 
