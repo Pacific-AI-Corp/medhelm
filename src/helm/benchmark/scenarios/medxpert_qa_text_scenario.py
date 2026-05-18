@@ -95,11 +95,15 @@ class MedXpertQATextScenario(Scenario):
     def get_metadata(self) -> ScenarioMetadata:
         return ScenarioMetadata(
             name=self.name,
+            display_name="MedXpertQA Text",
             description=self.description,
-            tags=self.tags,
-            taxonomy_info=TaxonomyInfo(
-                subjects=["medicine"],
-                objects=["question_answering"],
-                domains=["biomedical"],
+            taxonomy=TaxonomyInfo(
+                task="Question answering",
+                what="Answer expert-level medical questions across diverse specialties and body systems",
+                when="Any",
+                who="Medical professionals, Medical students",
+                language="English",
             ),
+            main_metric="exact_match",
+            main_split=TEST_SPLIT,
         )
