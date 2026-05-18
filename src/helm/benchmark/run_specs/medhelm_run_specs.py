@@ -1733,8 +1733,9 @@ def get_health_bench_professional_run_spec(jury_config_path: Optional[str] = Non
         groups=["health_bench_professional"],
     )
 
+
 @run_spec_function("medxpert_qa_text")
-def get_medxpert_qa_text_spec(jury_config_path: Optional[str] = None) -> RunSpec:
+def get_medxpert_qa_text_spec() -> RunSpec:
     scenario_spec = ScenarioSpec(
         class_name="helm.benchmark.scenarios.medxpert_qa_text_scenario.MedXpertQATextScenario",
         args={},
