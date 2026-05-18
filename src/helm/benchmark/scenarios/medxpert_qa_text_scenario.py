@@ -4,7 +4,7 @@ from typing import List
 from datasets import DatasetDict, load_dataset
 
 from helm.benchmark.presentation.taxonomy_info import TaxonomyInfo
-from helm.common.general import ensure_directory_exists, ensure_file_downloaded
+from helm.common.general import ensure_directory_exists
 
 from helm.benchmark.scenarios.scenario import (
     CORRECT_TAG,
