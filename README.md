@@ -92,14 +92,12 @@ Adds heavy libraries (bert-score, rouge-score, nltk). **Install can take 2–3 m
 
 Scenarios: **DischargeMe** (hospital course summaries; requires PhysioNet `data_path`), **ACI-Bench** (clinical transcripts), **Patient-Edu** (simplifying medical jargon).
 
-**⚠️ Note on macOS with Python 3.12:** Use `pip` instead of `uv` for this tier due to build compatibility issues with `pyemd`.
-
-Install (use `pip` on Intel Mac):
+Install:
 ```sh
 pip install "medhelm[summarization]"
 ```
 
-Or with `uv` (Linux/other platforms):
+Or with `uv`:
 ```sh
 uv pip install "medhelm[summarization]"
 ```

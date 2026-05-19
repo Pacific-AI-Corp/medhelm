@@ -20,6 +20,7 @@ from helm.benchmark.metrics.metric import Metric, MetricMetadata, MetricResult
 from helm.benchmark.metrics.metric_name import MetricName
 from helm.benchmark.metrics.metric_service import MetricService
 from helm.benchmark.metrics.statistic import Stat
+from helm.benchmark.metrics.data_stats import DataStatsMetric
 from helm.benchmark.metrics.summac.model_summac import SummaCZS
 
 try:
@@ -66,11 +67,6 @@ class SummarizationMetric(Metric):
         # `NameError: name 'stderr' is not defined`
         if not spacy.util.is_package("en_core_web_sm"):
             spacy.cli.download("en_core_web_sm")
-
-        try:
-            from summ_eval.data_stats_metric import DataStatsMetric  # type: ignore
-        except ModuleNotFoundError as e:
-            handle_module_not_found_error(e, ["summarization"])
 
         self.data_stats_metric = DataStatsMetric()
         self.task: str = task

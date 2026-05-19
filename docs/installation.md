@@ -61,8 +61,6 @@ Scenarios: **DischargeMe** (hospital course summaries), **ACI-Bench** (clinical 
 pip install "medhelm[summarization]"
 ```
 
-**Note on macOS with Python 3.12:** Use `pip` (not `uv`) for this tier due to build compatibility with `pyemd`.
-
 ### Gated / licensing tier (`[gated]`)
 
 Adds **gdown** so the code can download data from Google Drive. Install can also take longer.
@@ -91,18 +89,6 @@ pip install "medhelm[summarization,gated]"
 | **All tiers** | `pip install "medhelm[summarization,gated]"` | All of the above (install once, run any scenario) |
 
 See [Quick Start](/quick_start) for running benchmarks with `medhelm-run` (after activating your environment).
-
-## Troubleshooting
-
-### macOS with Python 3.12 and the summarization tier
-
-If you encounter build errors with `pyemd` when installing `medhelm[summarization]` on macOS:
-
-```bash
-pip install "medhelm[summarization]"
-```
-
-This is a known compatibility issue. Use `pip` instead of `uv` for this tier.
 
 ## Install Multimodal Support
 

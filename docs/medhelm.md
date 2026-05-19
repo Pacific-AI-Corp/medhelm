@@ -181,7 +181,6 @@ source .venv/bin/activate
 pip install "medhelm[summarization,gated]"
 ```
 
-**Note on macOS/Python 3.12:** Use `pip` (not `uv`) for the `[summarization]` tier due to compatibility with `pyemd`.
 
 ### Alternative: Using conda
 
