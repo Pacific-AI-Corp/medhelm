@@ -44,7 +44,7 @@ class MedXpertQATextScenario(Scenario):
 
     HF_DATASET_NAME = "TsinghuaC3I/MedXpertQA"
 
-    name = "medxpert_qa"
+    name = "medxpert_qa_text"
     description = (
         "MedXpertQA Text is a text-only benchmark designed to evaluate expert-level medical knowledge, clinical reasoning,"
         " and advanced problem-solving capabilities in large language models across diverse medical specialties and body systems."
