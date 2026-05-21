@@ -46,7 +46,7 @@ class MedXpertQATextScenario(Scenario):
 
     name = "medxpert_qa_text"
     description = (
-        "MedXpertQA Text is a text-only benchmark designed to evaluate expert-level medical knowledge, clinical reasoning,"
+        "MedXpertQA is a benchmark designed to evaluate expert-level medical knowledge, clinical reasoning,"
         " and advanced problem-solving capabilities in large language models across diverse medical specialties and body systems."
         " It features rigorously curated and clinically relevant board-style questions, enhanced through expert review and data synthesis "
         "techniques to ensure high difficulty, reliability, and minimal data leakage."
@@ -95,7 +95,7 @@ class MedXpertQATextScenario(Scenario):
     def get_metadata(self) -> ScenarioMetadata:
         return ScenarioMetadata(
             name=self.name,
-            display_name="MedXpertQA Text",
+            display_name="MedXpertQA",
             description=self.description,
             taxonomy=TaxonomyInfo(
                 task="Question answering",
