@@ -724,7 +724,7 @@ run_groups:
       language: English
 
   - name: medxpert_qa_text
-    display_name: MedXpert-QA-Text
+    display_name: MedXpertQA
     description: MedXpertQA is a benchmark designed to evaluate expert-level medical knowledge, clinical reasoning, and advanced problem-solving capabilities in large language models across diverse medical specialties and body systems. Note:- Only text split is used [(Medxpertqa)](https://arxiv.org/abs/2501.18362).
     metric_groups:
       - accuracy
