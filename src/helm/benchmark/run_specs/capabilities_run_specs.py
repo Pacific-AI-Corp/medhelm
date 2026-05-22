@@ -1,6 +1,10 @@
 """Run spec functions for MMLU-Pro."""
 
-from helm.benchmark.adaptation.adapter_spec import ADAPT_MULTIPLE_CHOICE_JOINT, ADAPT_MULTIPLE_CHOICE_JOINT_CHAIN_OF_THOUGHT, AdapterSpec
+from helm.benchmark.adaptation.adapter_spec import (
+    ADAPT_MULTIPLE_CHOICE_JOINT,
+    ADAPT_MULTIPLE_CHOICE_JOINT_CHAIN_OF_THOUGHT,
+    AdapterSpec,
+)
 from helm.benchmark.metrics.common_metric_specs import get_basic_metric_specs, get_exact_match_metric_specs
 from helm.benchmark.metrics.metric import MetricSpec
 from helm.benchmark.run_spec import RunSpec, run_spec_function
