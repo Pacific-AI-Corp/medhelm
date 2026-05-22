@@ -5,7 +5,6 @@ from typing import List, Any
 import datasets
 from datasets import load_dataset
 
-from helm.benchmark.scenarios.lextreme_scenario import TaskType
 from helm.benchmark.scenarios.scenario import (
     Scenario,
     Instance,
@@ -18,6 +17,14 @@ from helm.benchmark.scenarios.scenario import (
     Output,
     ScenarioMetadata,
 )
+
+
+class TaskType:
+    SLTC = "SingleLabelTextClassification"
+    MLTC = "MultiLabelTextClassification"
+    NER = "NamedEntityRecognition"
+    QA = "QuestionAnswering"
+
 
 ECTHR_A = "ecthr_a"
 ECTHR_B = "ecthr_b"
