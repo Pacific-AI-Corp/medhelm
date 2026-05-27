@@ -511,6 +511,7 @@ run_groups:
       - medbullets
       - med_qa
       - med_mcqa
+      - healthqa_br
       - medalign
       - shc_ptbm_med
       - shc_sei_med
@@ -772,6 +773,23 @@ run_groups:
       who: n/a
       when: n/a
       language: English
+
+  - name: healthqa_br
+    display_name: HealthQA-BR
+    description: HealthQA-BR is a large-scale multiple-choice benchmark for evaluating clinical knowledge in the Brazilian Unified Health System (SUS) context. It contains 5,632 questions from nationwide licensing exams and residency tests, covering medical specialties and allied health professions including nursing, dentistry, psychology, pharmacy, and physiotherapy [(Larxel/healthqa-br, 2024)](https://huggingface.co/datasets/Larxel/healthqa-br).
+    metric_groups:
+      - accuracy
+      - efficiency
+      - general_information
+    environment:
+      main_name: exact_match
+      main_split: test
+    taxonomy:
+      task: Question answering
+      what: Medical knowledge testing in the Brazilian public health context
+      who: Medical student, Resident, Allied health professional
+      when: Any
+      language: Portuguese
 
   - name: medalign
     display_name: MedAlign

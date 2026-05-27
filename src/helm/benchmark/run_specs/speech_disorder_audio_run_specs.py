@@ -165,3 +165,30 @@ def get_ultra_suite_disorder_symptoms_run_spec() -> RunSpec:
         metric_specs=metric_specs,
         groups=[run_spec_name],
     )
+
+
+ASR_INSTRUCTIONS: str = (
+    "Listen to the audio and transcribe the spoken content to text. "
+    "Respond with only the transcript text and nothing else."
+)
+
+
+@run_spec_function("speech_robust_bench")
+def get_speech_robust_bench_run_spec(subject: str, level: int) -> RunSpec:
+    scenario_spec = ScenarioSpec(
+        class_name="helm.benchmark.scenarios.audio_language.speech_robust_bench_scenario.SpeechRobustBenchScenario",
+        args={"subject": subject, "level": level},
+    )
+    adapter_spec = _get_generation_adapter_spec(
+        instructions=ASR_INSTRUCTIONS,
+        max_tokens=100,
+    )
+    metric_specs: List[MetricSpec] = get_basic_metric_specs(["wer_score", "mer_score", "wip_score", "cer_score"])
+    run_spec_name: str = "speech_robust_bench"
+    return RunSpec(
+        name=f"{run_spec_name}:subject={subject},level={level}",
+        scenario_spec=scenario_spec,
+        adapter_spec=adapter_spec,
+        metric_specs=metric_specs,
+        groups=[run_spec_name],
+    )
