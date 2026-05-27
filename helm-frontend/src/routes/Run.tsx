@@ -29,8 +29,7 @@ export default function Run() {
   const [scenario, setScenario] = useState<Scenario | undefined>();
   const [runGroup, setRunGroup] = useState<RunGroup | undefined>();
 
-  const [adapterFieldMap, setAdapterFieldMap] =
-    useState<AdapterFieldMap>({});
+  const [adapterFieldMap, setAdapterFieldMap] = useState<AdapterFieldMap>({});
 
   const [metricFieldMap, setMetricFieldMap] = useState<
     MetricFieldMap | undefined
@@ -152,29 +151,24 @@ export default function Run() {
 
         <div>
           <List className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8">
-            {Object.entries(runSpec.adapter_spec).map(
-              ([key, value], idx) => (
-                <ListItem
-                  key={key}
-                  className={idx < 3 ? "!border-0" : ""}
+            {Object.entries(runSpec.adapter_spec).map(([key, value], idx) => (
+              <ListItem key={key} className={idx < 3 ? "!border-0" : ""}>
+                <strong
+                  className="mr-1"
+                  title={
+                    adapterFieldMap[key]
+                      ? adapterFieldMap[key].description
+                      : undefined
+                  }
                 >
-                  <strong
-                    className="mr-1"
-                    title={
-                      adapterFieldMap[key]
-                        ? adapterFieldMap[key].description
-                        : undefined
-                    }
-                  >
-                    {`${key}: `}
-                  </strong>
+                  {`${key}: `}
+                </strong>
 
-                  <span className="overflow-x-auto pre-wrap">
-                    {String(value)}
-                  </span>
-                </ListItem>
-              ),
-            )}
+                <span className="overflow-x-auto pre-wrap">
+                  {String(value)}
+                </span>
+              </ListItem>
+            ))}
           </List>
         </div>
       </Card>

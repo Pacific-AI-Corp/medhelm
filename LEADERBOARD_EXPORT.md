@@ -73,7 +73,13 @@ rm -rf src/helm/benchmark/static_build/assets
 cp -r helm-frontend/dist/* src/helm/benchmark/static_build/
 ```
 
-## 3. Export static sites
+## 3. Run helm-summarize for multiple suites
+
+```text
+helm-summarize --release v5.0.0 --suites v4.0.0 meta_v2 meta_v1alpha -o benchmarks/ --schema-path schema_v5.yaml
+```
+
+## 4. Export static sites
 
 Pick a site root and portal base URL (your public origin and path prefix). Export **one directory per release**. Each `--export-path` must not exist yet.
 
@@ -104,7 +110,7 @@ helm-server \
 
 Repeat for other tags under `benchmark_output/releases/`.
 
-## 4. Release menu metadata
+## 5. Release menu metadata
 
 The navbar release dropdown needs `project_metadata.json` at the URL you set above.
 
@@ -123,7 +129,7 @@ EOF
 
 `HELM_PROJECT_METADATA_URL` in each export’s `config.js` must match where this file is served. If the file lives under `/medhelm/`, do not point metadata at `/helm/`.
 
-## 5. Preview locally
+## 6. Preview locally
 
 ```bash
 python -m http.server -d "$SITE_ROOT"
@@ -136,7 +142,9 @@ Open:
 
 Hard-refresh if `config.js` is cached.
 
-## 6. Deploy
+## 7. Deploy
 
 Upload `$SITE_ROOT` to your host or map nginx locations to each version folder and to `medhelm/project_metadata.json`.
+
+The static site cam be hosted with AWS s3 Static Syte and AWS CloudFront.
 

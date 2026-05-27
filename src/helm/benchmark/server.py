@@ -40,15 +40,13 @@ def serve_config():
         return (
             f'window.BENCHMARK_OUTPUT_BASE_URL = "{app.config["helm.outputurl"]}";\n'
             f'window.RELEASE = "{app.config["helm.release"]}";\n'
-            f'window.PROJECT_ID = "{app.config["helm.project"]}";\n'
-            + _helm_frontend_portal_config_js()
+            f'window.PROJECT_ID = "{app.config["helm.project"]}";\n' + _helm_frontend_portal_config_js()
         )
     else:
         return (
             f'window.BENCHMARK_OUTPUT_BASE_URL = "{app.config["helm.outputurl"]}";\n'
             f'window.SUITE = "{app.config["helm.suite"]}";\n'
-            f'window.PROJECT_ID = "{app.config["helm.project"]}";\n'
-            + _helm_frontend_portal_config_js()
+            f'window.PROJECT_ID = "{app.config["helm.project"]}";\n' + _helm_frontend_portal_config_js()
         )
 
 

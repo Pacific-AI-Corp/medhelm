@@ -24,7 +24,6 @@ export default function MinimalNavBar() {
         <Link to="/" className="mx-2 w-32">
           <img src={helmLogo} className="object-contain" />
         </Link>
-
       </div>
     </nav>
   );

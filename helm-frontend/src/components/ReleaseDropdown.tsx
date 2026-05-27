@@ -122,11 +122,11 @@ function ReleaseDropdown() {
       >
         {menuVersions.map((release) => (
           <li key={release}>
-                <a
-                  href={`${getReleaseUrl(release, projectId)}#/leaderboard`}
-                  className="block"
-                  role="menuitem"
-                >
+            <a
+              href={`${getReleaseUrl(release, projectId)}#/leaderboard`}
+              className="block"
+              role="menuitem"
+            >
               {release}
             </a>
           </li>
