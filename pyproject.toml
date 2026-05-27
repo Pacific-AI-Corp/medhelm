@@ -99,8 +99,9 @@ ranking = [
 summarization = [
     # For summarization_metrics and MedHELM Clinical NLP tier (DischargeMe, ACI-Bench, Patient-Edu)
     # Use: pip install "medhelm[summarization]" — install can take 2–3 minutes
-    "summ-eval~=0.892",
-    "bert-score~=0.3",
+    # Note: extractive stats (coverage/density/compression) are vendored in helm.benchmark.metrics.data_stats
+    # instead of summ-eval, which pins pyemd==0.5.1 (fails on Python 3.12+) and torch<2.0 via blanc.
+    "bert-score~=0.3.13",
     "rouge-score~=0.1.2",
     "nltk~=3.7,!=3.9.0",
     "sentencepiece~=0.2.0",
@@ -469,13 +470,6 @@ crfm-proxy-cli = "helm.proxy.cli:main"
 default-groups = ["dev", "types"]
 
 override-dependencies = [
-    # override torch dependency for summ-eval in "summarization" extra:
-    # - summ-eval depends on blanc 
-    # - blanc depends on torch<2.0
-    "torch~=2.1",
-    # override torch dependency for summ-eval in "summarization" extra:
-    # - summ-eval depends on blanc 
-    # - blanc depends on numpy<2.0
     "numpy>=1.26,<3",
 ]
 
@@ -486,7 +480,7 @@ conflicts = [
     ],
 ]
 
-# openai-whisper build needs setuptools + wheel; it doesn't declare them (CI uses --no-build-isolation-package + venv with both)
+# openai-whisper setup.py imports pkg_resources; needs setuptools<82 (pkg_resources removed in 82+)
 [tool.uv.extra-build-dependencies]
 openai-whisper = ["setuptools<82", "wheel"]
 
