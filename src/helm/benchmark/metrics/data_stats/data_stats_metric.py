@@ -2,7 +2,7 @@
 # Vendored so medhelm[summarization] does not depend on summ-eval (pyemd==0.5.1, torch<2.0).
 
 from collections import Counter
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import spacy
 
@@ -31,11 +31,20 @@ class DataStatsMetric:
         self.tokenize = tokenize
 
     def evaluate_example(self, summary: str, input_text: str) -> Dict[str, float]:
+        text_for_fragments: Union[str, List[str]]
+        summary_for_fragments: Union[str, List[str]]
         if self.tokenize:
             nlp = _get_spacy_en()
-            input_text = [tok.text for tok in nlp(input_text, disable=["tagger", "parser", "ner", "textcat"])]
-            summary = [tok.text for tok in nlp(summary, disable=["tagger", "parser", "ner", "textcat"])]
-        fragments = Fragments(summary, input_text, case=self.case)
+            text_for_fragments = [
+                tok.text for tok in nlp(input_text, disable=["tagger", "parser", "ner", "textcat"])
+            ]
+            summary_for_fragments = [
+                tok.text for tok in nlp(summary, disable=["tagger", "parser", "ner", "textcat"])
+            ]
+        else:
+            text_for_fragments = input_text
+            summary_for_fragments = summary
+        fragments = Fragments(summary_for_fragments, text_for_fragments, case=self.case)
         score_dict: Dict[str, float] = {
             "coverage": fragments.coverage(),
             "density": fragments.density(),
