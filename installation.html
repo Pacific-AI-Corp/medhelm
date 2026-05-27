@@ -171,8 +171,6 @@ python3.12 <span class="nt">-m</span> venv .venv
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="s2">"medhelm[summarization]"</span>
 </code></pre></div></div>
 
-<p><strong>Note on macOS with Python 3.12:</strong> Use <code class="language-plaintext highlighter-rouge">pip</code> (not <code class="language-plaintext highlighter-rouge">uv</code>) for this tier due to build compatibility with <code class="language-plaintext highlighter-rouge">pyemd</code>.</p>
-
 <h3 id="gated--licensing-tier-gated">Gated / licensing tier (<code class="language-plaintext highlighter-rouge">[gated]</code>)</h3>
 
 <p>Adds <strong>gdown</strong> so the code can download data from Google Drive. Install can also take longer.</p>
@@ -224,17 +222,6 @@ python3.12 <span class="nt">-m</span> venv .venv
 </table>
 
 <p>See <a href="/quick_start">Quick Start</a> for running benchmarks with <code class="language-plaintext highlighter-rouge">medhelm-run</code> (after activating your environment).</p>
-
-<h2 id="troubleshooting">Troubleshooting</h2>
-
-<h3 id="macos-with-python-312-and-the-summarization-tier">macOS with Python 3.12 and the summarization tier</h3>
-
-<p>If you encounter build errors with <code class="language-plaintext highlighter-rouge">pyemd</code> when installing <code class="language-plaintext highlighter-rouge">medhelm[summarization]</code> on macOS:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="s2">"medhelm[summarization]"</span>
-</code></pre></div></div>
-
-<p>This is a known compatibility issue. Use <code class="language-plaintext highlighter-rouge">pip</code> instead of <code class="language-plaintext highlighter-rouge">uv</code> for this tier.</p>
 
 <h2 id="install-multimodal-support">Install Multimodal Support</h2>
 
