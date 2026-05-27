@@ -40,14 +40,14 @@ jobs:
         with:
           version: "0.9.4"
           enable-cache: true
-      - name: Create build env with setuptools (for openai-whisper)
-        run: |
-          python -m venv .build-venv
-          .build-venv/bin/pip install setuptools wheel --quiet
       - name: Lock dependencies
-        run: UV_PYTHON=".build-venv/bin/python" uv lock --no-build-isolation-package openai-whisper
+        env:
+          UV_PREVIEW_FEATURES: extra-build-dependencies
+        run: uv lock
       - name: Install dependencies
-        run: UV_PYTHON=".build-venv/bin/python" uv sync --extra ci --no-build-isolation-package openai-whisper
+        env:
+          UV_PREVIEW_FEATURES: extra-build-dependencies
+        run: uv sync --extra ci --frozen
       - name: Write requirements.txt
         run: uv pip freeze --exclude-editable > requirements.txt
         # Need to manually run tests here because the pull request opened later will not
@@ -66,8 +66,6 @@ jobs:
         run: uv run pytest
       - name: Run helm-run
         run: uv run helm-run --suite test --run-entries simple1:model=simple/model1 --max-eval-instances 10 --exit-on-error
-      - name: Remove build venv before PR (do not commit)
-        run: rm -rf .build-venv
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6
         with:

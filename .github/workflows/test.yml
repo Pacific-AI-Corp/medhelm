@@ -56,12 +56,10 @@ jobs:
         with:
           version: "0.9.4"
           enable-cache: true
-      - name: Create build env with setuptools (for openai-whisper)
-        run: |
-          python -m venv .build-venv
-          .build-venv/bin/pip install setuptools wheel --quiet
       - name: Install dependencies
-        run: UV_PYTHON=".build-venv/bin/python" uv sync --extra ci --no-build-isolation-package openai-whisper
+        env:
+          UV_PREVIEW_FEATURES: extra-build-dependencies
+        run: uv sync --extra ci --frozen
       - name: Run pre-commit
         run: ./pre-commit.sh
       - name: Run tests
