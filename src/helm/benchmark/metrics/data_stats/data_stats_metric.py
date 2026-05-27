@@ -35,12 +35,8 @@ class DataStatsMetric:
         summary_for_fragments: Union[str, List[str]]
         if self.tokenize:
             nlp = _get_spacy_en()
-            text_for_fragments = [
-                tok.text for tok in nlp(input_text, disable=["tagger", "parser", "ner", "textcat"])
-            ]
-            summary_for_fragments = [
-                tok.text for tok in nlp(summary, disable=["tagger", "parser", "ner", "textcat"])
-            ]
+            text_for_fragments = [tok.text for tok in nlp(input_text, disable=["tagger", "parser", "ner", "textcat"])]
+            summary_for_fragments = [tok.text for tok in nlp(summary, disable=["tagger", "parser", "ner", "textcat"])]
         else:
             text_for_fragments = input_text
             summary_for_fragments = summary
