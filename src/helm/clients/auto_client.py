@@ -144,7 +144,6 @@ class AutoClient(Client):
 
         client: Client = self._get_client(model_deployment_name)
         try:
-
             return make_batch_request_with_retry(client=client, requests=requests)
 
         except RetryError as e:

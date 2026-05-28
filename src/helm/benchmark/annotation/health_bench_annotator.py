@@ -231,7 +231,6 @@ class HealthBenchAnnotator(LLMAsJuryAnnotator):
         grading_responses: List[dict] = []
 
         for annotator_name, annotator_model_info in self._annotator_models.items():
-
             if instance.extra_data is None or "rubrics" not in instance.extra_data:
                 hlog(
                     f"Instance {instance.id} is missing rubric information, skipping annotation for annotator {annotator_name}"
@@ -327,7 +326,6 @@ class HealthBenchProfessionalAnnotator(LLMAsJuryAnnotator):
         grading_responses: List[dict] = []
 
         for annotator_name, annotator_model_info in self._annotator_models.items():
-
             if instance.extra_data is None or "rubrics" not in instance.extra_data:
                 hlog(
                     f"Instance {instance.id} is missing rubric information, skipping annotation for annotator {annotator_name}"

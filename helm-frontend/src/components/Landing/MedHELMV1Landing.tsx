@@ -52,7 +52,7 @@ export default function MedHELMLanding() {
             </a>
             <a
               className="px-10 btn rounded-md mx-4"
-              href="https://crfm-helm.readthedocs.io/en/latest/medhelm/"
+              href="https://medhelm.org/installation"
             >
               Documentation
             </a>

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import crfmLogo from "@/assets/crfm-logo.png";
-import helmLogo from "@/assets/helm-logo-simple.png";
-import NavDropdown from "@/components/NavDropdown";
+import helmLogo from "@/assets/medhelm_logo.jpg";
+import { getHelmLogoHref } from "@/utils/helmPortalConfig";
 
 export default function MinimalNavBar() {
   return (
@@ -18,13 +18,12 @@ export default function MinimalNavBar() {
         </div>
       </div>
       <div className="flex-1 items-center">
-        <Link to="https://crfm.stanford.edu/" className="w-24">
+        <a href={getHelmLogoHref()} className="w-24">
           <img src={crfmLogo} className="object-contain" />
-        </Link>
+        </a>
         <Link to="/" className="mx-2 w-32">
           <img src={helmLogo} className="object-contain" />
         </Link>
-        <NavDropdown></NavDropdown>
       </div>
     </nav>
   );

@@ -7,7 +7,7 @@ title: HEIM (Text-to-image Model Evaluation)
 
 ## Holistic Evaluation of Text-To-Image Models
 
-<img src="../assets/images/heim-logo.png" alt="HEIM logo" width="800"/>
+<img src="../assets/images/medhelm_logo.jpg" alt="HEIM logo" width="800"/>
 
 Significant effort has recently been made in developing text-to-image generation models, which take textual prompts as 
 input and generate images. As these models are widely used in real-world applications, there is an urgent need to 

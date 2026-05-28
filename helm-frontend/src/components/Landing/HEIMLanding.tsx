@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import getSchema from "@/services/getSchema";
 import type Schema from "@/types/Schema";
-import heimLogo from "@/assets/heim-logo.png";
+import heimLogo from "@/assets/medhelm_logo.jpg";
 import MetricsList from "@/components/MetricsList";
 import ModelsList from "@/components/ModelsList";
 import ScenariosList from "@/components/ScenariosList";

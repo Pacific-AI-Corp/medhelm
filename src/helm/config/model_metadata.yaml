@@ -10,6 +10,14 @@
 
 
 models:
+  # JSL
+  - name: jsl/medical-visual-lm-30b
+    display_name: medical-visual-lm-30b
+    description: jsl/medical-visual-lm-30b is a 30B parameter vision-language model trained on a large corpus of medical text and images
+    creator_organization_name: JSL
+    access: open
+    release_date: 2025-01-11 # paper date
+    tags: [ TEXT_MODEL_TAG, FULL_FUNCTIONALITY_TEXT_MODEL_TAG, BUGGY_TEMP_0_TAG ]
 
   - name: simple/model1
     display_name: Simple Model 1
@@ -619,6 +627,14 @@ models:
     tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
 
   - name: anthropic/claude-opus-4-6
+    display_name: Claude 4.6 Opus
+    description: Claude 4.6 Opus is a large language model from Anthropic with strong capabilities in software engineering, agentic tasks, and long context reasoning, as well as in knowledge work. ([blog](https://www.anthropic.com/news/claude-opus-4-6), [system card](https://www-cdn.anthropic.com/c788cbc0a3da9135112f97cdf6dcd06f2c16cee2.pdf))
+    creator_organization_name: Anthropic
+    access: limited
+    release_date: 2026-02-05
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: anthropic/claude-opus-4.6
     display_name: Claude 4.6 Opus
     description: Claude 4.6 Opus is a large language model from Anthropic with strong capabilities in software engineering, agentic tasks, and long context reasoning, as well as in knowledge work. ([blog](https://www.anthropic.com/news/claude-opus-4-6), [system card](https://www-cdn.anthropic.com/c788cbc0a3da9135112f97cdf6dcd06f2c16cee2.pdf))
     creator_organization_name: Anthropic
@@ -1949,6 +1965,16 @@ models:
     tags: [TEXT_MODEL_TAG, PARTIAL_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
 
   # Meta
+  - name: meta/quiet_sand_v1alpha
+    display_name: Muse Spark (2026-04-08)
+    description: Muse Spark is purpose-built for Meta’s products. It will power a smarter and faster Meta AI, and over time unlock new features that cite recommendations and content people share across Instagram, Facebook, and Threads. (https://about.fb.com/news/2026/04/introducing-muse-spark-meta-superintelligence-labs/)
+    creator_organization_name: Meta
+    access: limited
+    num_parameters: 175000000000
+    release_date: 2026-04-08
+    tags:  [TEXT_MODEL_TAG, PARTIAL_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+
   - name: meta/opt-iml-175b # NOT SUPPORTED
     display_name: OPT-IML (175B)
     description: OPT-IML (175B parameters) is a suite of decoder-only transformer LMs that are multi-task fine-tuned on 2000 datasets ([paper](https://arxiv.org/pdf/2212.12017.pdf)).
@@ -3280,6 +3306,22 @@ models:
     access: limited
     release_date: 2025-11-13
     tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: openai/gpt-5.4-2026-03-05
+    display_name: GPT-5.4 (2026-03-05)
+    description: GPT-5.4 (2026-03-05) is a model in the GPT-5 model family, and has similar training for code generation, bug fixing, refactoring, instruction following, long context and tool calling. ([blog](https://openai.com/index/gpt-5-4-for-developers/))
+    creator_organization_name: OpenAI
+    access: limited
+    release_date: 2025-11-13
+    tags: [TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG]
+
+  - name: openai/gpt-5.4
+    display_name: GPT-5.4 (2026-04-08)
+    description: GPT-5.4 (2026-04-08) is a model in the GPT-5 model family, and has similar training for code generation, bug fixing, refactoring, instruction following, long context and tool calling. ([blog](https://openai.com/index/gpt-5-4-for-developers/))
+    creator_organization_name: OpenAI
+    access: limited
+    release_date: 2025-11-13
+    tags: [ TEXT_MODEL_TAG, VISION_LANGUAGE_MODEL_TAG, OPENAI_CHATGPT_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG, INSTRUCTION_FOLLOWING_MODEL_TAG ]
 
   - name: openai/whisper-1_gpt-4o-2024-11-20
     display_name: Whisper-1 + GPT-4o (2024-11-20)

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getProjectMetadataUrl } from "@/utils/helmPortalConfig";
 import ReleaseIndexEntry from "@/types/ProjectMetadata";
 import ProjectCard from "./ProjectCard";
 
@@ -8,7 +9,7 @@ export default function CardGrid() {
   >();
 
   useEffect(() => {
-    fetch("https://crfm.stanford.edu/helm/project_metadata.json")
+    fetch(getProjectMetadataUrl())
       .then((response) => response.json())
       .then((data: ReleaseIndexEntry[]) => {
         setProjectEntries(data);
